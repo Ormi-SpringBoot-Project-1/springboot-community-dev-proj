@@ -2,9 +2,11 @@ package com.springbootcommunitydevproj.usermanagement;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.springbootcommunitydevproj.utils.ResponseMessages;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,5 +103,43 @@ public class UserManagementControllerTest {
             } catch (Exception e) {
             }
         });
+    }
+
+    @Test
+    @DisplayName("PUT /api/admin/user/level")
+    void changeUserLevelTest() throws Exception{
+        // given
+        String jsonTestData1 = "{\"user_id\": 5,\"level\": 3}"; // 성공 데이터
+        String jsonTestData2 = "{\"user\":2,\"level\":1}";  // 실패 데이터
+        String jsonTestData3 = "{\"user_id\":100,\"level\":3}"; // 실패 데이터
+        String jsonTestData4 = "{\"user_id\":7,\"level\":0}"; // 비유효 데이터
+
+        // when
+        ResultActions result1 = mockMvc.perform(put("/api/admin/user/level")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jsonTestData1));
+        ResultActions result2 = mockMvc.perform(put("/api/admin/user/level")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jsonTestData2));
+        ResultActions result3 = mockMvc.perform(put("/api/admin/user/level")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jsonTestData3));
+        ResultActions result4 = mockMvc.perform(put("/api/admin/user/level")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jsonTestData4));
+
+        // then
+        // Status Code를 확인하고 성공, 실패, 비유효 메시지를 정상적으로 올바르게 받았는지 확인합니다.
+        result1.andExpect(status().isOk());
+        result1.andExpect(jsonPath("$.Result").value(ResponseMessages.CHANGE_LEVEL_SUCCESS));
+
+        result2.andExpect(status().isOk());
+        result2.andExpect(jsonPath("$.Result").value(ResponseMessages.CHANGE_LEVEL_FAIL));
+
+        result3.andExpect(status().isOk());
+        result3.andExpect(jsonPath("$.Result").value(ResponseMessages.CHANGE_LEVEL_FAIL));
+
+        result4.andExpect(status().isOk());
+        result4.andExpect(jsonPath("$.Result").value(ResponseMessages.INVALID_LEVEL));
     }
 }
