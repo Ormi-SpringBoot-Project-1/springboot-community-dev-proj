@@ -1,9 +1,8 @@
 package com.springbootcommunitydevproj.model;
 
+import com.springbootcommunitydevproj.dto.PostResponse;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -12,22 +11,23 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
+@Builder
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Article {
-
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="article_id", updatable = false)
-    private Integer article_id;
+    @Column(name="post_id", updatable = false)
+    private Integer id;
 
     @Column(name="board_id", nullable = false)
     private Integer board_id;
 
-    @Column(name="user_id", nullable = false)
-    private Integer user_id;
+    @ManyToOne()
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
 
     @Column(name="title", nullable = false)
     private String title;
@@ -43,9 +43,8 @@ public class Article {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="limit_access_level", nullable = false)
-    @ColumnDefault("5")
-    private Byte limit_access_level;
+    @Column(name="auth_id", nullable = false)
+    private Integer authId;
 
     @Column(name="views", nullable = false)
     @ColumnDefault("0")
@@ -59,15 +58,13 @@ public class Article {
     @ColumnDefault("0")
     private Integer dislikes;
 
-    @Column(name="article_order", nullable = false)
-    @ColumnDefault("0")
-    private Integer article_order;
-
-    @Column(name="comment_count", nullable = false)
-    @ColumnDefault("0")
-    private Integer comment_count;
-
     @Column(name="post_file_count", nullable = false)
     @ColumnDefault("0")
     private Integer post_file_count;
+
+    public PostResponse toResponse() {
+        return PostResponse.builder()
+                .title(title)
+                .content(title).build();
+    }
 }
