@@ -1,9 +1,9 @@
 package com.springbootcommunitydevproj.repository;
 
-import com.springbootcommunitydevproj.model.Article;
+import com.springbootcommunitydevproj.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<Article, Integer> {
+public interface PostRepository extends JpaRepository<Post, Integer> {
 }
