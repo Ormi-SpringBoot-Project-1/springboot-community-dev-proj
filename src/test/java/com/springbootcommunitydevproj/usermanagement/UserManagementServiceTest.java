@@ -2,12 +2,16 @@ package com.springbootcommunitydevproj.usermanagement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.springbootcommunitydevproj.domain.User;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
+import com.springbootcommunitydevproj.repository.UserManagementRepository;
 import com.springbootcommunitydevproj.service.UserManagementService;
+import com.springbootcommunitydevproj.utils.ResponseMessages;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,9 @@ public class UserManagementServiceTest {
 
     @Autowired
     private UserManagementService userManagementService;
+
+    @Autowired
+    private UserManagementRepository userManagementRepository;
 
     @Test
     @DisplayName("findAllUserManagementInfo() 테스트")
@@ -93,7 +100,8 @@ public class UserManagementServiceTest {
 
         for (int i = 0; i < nicknames.size(); i++) {
             // when
-            List<UserManagementInfoDto> result = userManagementService.getUserManagementInfoByNickname(nicknames.get(i));
+            List<UserManagementInfoDto> result = userManagementService.getUserManagementInfoByNickname(
+                nicknames.get(i));
 
             // then
             if (i == 4) {
@@ -103,7 +111,7 @@ public class UserManagementServiceTest {
             else {
                 // 조회 결과가 1개인지 확인합니다.
                 assertThat(result.size()).isEqualTo(1);
-                
+
                 UserManagementInfoDto actual = result.get(0);
                 Map<String, String> expected = answer.get(i);
 
@@ -114,5 +122,52 @@ public class UserManagementServiceTest {
                 assertThat(actual.getCurrentPostCount()).isEqualTo(Integer.parseInt(expected.get("currentPostCount")));
             }
         }
+    }
+
+    @Test
+    @DisplayName("changeUserLevel(Map<String, Integer> request) 테스트")
+    void changeUserLevelTest() {
+        // given
+        // 총 8개의 데이터로 테스트합니다. (성공: 5개 / 실패: 3개)
+        List<Map<String, Integer>> testDataList = List.of(new HashMap<>(), new HashMap<>(), new HashMap<>(),
+            new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        setData(testDataList, 0, 1, 4);
+        setData(testDataList, 1, 2, 3);
+        setData(testDataList, 2, 10, 2);
+        setData(testDataList, 3, 7, 1);
+        setData(testDataList, 4, 12, 3);
+        setData(testDataList, 5, 112, 3);
+        setData(testDataList, 6, 6, 0);
+        setData(testDataList, 7, 8, 9);
+
+        for (int i = 0; i < testDataList.size(); i++) {
+            // when
+            // 등급 변경 결과와 검증용 데이터를 가져옵니다.
+            String result = userManagementService.changeUserLevel(testDataList.get(i));
+            Optional<User> user = userManagementRepository.findById(testDataList.get(i).get("user_id"));
+
+            // then
+            if (i < 5) {
+                // 등급 변경 성공 메시지를 정상적으로 받았는지 확인합니다.
+                assertThat(result).isEqualTo(ResponseMessages.CHANGE_LEVEL_SUCCESS);
+                // 등급이 실제로 올바르게 변경되었는지 확인합니다.
+                assertThat(user.orElseThrow().getLevelId()).isEqualTo(testDataList.get(i).get("level"));
+            }
+            else if (i == 5) {
+                // 등급 변경 실페 메시지를 정상적으로 받았는지 확인합니다.
+                assertThat(result).isEqualTo(ResponseMessages.CHANGE_LEVEL_FAIL);
+            }
+            else {
+                // 비유효 등급 메시지를 정상적으로 받았는지 확인합니다.
+                assertThat(result).isEqualTo(ResponseMessages.INVALID_LEVEL);
+            }
+        }
+
+    }
+
+    // changeUserLevelTest()의 테스트 데이터 생성용 메소드
+    private void setData(List<Map<String, Integer>> testDataList, Integer index, Integer userId, Integer level) {
+        testDataList.get(index).put("user_id", userId);
+        testDataList.get(index).put("level", level);
     }
 }
