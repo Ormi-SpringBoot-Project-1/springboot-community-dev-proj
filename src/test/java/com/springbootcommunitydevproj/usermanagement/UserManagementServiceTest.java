@@ -21,7 +21,7 @@ public class UserManagementServiceTest {
 
     @Test
     @DisplayName("findAllUserManagementInfo() 테스트")
-    public void findAllUserManagementInfoTest() {
+    void findAllUserManagementInfoTest() {
         // given
         // 미리 데이터베이스에 세팅한 데이터를 기준으로 합니다. (회원 12명)
         List<Map<String, String>> answer = List.of(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),
@@ -51,10 +51,68 @@ public class UserManagementServiceTest {
         assertThat(result.size()).isEqualTo(answer.size());
         // 결과 내용 일치 확인
         for (int i = 0; i < answer.size(); i++) {
-            assertThat(result.get(i).getUserId()).isEqualTo(Integer.parseInt(answer.get(i).get("userId")));
-            assertThat(result.get(i).getNickname()).isEqualTo(answer.get(i).get("nickname"));
-            assertThat(result.get(i).getLevelName()).isEqualTo(answer.get(i).get("levelName"));
-            assertThat(result.get(i).getCurrentPostCount()).isEqualTo(Integer.parseInt(answer.get(i).get("currentPostCount")));
+            UserManagementInfoDto actual = result.get(i);
+            Map<String, String> expected = answer.get(i);
+
+            assertThat(actual.getUserId()).isEqualTo(Integer.parseInt(expected.get("userId")));
+            assertThat(actual.getNickname()).isEqualTo(expected.get("nickname"));
+            assertThat(actual.getLevelName()).isEqualTo(expected.get("levelName"));
+            assertThat(actual.getCurrentPostCount()).isEqualTo(Integer.parseInt(expected.get("currentPostCount")));
+        }
+    }
+
+    @Test
+    @DisplayName("getUserManagementInfoByNickname(String nickname) 테스트")
+    void getUserManagementInfoByNicknameTest() {
+        // given
+        // ID가 1, 5, 9, 12번인 회원 정보를 테스트로 사용합니다.
+        List<Map<String, String>> answer = new ArrayList<>();
+        List<Integer> indexes = List.of(1, 5, 9, 12);
+
+        indexes.forEach(index -> {
+            Map<String, String> testData = new HashMap<>();
+            testData.put("userId", Integer.toString(index));
+            testData.put("nickname", "Test " + index);
+            testData.put("levelName", "Tier 5");
+
+            if (index == 1) {
+                testData.put("currentPostCount", "1");
+            }
+            else if (index == 5) {
+                testData.put("currentPostCount", "2");
+            }
+            else {
+                testData.put("currentPostCount", "0");
+            }
+
+            answer.add(testData);
+        });
+
+        // 테스트 해볼 닉네임들
+        List<String> nicknames = List.of("Test 1", "Test 5", "Test 9", "Test 12", "Test 100");
+
+        for (int i = 0; i < nicknames.size(); i++) {
+            // when
+            List<UserManagementInfoDto> result = userManagementService.getUserManagementInfoByNickname(nicknames.get(i));
+
+            // then
+            if (i == 4) {
+                // Test 100 이란 닉네임은 존재하지 않습니다.
+                assertThat(result.size()).isEqualTo(0);
+            }
+            else {
+                // 조회 결과가 1개인지 확인합니다.
+                assertThat(result.size()).isEqualTo(1);
+                
+                UserManagementInfoDto actual = result.get(0);
+                Map<String, String> expected = answer.get(i);
+
+                // 존재하는 닉네임 조회 결과가 일치하는지 확인합니다.
+                assertThat(actual.getUserId()).isEqualTo(Integer.parseInt(expected.get("userId")));
+                assertThat(actual.getNickname()).isEqualTo(expected.get("nickname"));
+                assertThat(actual.getLevelName()).isEqualTo(expected.get("levelName"));
+                assertThat(actual.getCurrentPostCount()).isEqualTo(Integer.parseInt(expected.get("currentPostCount")));
+            }
         }
     }
 }
