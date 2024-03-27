@@ -17,11 +17,13 @@ public class PostController {
 
     @PostMapping("/api/post") // 게시글 생성 요청
     public ResponseEntity<PostResponse> savePost(@RequestBody AddPostRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postService.saveArticle(request).toResponse());
+        return ResponseEntity.status(HttpStatus.CREATED).body(postService.savePost(request).toResponse());
     }
 
     @GetMapping("/api/post/{post_id}") // 게시글 조회
     public ResponseEntity<PostResponse> showPost(@PathVariable Integer post_id) {
         return ResponseEntity.ok(postService.findById(post_id).toResponse());
     }
+
+
 }

@@ -44,9 +44,6 @@ public class Post {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="auth_id", nullable = false)
-    private Integer authId;
-
     @Column(name="views", nullable = false)
     @ColumnDefault("0")
     private Integer views;

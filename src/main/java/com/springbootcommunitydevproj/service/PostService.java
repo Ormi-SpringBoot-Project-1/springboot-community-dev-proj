@@ -12,13 +12,13 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Post saveArticle(AddPostRequest request) {
+    public Post savePost(AddPostRequest request) {
 
-        Post article = Post.builder()
+        Post post = Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent()).build();
 
-        return postRepository.save(article);
+        return postRepository.save(post);
     }
 
     public Post findById(Integer id) {
