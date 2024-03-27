@@ -18,17 +18,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class BoardAuthority {
     @Id
     @Column(name = "auth_id", nullable = false)
-    private Integer auth_id ;
+    private Integer id ;
 
     @Column(name = "auth_create_post_level", nullable = false)
     @ColumnDefault("5")
-    private Integer auth_create_post_level;
+    private Byte authCreatePostLevel;
 
     @Column(name = "auth_access_board_level", nullable = false)
     @ColumnDefault("5")
-    private Integer auth_access_board_level;
+    private Byte authAccessBoardLevel;
 
     @Column(name = "auth_comment_level", nullable = false)
     @ColumnDefault("5")
-    private Integer auth_comment_level;
+    private Byte authCommentLevel;
 }

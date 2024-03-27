@@ -22,10 +22,11 @@ public class Post {
     @Column(name="post_id", updatable = false)
     private Integer id;
 
-    @Column(name="board_id", nullable = false)
-    private Integer board_id;
+    @ManyToOne
+    @JoinColumn(name="board_id", nullable = false)
+    private Board board;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
@@ -60,7 +61,11 @@ public class Post {
 
     @Column(name="post_file_count", nullable = false)
     @ColumnDefault("0")
-    private Integer post_file_count;
+    private Integer postFileCount;
+
+    @OneToOne
+    @JoinColumn(name="auth_id", nullable = false)
+    private PostAuthority authority;
 
     public PostResponse toResponse() {
         return PostResponse.builder()
