@@ -5,12 +5,9 @@ import com.springbootcommunitydevproj.dto.PostResponse;
 import com.springbootcommunitydevproj.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class PostController {
     private final PostService postService;
 
@@ -18,9 +15,13 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/api/articles") // 게시글 생성 요청
-    @ResponseBody
-    public ResponseEntity<PostResponse> saveArticle(@RequestBody AddPostRequest request) {
+    @PostMapping("/api/post") // 게시글 생성 요청
+    public ResponseEntity<PostResponse> savePost(@RequestBody AddPostRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.saveArticle(request).toResponse());
+    }
+
+    @GetMapping("/api/post/{post_id}") // 게시글 조회
+    public ResponseEntity<PostResponse> showPost(@PathVariable Integer post_id) {
+        return ResponseEntity.ok(postService.findById(post_id).toResponse());
     }
 }

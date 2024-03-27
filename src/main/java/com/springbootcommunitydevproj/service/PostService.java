@@ -20,4 +20,8 @@ public class PostService {
 
         return postRepository.save(article);
     }
+
+    public Post findById(Integer id) {
+        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found id" + id));
+    }
 }
