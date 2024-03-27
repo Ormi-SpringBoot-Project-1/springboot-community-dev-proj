@@ -15,4 +15,10 @@ public interface UserManagementRepository extends JpaRepository<User, Integer> {
         + "from (user as user left outer join level as level on user.level_id = level.level_id) left outer join post as post on user.user_id = post.user_id "
         + "where user.is_admin = 0 group by user.user_id limit 30 offset :start", nativeQuery = true)
     List<UserManagementInfoDto> findAllUserManagementInfo(@Param("start") Integer start);
+
+    // 특정 회원의 닉네임을 조회해 결과를 가져옵니다.
+    @Query(value = "select user.user_id as 'userId', user.nickname as 'nickname', level.level_name as 'levelName', count(post.post_id) as 'currentPostCount' "
+        + "from (user as user left outer join level as level on user.level_id = level.level_id) left outer join post as post on user.user_id = post.user_id "
+        + "where user.is_admin = 0 and :nickname = user.nickname group by user.user_id", nativeQuery = true)
+    List<UserManagementInfoDto> findByNickname(@Param("nickname") String nickname);
 }
