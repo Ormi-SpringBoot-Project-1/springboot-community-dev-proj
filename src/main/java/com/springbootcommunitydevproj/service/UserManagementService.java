@@ -1,8 +1,7 @@
 package com.springbootcommunitydevproj.service;
 
-import com.springbootcommunitydevproj.dto.ChangeUserLevelRequest;
-import com.springbootcommunitydevproj.dto.SetUserToBlockedUserRequest;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
+import com.springbootcommunitydevproj.dto.UserRequest;
 import com.springbootcommunitydevproj.repository.BlockedUserRepository;
 import com.springbootcommunitydevproj.repository.UserManagementRepository;
 import com.springbootcommunitydevproj.utils.ResponseMessages;
@@ -29,7 +28,7 @@ public class UserManagementService {
     }
 
     // 특정 회원의 등급을 변경합니다.
-    public String changeUserLevel(ChangeUserLevelRequest request) {
+    public String changeUserLevel(UserRequest request) {
         // 만약 변경하고자 하는 level이 올바른 범위(5 ~ 1)를 벗어나면 유효하지 않은 등급 메시지를 반환합니다.
         if (request.getLevel() <= 0 || 5 < request.getLevel()) {
             return ResponseMessages.INVALID_LEVEL;
@@ -42,7 +41,7 @@ public class UserManagementService {
     }
 
     // 특정 회원을 가입 제한으로 설정합니다.
-    public String setUserToBlockedUser(SetUserToBlockedUserRequest request) {
+    public String setUserToBlockedUser(UserRequest request) {
         // 이미 가입 제한 테이블에 해당 회원이 존재하는지 확인합니다.
         if (blockedUserRepository.findById(request.getUserId()).isPresent()) {
             return ResponseMessages.ALREADY_SET_BLOCKED_USER;
@@ -53,5 +52,12 @@ public class UserManagementService {
         // 쿼리 실행 결과에 따라 성공, 실패 메시지를 반환합니다.
         return result.equals(1) ? ResponseMessages.SET_USER_TO_BLOCKED_USER_SUCCESS
             : ResponseMessages.SET_USER_TO_BLOCKED_USER_FAIL;
+    }
+
+    // 특정 회원의 가입 제한을 해제합니다.
+    public String setBlockedUserToUnblock(UserRequest request) {
+        blockedUserRepository.deleteById(request.getUserId());
+
+        return ResponseMessages.USER_UNBLOCK_SUCCESS;
     }
 }
