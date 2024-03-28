@@ -2,8 +2,11 @@ package com.springbootcommunitydevproj.usermanagement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.springbootcommunitydevproj.domain.BlockedUser;
 import com.springbootcommunitydevproj.domain.User;
+import com.springbootcommunitydevproj.dto.SetUserToBlockedUserRequest;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
+import com.springbootcommunitydevproj.repository.BlockedUserRepository;
 import com.springbootcommunitydevproj.repository.UserManagementRepository;
 import com.springbootcommunitydevproj.service.UserManagementService;
 import com.springbootcommunitydevproj.utils.ResponseMessages;
@@ -25,6 +28,9 @@ public class UserManagementServiceTest {
 
     @Autowired
     private UserManagementRepository userManagementRepository;
+
+    @Autowired
+    private BlockedUserRepository blockedUserRepository;
 
     @Test
     @DisplayName("findAllUserManagementInfo() 테스트")
@@ -69,7 +75,7 @@ public class UserManagementServiceTest {
     }
 
     @Test
-    @DisplayName("getUserManagementInfoByNickname(String nickname) 테스트")
+    @DisplayName("getUserManagementInfoByNickname() 테스트")
     void getUserManagementInfoByNicknameTest() {
         // given
         // ID가 1, 5, 9, 12번인 회원 정보를 테스트로 사용합니다.
@@ -125,7 +131,7 @@ public class UserManagementServiceTest {
     }
 
     @Test
-    @DisplayName("changeUserLevel(Map<String, Integer> request) 테스트")
+    @DisplayName("changeUserLevel() 테스트")
     void changeUserLevelTest() {
         // given
         // 총 8개의 데이터로 테스트합니다. (성공: 5개 / 실패: 3개)
@@ -169,5 +175,43 @@ public class UserManagementServiceTest {
     private void setData(List<Map<String, Integer>> testDataList, Integer index, Integer userId, Integer level) {
         testDataList.get(index).put("user_id", userId);
         testDataList.get(index).put("level", level);
+    }
+
+    @Test
+    @DisplayName("setUserToBlockedUser() 테스트")
+    void setUserToBlockedUserTest() {
+        // given
+        // 6개의 데이터로 테스트합니다. (성공: 3개 / 실패: 3개)
+        List<SetUserToBlockedUserRequest> testDataList = List.of(new SetUserToBlockedUserRequest(1),
+            new SetUserToBlockedUserRequest(5), new SetUserToBlockedUserRequest(10),
+            new SetUserToBlockedUserRequest(100), new SetUserToBlockedUserRequest(-12),
+            new SetUserToBlockedUserRequest(5));
+
+        for (int i = 0; i < testDataList.size(); i++) {
+            // when
+            String result = userManagementService.setUserToBlockedUser(testDataList.get(i));
+
+            // then
+            if (i < 3) {
+                // 성공 데이터에 대한 결과 메시지가 올바른지 확인합니다.
+                assertThat(result).isEqualTo(ResponseMessages.SET_USER_TO_BLOCKED_USER_SUCCESS);
+            }
+            else if (i < 5){
+                // 실패 데이터에 대한 결과 메시지 올바른지 확인합니다.
+                assertThat(result).isEqualTo(ResponseMessages.SET_USER_TO_BLOCKED_USER_FAIL);
+            }
+            else {
+                // 이미 가입 제한으로 설정된 회원 메시지가 올바른지 확인합니다.
+                assertThat(result).isEqualTo(ResponseMessages.ALREADY_SET_BLOCKED_USER);
+            }
+        }
+
+        List<BlockedUser> result = blockedUserRepository.findAll();
+        // 실제로 3개가 들어왔는지 확인합니다.
+        assertThat(result.size()).isEqualTo(3);
+        // 올바르게 데이터가 들어갔는지 확인합니다.
+        for (int i = 0; i < 3; i++) {
+            assertThat(result.get(i).getUserId()).isEqualTo(testDataList.get(i).getUserId());
+        }
     }
 }
