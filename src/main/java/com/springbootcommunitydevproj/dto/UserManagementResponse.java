@@ -2,14 +2,11 @@ package com.springbootcommunitydevproj.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class SetUserToBlockedUserRequest {
-
-    private Integer userId;
+public class UserManagementResponse {
+    private String result;
 }
