@@ -1,4 +1,4 @@
-package com.springbootcommunitydevproj.domain;
+package com.springbootcommunitydevproj.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
