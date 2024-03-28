@@ -23,7 +23,7 @@ public class Board {
 
     @Column(name="board_type", nullable = false)
     @ColumnDefault("1")
-    private Integer board_type;
+    private Byte board_type;
 
     @Column(name="page_post_count", nullable = false)
     @ColumnDefault("10")

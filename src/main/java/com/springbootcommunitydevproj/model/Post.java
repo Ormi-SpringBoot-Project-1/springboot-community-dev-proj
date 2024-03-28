@@ -36,29 +36,29 @@ public class Post {
     @Column(name="content", nullable = false)
     private String content;
 
-//    @CreatedDate
-//    @Column(name="created_at")
-//    private LocalDateTime createdAt;
-//
-//    @LastModifiedDate
-//    @Column(name="updated_at")
-//    private LocalDateTime updatedAt;
-//
-//    @Column(name="views", nullable = false)
-//    @ColumnDefault("0")
-//    private Integer views;
-//
-//    @Column(name="likes", nullable = false)
-//    @ColumnDefault("0")
-//    private Integer likes;
-//
-//    @Column(name="dislikes", nullable = false)
-//    @ColumnDefault("0")
-//    private Integer dislikes;
-//
-//    @Column(name="post_file_count", nullable = false)
-//    @ColumnDefault("0")
-//    private Integer postFileCount;
+    @CreatedDate
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name="updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name="views", nullable = false)
+    @ColumnDefault("0")
+    private Integer views;
+
+    @Column(name="likes", nullable = false)
+    @ColumnDefault("0")
+    private Integer likes;
+
+    @Column(name="dislikes", nullable = false)
+    @ColumnDefault("0")
+    private Integer dislikes;
+
+    @Column(name="post_file_count", nullable = false)
+    @ColumnDefault("0")
+    private Integer postFileCount;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="auth_id", nullable = false)

@@ -31,30 +31,30 @@ public class User {
     @Column(name="password", nullable = false)
     private String password;
 
-//    @Column(name="description")
-//    private String description;
-//
-//    @Column(name="level_id", nullable = false)
-//    private Integer levelId;
+    @Column(name="description")
+    private String description;
 
-//    @Column(name="reported_count", nullable = false)
-//    @ColumnDefault("0")
-//    private Integer reportedCount;
-//
-//    @CreatedDate
-//    @Column(name="created_at")
-//    private LocalDateTime createdAt;
+    @Column(name="level_id", nullable = false)
+    private Integer levelId;
 
-//    @Column(name="is_admin", nullable = false)
-//    @ColumnDefault("0")
-//    private Boolean isAdmin;
-//
-//    @Column(name="user_ip", nullable = false)
-//    private String userIp;
-//
-//    @Column(name="last_login_ip", nullable = false)
-//    private String lastLogInIp;
-//
-//    @Column(name="phone_number", nullable = false)
-//    private String phoneNumber;
+    @Column(name="reported_count", nullable = false)
+    @ColumnDefault("0")
+    private Integer reportedCount;
+
+    @CreatedDate
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name="is_admin", nullable = false)
+    @ColumnDefault("0")
+    private Boolean isAdmin;
+
+    @Column(name="user_ip", nullable = false)
+    private String userIp;
+
+    @Column(name="last_login_ip", nullable = false)
+    private String lastLogInIp;
+
+    @Column(name="phone_number", nullable = false)
+    private String phoneNumber;
 }
