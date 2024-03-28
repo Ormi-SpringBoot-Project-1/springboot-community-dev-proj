@@ -1,12 +1,12 @@
 package com.springbootcommunitydevproj.service;
 
+import com.springbootcommunitydevproj.dto.ChangeUserLevelRequest;
 import com.springbootcommunitydevproj.dto.SetUserToBlockedUserRequest;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
 import com.springbootcommunitydevproj.repository.BlockedUserRepository;
 import com.springbootcommunitydevproj.repository.UserManagementRepository;
 import com.springbootcommunitydevproj.utils.ResponseMessages;
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +29,13 @@ public class UserManagementService {
     }
 
     // 특정 회원의 등급을 변경합니다.
-    public String changeUserLevel(Map<String, Integer> request) {
-        // request에 회원의 user_id가 없거나 변경할 level이 없으면 변경 실패 메시지를 반환합니다.
-        if (!request.containsKey("user_id") || !request.containsKey("level")) {
-            return ResponseMessages.CHANGE_LEVEL_FAIL;
-        }
-
+    public String changeUserLevel(ChangeUserLevelRequest request) {
         // 만약 변경하고자 하는 level이 올바른 범위(5 ~ 1)를 벗어나면 유효하지 않은 등급 메시지를 반환합니다.
-        if (request.get("level") <= 0 || 5 < request.get("level")) {
+        if (request.getLevel() <= 0 || 5 < request.getLevel()) {
             return ResponseMessages.INVALID_LEVEL;
         }
 
-        Integer result = userManagementRepository.changeUserLevel(request.get("user_id"), request.get("level"));
+        Integer result = userManagementRepository.changeUserLevel(request.getUserId(), request.getLevel());
 
         // 쿼리 실행 결과에 따라 성공, 실패 메시지를 반환합니다.
         return result.equals(1) ? ResponseMessages.CHANGE_LEVEL_SUCCESS : ResponseMessages.CHANGE_LEVEL_FAIL;
