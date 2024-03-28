@@ -1,10 +1,7 @@
 package com.springbootcommunitydevproj.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,8 +10,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor
+@Builder
+@Table(name = "users")
 public class User {
 
     @Id
@@ -31,30 +31,30 @@ public class User {
     @Column(name="password", nullable = false)
     private String password;
 
-    @Column(name="description")
-    private String description;
+//    @Column(name="description")
+//    private String description;
+//
+//    @Column(name="level_id", nullable = false)
+//    private Integer levelId;
 
-    @Column(name="level_id", nullable = false)
-    private Integer levelId;
+//    @Column(name="reported_count", nullable = false)
+//    @ColumnDefault("0")
+//    private Integer reportedCount;
+//
+//    @CreatedDate
+//    @Column(name="created_at")
+//    private LocalDateTime createdAt;
 
-    @Column(name="reported_count", nullable = false)
-    @ColumnDefault("0")
-    private Integer reportedCount;
-
-    @CreatedDate
-    @Column(name="created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name="is_admin", nullable = false)
-    @ColumnDefault("0")
-    private Boolean isAdmin;
-
-    @Column(name="user_ip", nullable = false)
-    private String userIp;
-
-    @Column(name="last_login_ip", nullable = false)
-    private String lastLogInIp;
-
-    @Column(name="phone_number", nullable = false)
-    private String phoneNumber;
+//    @Column(name="is_admin", nullable = false)
+//    @ColumnDefault("0")
+//    private Boolean isAdmin;
+//
+//    @Column(name="user_ip", nullable = false)
+//    private String userIp;
+//
+//    @Column(name="last_login_ip", nullable = false)
+//    private String lastLogInIp;
+//
+//    @Column(name="phone_number", nullable = false)
+//    private String phoneNumber;
 }

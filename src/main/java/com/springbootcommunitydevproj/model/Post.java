@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class Post {
     @Id
@@ -22,11 +22,11 @@ public class Post {
     @Column(name="post_id", updatable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name="board_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="board_id", nullable = true)
     private Board board;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
@@ -36,37 +36,37 @@ public class Post {
     @Column(name="content", nullable = false)
     private String content;
 
-    @CreatedDate
-    @Column(name="created_at")
-    private LocalDateTime createdAt;
+//    @CreatedDate
+//    @Column(name="created_at")
+//    private LocalDateTime createdAt;
+//
+//    @LastModifiedDate
+//    @Column(name="updated_at")
+//    private LocalDateTime updatedAt;
+//
+//    @Column(name="views", nullable = false)
+//    @ColumnDefault("0")
+//    private Integer views;
+//
+//    @Column(name="likes", nullable = false)
+//    @ColumnDefault("0")
+//    private Integer likes;
+//
+//    @Column(name="dislikes", nullable = false)
+//    @ColumnDefault("0")
+//    private Integer dislikes;
+//
+//    @Column(name="post_file_count", nullable = false)
+//    @ColumnDefault("0")
+//    private Integer postFileCount;
 
-    @LastModifiedDate
-    @Column(name="updated_at")
-    private LocalDateTime updatedAt;
-
-    @Column(name="views", nullable = false)
-    @ColumnDefault("0")
-    private Integer views;
-
-    @Column(name="likes", nullable = false)
-    @ColumnDefault("0")
-    private Integer likes;
-
-    @Column(name="dislikes", nullable = false)
-    @ColumnDefault("0")
-    private Integer dislikes;
-
-    @Column(name="post_file_count", nullable = false)
-    @ColumnDefault("0")
-    private Integer postFileCount;
-
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="auth_id", nullable = false)
     private PostAuthority authority;
 
     public PostResponse toResponse() {
         return PostResponse.builder()
                 .title(title)
-                .content(title).build();
+                .content(content).build();
     }
 }

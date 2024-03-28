@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -20,18 +22,22 @@ public class Board {
     private Integer id;
 
     @Column(name="board_type", nullable = false)
+    @ColumnDefault("1")
     private Integer board_type;
 
     @Column(name="page_post_count", nullable = false)
+    @ColumnDefault("10")
     private Integer pagePostCount;
 
     @Column(name="post_order", nullable = false)
+    @ColumnDefault("0")
     private Integer postOrder;
 
     @Column(name="description", nullable = false)
+    @ColumnDefault("")
     private String description;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="auth_id")
     private BoardAuthority authority;
 }

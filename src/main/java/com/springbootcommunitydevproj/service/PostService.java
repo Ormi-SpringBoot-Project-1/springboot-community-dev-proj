@@ -1,7 +1,7 @@
 package com.springbootcommunitydevproj.service;
 
 import com.springbootcommunitydevproj.dto.AddPostRequest;
-import com.springbootcommunitydevproj.model.Post;
+import com.springbootcommunitydevproj.model.*;
 import com.springbootcommunitydevproj.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,11 @@ public class PostService {
 
         Post post = Post.builder()
                 .title(request.getTitle())
-                .content(request.getContent()).build();
+                .content(request.getContent())
+                .board(request.getBoard())
+                .user(request.getUser())
+                .authority(request.getAuthority())
+                .build();
 
         return postRepository.save(post);
     }

@@ -9,7 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class PostLikes {
     @Id
