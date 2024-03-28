@@ -64,7 +64,7 @@ public class UserManagementControllerTest {
         }
 
         // when
-        ResultActions result = mockMvc.perform(get("/api/admin/user_list?page=1")
+        ResultActions result = mockMvc.perform(get("/api/admin/user_list?page=1&order=userId&sort=asc")
             .accept(MediaType.APPLICATION_JSON));
 
         // then
