@@ -1,6 +1,6 @@
 package com.springbootcommunitydevproj.repository;
 
-import com.springbootcommunitydevproj.domain.BlockedUser;
+import com.springbootcommunitydevproj.model.BlockedUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
