@@ -1,14 +1,14 @@
 package com.springbootcommunitydevproj.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class AddUserRequest {
     private Integer Id;
     private String nickname;

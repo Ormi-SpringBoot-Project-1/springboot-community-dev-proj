@@ -1,20 +1,41 @@
 package com.springbootcommunitydevproj.service;
 
-import com.springbootcommunitydevproj.domain.User;
 import com.springbootcommunitydevproj.dto.AddUserRequest;
+import com.springbootcommunitydevproj.entity.User;
 import com.springbootcommunitydevproj.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
+    private UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder; // 암호화
 
-    public User save(AddUserRequest request) {
-        return userRepository.save(new User(
-                request.getEmail(), encoder.encode(request.getPassword())), );
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder){
+        this.userRepository = userRepository;
+        this.encoder = encoder;
+    }
+
+    public User save(AddUserRequest dto){
+        return userRepository.save(
+                User.builder()
+                        .id(dto.getId())
+                        .nickname(dto.getNickname())
+                        .email(dto.getEmail())
+                        .password(encoder.encode(dto.getPassword()))
+                        .description(dto.getDescription())
+                        .levelId(dto.getLevelId())
+                        .reportedCount(dto.getReportedCount())
+                        .createdAt(dto.getCreatedAt())
+                        .isAdmin(dto.getIsAdmin())
+                        .userIp(dto.getUserIp())
+                        .lastLogInIp(dto.getLastLogInIp())
+                        .phoneNumber(dto.getPhoneNumber())
+                        .build()
+        );
+    }
+
+    public void deleteById(String userId){
+        userRepository.deleteById(Integer.valueOf(userId));
     }
 }
