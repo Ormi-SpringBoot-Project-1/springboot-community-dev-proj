@@ -7,6 +7,8 @@ import com.springbootcommunitydevproj.repository.UserManagementRepository;
 import com.springbootcommunitydevproj.utils.ResponseMessages;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,9 +18,28 @@ public class UserManagementService {
     private final UserManagementRepository userManagementRepository;
     private final BlockedUserRepository blockedUserRepository;
 
-    // 한 페이지 당 30개의 검색 결과가 기준이므로 offset = (page - 1) * 30이 됩니다.
-    public List<UserManagementInfoDto> getAllUserManagementInfo(Integer page) {
-        return userManagementRepository.findAllUserManagementInfo((page - 1) * 30);
+    // 한 페이지 당 10개의 검색 결과가 기준이므로 offset = (page - 1) * 10이 됩니다.
+    // (3/28 추가) 만약 page가 음수거나 정렬할 열의 이름, 정렬 순서가 올바르지 않다면 userId 기준 오름차순으로 첫 번째 페이지의 목록을 가져옵니다.
+    public List<UserManagementInfoDto> getAllUserManagementInfo(Integer page, String orderBy, String sort) {
+        PageRequest pageRequest;
+
+        if (!(orderBy.equals("userId") || orderBy.equals("nickname")
+            || orderBy.equals("level") || orderBy.equals("currentPostCount")
+            || sort.equals("asc") || sort.equals("desc"))
+            || page < 0) {
+            pageRequest = PageRequest.of(0, 10, Direction.ASC, "userId");
+
+            return userManagementRepository.findAllUserManagementInfo(0, pageRequest);
+        }
+
+        if (sort.equals("asc")) {
+            pageRequest = PageRequest.of(0, 10, Direction.ASC, orderBy);
+        }
+        else {
+            pageRequest = PageRequest.of(0, 10, Direction.DESC, orderBy);
+        }
+
+        return userManagementRepository.findAllUserManagementInfo((page - 1) * 10, pageRequest);
     }
 
     // 회원의 닉네임을 기준으로 해당 회원 정보를 조회합니다.
