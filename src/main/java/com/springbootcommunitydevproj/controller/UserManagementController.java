@@ -1,5 +1,6 @@
 package com.springbootcommunitydevproj.controller;
 
+import com.springbootcommunitydevproj.dto.ChangeUserLevelRequest;
 import com.springbootcommunitydevproj.dto.SetUserToBlockedUserRequest;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
 import com.springbootcommunitydevproj.service.UserManagementService;
@@ -47,7 +48,7 @@ public class UserManagementController {
     // Admin 페이지의 특정 회원의 등급을 변경합니다.
     // 변경 결과에 따라 메시지를 Response로 반환합니다.
     @PutMapping("/api/admin/user/level")
-    public ResponseEntity<Map<String, String>> changeUserLevel(@RequestBody Map<String, Integer> request) {
+    public ResponseEntity<Map<String, String>> changeUserLevel(@RequestBody ChangeUserLevelRequest request) {
         Map<String, String> response = new HashMap<>();
 
         response.put("Result", userManagementService.changeUserLevel(request));
