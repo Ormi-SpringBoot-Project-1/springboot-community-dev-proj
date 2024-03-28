@@ -57,13 +57,13 @@ public class UserManagementServiceTest {
         }
 
         // when
-        List<UserManagementInfoDto> result = userManagementService.getAllUserManagementInfo(1);
+        List<UserManagementInfoDto> result = userManagementService.getAllUserManagementInfo(1, "userId", "asc");
 
         // then
         // 결과 갯수 확인
-        assertThat(result.size()).isEqualTo(answer.size());
+        assertThat(result.size()).isEqualTo(10);
         // 결과 내용 일치 확인
-        for (int i = 0; i < answer.size(); i++) {
+        for (int i = 0; i < 10; i++) {
             UserManagementInfoDto actual = result.get(i);
             Map<String, String> expected = answer.get(i);
 
