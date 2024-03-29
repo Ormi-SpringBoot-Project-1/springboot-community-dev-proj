@@ -22,6 +22,7 @@ public class PostController {
 
     @GetMapping("/api/post/{post_id}") // 게시글 조회
     public ResponseEntity<PostResponse> showPost(@PathVariable Integer post_id) {
+        postService.findById(post_id).toResponse().updateViews();
         return ResponseEntity.ok(postService.findById(post_id).toResponse());
     }
 

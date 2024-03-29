@@ -1,6 +1,6 @@
 package com.springbootcommunitydevproj.repository;
 
-import com.springbootcommunitydevproj.domain.User;
+import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
