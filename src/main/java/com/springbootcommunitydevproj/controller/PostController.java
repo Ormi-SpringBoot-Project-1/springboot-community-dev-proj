@@ -18,8 +18,8 @@ public class PostController {
     }
 
     @PostMapping("/api/post") // 게시글 생성 요청
-    public ResponseEntity<PostResponse> savePost(@RequestParam Integer board_id, @RequestBody AddPostRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postService.savePost(board_id, request).toResponse());
+    public ResponseEntity<PostResponse> savePost(@RequestParam Integer board_id, @RequestParam Integer auth_id, @RequestBody AddPostRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(postService.savePost(board_id, auth_id, request).toResponse());
     }
 
     @GetMapping("/api/post/{post_id}") // 게시글 조회

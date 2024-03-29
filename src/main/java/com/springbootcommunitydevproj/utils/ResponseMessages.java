@@ -12,4 +12,5 @@ public class ResponseMessages {
     public static final String SET_USER_TO_BLOCKED_USER_FAIL = "가입 제한 설정에 실패했습니다.";
     public static final String ALREADY_SET_BLOCKED_USER = "이미 가입 제한으로 설정되었습니다.";
     public static final String USER_UNBLOCK_SUCCESS = "가입 제한을 해제했습니다.";
+    public static final String POST_ID_NOT_FOUND = "게시글이 존재하지 않습니다.";
 }
