@@ -2,11 +2,10 @@ package com.springbootcommunitydevproj.usermanagement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.springbootcommunitydevproj.domain.BlockedUser;
-import com.springbootcommunitydevproj.model.User;
-import com.springbootcommunitydevproj.dto.ChangeUserLevelRequest;
-import com.springbootcommunitydevproj.dto.SetUserToBlockedUserRequest;
+import com.springbootcommunitydevproj.dto.UserRequest;
+import com.springbootcommunitydevproj.model.BlockedUser;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
+import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.repository.BlockedUserRepository;
 import com.springbootcommunitydevproj.repository.UserManagementRepository;
 import com.springbootcommunitydevproj.service.UserManagementService;
@@ -58,13 +57,13 @@ public class UserManagementServiceTest {
         }
 
         // when
-        List<UserManagementInfoDto> result = userManagementService.getAllUserManagementInfo(1);
+        List<UserManagementInfoDto> result = userManagementService.getAllUserManagementInfo(1, "userId", "asc");
 
         // then
         // 결과 갯수 확인
-        assertThat(result.size()).isEqualTo(answer.size());
+        assertThat(result.size()).isEqualTo(10);
         // 결과 내용 일치 확인
-        for (int i = 0; i < answer.size(); i++) {
+        for (int i = 0; i < 10; i++) {
             UserManagementInfoDto actual = result.get(i);
             Map<String, String> expected = answer.get(i);
 
@@ -136,10 +135,10 @@ public class UserManagementServiceTest {
     void changeUserLevelTest() {
         // given
         // 총 8개의 데이터로 테스트합니다. (성공: 5개 / 실패: 3개)
-        List<ChangeUserLevelRequest> testDataList = List.of(new ChangeUserLevelRequest(1, 4),
-            new ChangeUserLevelRequest(2, 3), new ChangeUserLevelRequest(10, 2), new ChangeUserLevelRequest(7, 1),
-            new ChangeUserLevelRequest(12, 3), new ChangeUserLevelRequest(112, 3), new ChangeUserLevelRequest(6, 0),
-            new ChangeUserLevelRequest(8, 9));
+        List<UserRequest> testDataList = List.of(new UserRequest(1, 4),
+            new UserRequest(2, 3), new UserRequest(10, 2), new UserRequest(7, 1),
+            new UserRequest(12, 3), new UserRequest(112, 3), new UserRequest(6, 0),
+            new UserRequest(8, 9));
 
         for (int i = 0; i < testDataList.size(); i++) {
             // when
@@ -171,10 +170,10 @@ public class UserManagementServiceTest {
     void setUserToBlockedUserTest() {
         // given
         // 6개의 데이터로 테스트합니다. (성공: 3개 / 실패: 3개)
-        List<SetUserToBlockedUserRequest> testDataList = List.of(new SetUserToBlockedUserRequest(1),
-            new SetUserToBlockedUserRequest(5), new SetUserToBlockedUserRequest(10),
-            new SetUserToBlockedUserRequest(100), new SetUserToBlockedUserRequest(-12),
-            new SetUserToBlockedUserRequest(5));
+        List<UserRequest> testDataList = List.of(new UserRequest(1),
+            new UserRequest(5), new UserRequest(10),
+            new UserRequest(100), new UserRequest(-12),
+            new UserRequest(5));
 
         for (int i = 0; i < testDataList.size(); i++) {
             // when
