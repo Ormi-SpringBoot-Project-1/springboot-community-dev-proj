@@ -2,6 +2,7 @@ package com.springbootcommunitydevproj.usermanagement;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -106,7 +107,7 @@ public class UserManagementControllerTest {
     }
 
     @Test
-    @DisplayName("PUT /api/admin/user/level")
+    @DisplayName("PUT /api/admin/user/level 테스트")
     void changeUserLevelTest() throws Exception{
         // given
         String jsonTestData1 = "{\"user_id\": 5,\"level\": 3}"; // 성공 데이터
@@ -141,5 +142,34 @@ public class UserManagementControllerTest {
 
         result4.andExpect(status().isOk());
         result4.andExpect(jsonPath("$.Result").value(ResponseMessages.INVALID_LEVEL));
+    }
+
+    @Test
+    @DisplayName("POST /api/admin/user/blocked 테스트")
+    void setUserToBlockedUserTest() throws Exception{
+        // given
+        String testData1 = "{\"userId\":1}"; // 성공
+        String testData2 = "{\"userId\":1}"; // 실패 (이미 설정됨)
+        String testData3 = "{\"userId\":100}"; // 실패 (없는 회원)
+
+        // when
+        ResultActions result1 = mockMvc.perform(post("/api/admin/user/blocked")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(testData1));
+        ResultActions result2 = mockMvc.perform(post("/api/admin/user/blocked")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(testData2));
+        ResultActions result3 = mockMvc.perform(post("/api/admin/user/blocked")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(testData3));
+
+        // then
+        // Status Code를 확인하고 성공, 실패 메시지를 정상적으로 올바르게 받았는지 확인합니다.
+        result1.andExpect(status().isCreated())
+            .andExpect(jsonPath("$.Result").value(ResponseMessages.SET_USER_TO_BLOCKED_USER_SUCCESS));
+        result2.andExpect(status().isCreated())
+            .andExpect(jsonPath("$.Result").value(ResponseMessages.ALREADY_SET_BLOCKED_USER));
+        result3.andExpect(status().isCreated())
+            .andExpect(jsonPath("$.Result").value(ResponseMessages.SET_USER_TO_BLOCKED_USER_FAIL));
     }
 }

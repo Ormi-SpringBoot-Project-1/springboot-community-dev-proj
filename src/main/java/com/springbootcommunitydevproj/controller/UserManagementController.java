@@ -1,14 +1,18 @@
 package com.springbootcommunitydevproj.controller;
 
+import com.springbootcommunitydevproj.dto.ChangeUserLevelRequest;
+import com.springbootcommunitydevproj.dto.SetUserToBlockedUserRequest;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
 import com.springbootcommunitydevproj.service.UserManagementService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,12 +48,25 @@ public class UserManagementController {
     // Admin 페이지의 특정 회원의 등급을 변경합니다.
     // 변경 결과에 따라 메시지를 Response로 반환합니다.
     @PutMapping("/api/admin/user/level")
-    public ResponseEntity<Map<String, String>> changeUserLevel(@RequestBody Map<String, Integer> request) {
+    public ResponseEntity<Map<String, String>> changeUserLevel(@RequestBody ChangeUserLevelRequest request) {
         Map<String, String> response = new HashMap<>();
 
         response.put("Result", userManagementService.changeUserLevel(request));
 
         return ResponseEntity.ok()
+            .header("Content-Type", "application/json")
+            .body(response);
+    }
+
+    // Admin 페이지의 특정 회원의 가입 제한을 설정합니다.
+    // 변경 결과에 따라 메시지를 Response로 반환합니다.
+    @PostMapping("/api/admin/user/blocked")
+    public ResponseEntity<Map<String, String>> setUserToBlockedUser(@RequestBody SetUserToBlockedUserRequest request) {
+        Map<String, String> response = new HashMap<>();
+
+        response.put("Result", userManagementService.setUserToBlockedUser(request));
+
+        return ResponseEntity.status(HttpStatus.CREATED)
             .header("Content-Type", "application/json")
             .body(response);
     }

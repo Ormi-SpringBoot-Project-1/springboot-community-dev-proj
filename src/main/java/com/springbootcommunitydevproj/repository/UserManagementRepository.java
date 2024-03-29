@@ -3,6 +3,8 @@ package com.springbootcommunitydevproj.repository;
 import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
 import java.util.List;
+
+import com.springbootcommunitydevproj.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
