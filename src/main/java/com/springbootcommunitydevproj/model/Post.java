@@ -76,4 +76,8 @@ public class Post {
         this.title = title;
         this.content = content;
     }
+
+    public void updateViews() {
+        views++;
+    }
 }

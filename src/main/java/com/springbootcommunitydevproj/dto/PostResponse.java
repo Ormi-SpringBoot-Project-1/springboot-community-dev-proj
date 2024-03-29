@@ -37,8 +37,4 @@ public class PostResponse {
         dislikes = post.getDislikes();
         authority = post.getAuthority();
     }
-
-    public void updateViews() {
-        views++;
-    }
 }
