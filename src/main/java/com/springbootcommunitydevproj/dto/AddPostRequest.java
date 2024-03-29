@@ -2,6 +2,7 @@ package com.springbootcommunitydevproj.dto;
 
 import com.springbootcommunitydevproj.model.Board;
 import com.springbootcommunitydevproj.model.PostAuthority;
+import com.springbootcommunitydevproj.model.PostLikes;
 import com.springbootcommunitydevproj.model.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,4 +17,5 @@ public class AddPostRequest {
     private PostAuthority authority;
     private Board board;
     private User user;
+    private Integer postFileCount;
 }

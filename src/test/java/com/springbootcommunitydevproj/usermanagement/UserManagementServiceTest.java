@@ -3,7 +3,7 @@ package com.springbootcommunitydevproj.usermanagement;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.springbootcommunitydevproj.domain.BlockedUser;
-import com.springbootcommunitydevproj.domain.User;
+import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.dto.ChangeUserLevelRequest;
 import com.springbootcommunitydevproj.dto.SetUserToBlockedUserRequest;
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
