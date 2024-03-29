@@ -1,6 +1,7 @@
 package com.springbootcommunitydevproj.usermanagement;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -63,7 +64,7 @@ public class UserManagementControllerTest {
         }
 
         // when
-        ResultActions result = mockMvc.perform(get("/api/admin/user_list?page=1")
+        ResultActions result = mockMvc.perform(get("/api/admin/user_list?page=1&order=userId&sort=asc")
             .accept(MediaType.APPLICATION_JSON));
 
         // then
@@ -110,10 +111,10 @@ public class UserManagementControllerTest {
     @DisplayName("PUT /api/admin/user/level 테스트")
     void changeUserLevelTest() throws Exception{
         // given
-        String jsonTestData1 = "{\"user_id\": 5,\"level\": 3}"; // 성공 데이터
+        String jsonTestData1 = "{\"userId\": 5,\"level\": 3}"; // 성공 데이터
         String jsonTestData2 = "{\"user\":2,\"level\":1}";  // 실패 데이터
-        String jsonTestData3 = "{\"user_id\":100,\"level\":3}"; // 실패 데이터
-        String jsonTestData4 = "{\"user_id\":7,\"level\":0}"; // 비유효 데이터
+        String jsonTestData3 = "{\"userId\":100,\"level\":3}"; // 실패 데이터
+        String jsonTestData4 = "{\"userId\":7,\"level\":0}"; // 비유효 데이터
 
         // when
         ResultActions result1 = mockMvc.perform(put("/api/admin/user/level")
@@ -132,16 +133,16 @@ public class UserManagementControllerTest {
         // then
         // Status Code를 확인하고 성공, 실패, 비유효 메시지를 정상적으로 올바르게 받았는지 확인합니다.
         result1.andExpect(status().isOk());
-        result1.andExpect(jsonPath("$.Result").value(ResponseMessages.CHANGE_LEVEL_SUCCESS));
+        result1.andExpect(jsonPath("$.result").value(ResponseMessages.CHANGE_LEVEL_SUCCESS));
 
         result2.andExpect(status().isOk());
-        result2.andExpect(jsonPath("$.Result").value(ResponseMessages.CHANGE_LEVEL_FAIL));
+        result2.andExpect(jsonPath("$.result").value(ResponseMessages.CHANGE_LEVEL_FAIL));
 
         result3.andExpect(status().isOk());
-        result3.andExpect(jsonPath("$.Result").value(ResponseMessages.CHANGE_LEVEL_FAIL));
+        result3.andExpect(jsonPath("$.result").value(ResponseMessages.CHANGE_LEVEL_FAIL));
 
         result4.andExpect(status().isOk());
-        result4.andExpect(jsonPath("$.Result").value(ResponseMessages.INVALID_LEVEL));
+        result4.andExpect(jsonPath("$.result").value(ResponseMessages.INVALID_LEVEL));
     }
 
     @Test
@@ -166,10 +167,26 @@ public class UserManagementControllerTest {
         // then
         // Status Code를 확인하고 성공, 실패 메시지를 정상적으로 올바르게 받았는지 확인합니다.
         result1.andExpect(status().isCreated())
-            .andExpect(jsonPath("$.Result").value(ResponseMessages.SET_USER_TO_BLOCKED_USER_SUCCESS));
+            .andExpect(jsonPath("$.result").value(ResponseMessages.SET_USER_TO_BLOCKED_USER_SUCCESS));
         result2.andExpect(status().isCreated())
-            .andExpect(jsonPath("$.Result").value(ResponseMessages.ALREADY_SET_BLOCKED_USER));
+            .andExpect(jsonPath("$.result").value(ResponseMessages.ALREADY_SET_BLOCKED_USER));
         result3.andExpect(status().isCreated())
-            .andExpect(jsonPath("$.Result").value(ResponseMessages.SET_USER_TO_BLOCKED_USER_FAIL));
+            .andExpect(jsonPath("$.result").value(ResponseMessages.SET_USER_TO_BLOCKED_USER_FAIL));
+    }
+
+    @Test
+    @DisplayName("DELETE /api/admin/user/unblocked 테스트")
+    void setBlockUserToUnblockTest() throws Exception{
+        // given
+        String testData = "{\"userId\":1}";
+
+        // when
+        ResultActions result = mockMvc.perform(delete("/api/admin/user/unblocked")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(testData));
+
+        // then
+        result.andExpect(status().isOk())
+            .andExpect(jsonPath("$.result").value(ResponseMessages.USER_UNBLOCK_SUCCESS));
     }
 }

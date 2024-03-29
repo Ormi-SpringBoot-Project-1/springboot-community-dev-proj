@@ -58,10 +58,6 @@ public class Post {
     @ColumnDefault("0")
     private Integer dislikes;
 
-    @Column(name="post_file_count", nullable = false)
-    @ColumnDefault("0")
-    private Integer postFileCount;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="auth_id", nullable = false)
     private PostAuthority authority;
