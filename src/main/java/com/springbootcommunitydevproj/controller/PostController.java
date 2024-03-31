@@ -28,7 +28,7 @@ public class PostController {
         return ResponseEntity.ok(postService.findById(id).toResponse());
     }
 
-    @PutMapping("/api/post/{post_id}")
+    @PutMapping("/api/post/{post_id}") // 게시글 수정
     public ResponseEntity<PostResponse> updatePost(@PathVariable Integer post_id, @RequestBody UpdatePostRequest request) {
 
         try {
@@ -39,7 +39,7 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/api/post/{post_id}")
+    @DeleteMapping("/api/post/{post_id}") // 게시글 삭제
     public ResponseEntity<Void> deletePost(@PathVariable Integer post_id) {
 
         try {

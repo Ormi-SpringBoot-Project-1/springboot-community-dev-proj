@@ -18,7 +18,7 @@ public class SecurityConfig{
     // swagger 접근도 Security 비활성화
     @Bean
     public WebSecurityCustomizer config() {
-        return web -> web.ignoring().requestMatchers(toH2Console())
+        return web -> web.ignoring()//.requestMatchers(toH2Console())
             .requestMatchers("/static/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html");
     }
 
@@ -27,6 +27,7 @@ public class SecurityConfig{
         return httpSecurity.authorizeHttpRequests(auth ->
                 // 로그인, 회원가입, "/user" URL에 대해서는 모든 요청에 대해 인증 허용
                 // 그 외 요청에 대해서는 인증 절차를 거친다.
+                // get url 테스트 목적으로 추가함.
                 auth.requestMatchers("/login", "/signup", "/user").permitAll()
                     .anyRequest().authenticated()
             )

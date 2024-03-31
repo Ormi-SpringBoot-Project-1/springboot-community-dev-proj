@@ -28,31 +28,30 @@ public class PostService {
         this.postAuthorityRepository = postAuthorityRepository;
     }
 
+    // 게시글 저장 api
     public Post savePost(Integer board_id, Integer auth_id, AddPostRequest request) {
 
-        // 유저 정보는 어떻게 넘겨주지....?
-
-        // 게시판 정보는 url을 통해서 넘겨준다..
-        // 게시판 권한은 설정칸을 만들어서 url로 넘겨준다.
-
+        // 게시글 구성 요소: 제목, 컨텐츠, 유저, 좋아요, 싫어요, 조회수, 글 권한
         Post post = Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
-                .board(boardRepository.findById(board_id).get())
+                .board(boardRepository.findById(board_id).get()) // 게시판
                 .user(request.getUser())
-                .likes(0)
-                .dislikes(0)
-                .views(0)
-                .authority(postAuthorityRepository.findById(auth_id).get())
+                .likes(0) // 디폴트 0
+                .dislikes(0) // 디폴트 0
+                .views(0) // 디폴트 0
+                .authority(postAuthorityRepository.findById(auth_id).get()) // 게시글 권한
                 .build();
 
         return postRepository.save(post);
     }
 
+    // 상세 게시글 불러오기 api
     public Post findById(Integer id) {
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(POST_ID_NOT_FOUND));
     }
 
+    // 게시글 수정 api
     @Transactional
     public Post update(Integer id, UpdatePostRequest request) {
 
@@ -73,6 +72,7 @@ public class PostService {
         return post;
     }
 
+    // 게시글 삭제 api
     public void delete(Integer id) {
 
         Optional<Post> optionalPost = postRepository.findById(id);
