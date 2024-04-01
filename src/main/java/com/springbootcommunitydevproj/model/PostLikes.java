@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 public class PostLikes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

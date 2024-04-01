@@ -3,6 +3,7 @@ package com.springbootcommunitydevproj.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
+@DynamicInsert
 public class User {
 
     @Id
@@ -50,11 +52,14 @@ public class User {
     private Boolean isAdmin;
 
     @Column(name="user_ip", nullable = false)
+    @ColumnDefault("")
     private String userIp;
 
     @Column(name="last_login_ip", nullable = false)
+    @ColumnDefault("")
     private String lastLogInIp;
 
     @Column(name="phone_number", nullable = false)
+    @ColumnDefault("")
     private String phoneNumber;
 }
