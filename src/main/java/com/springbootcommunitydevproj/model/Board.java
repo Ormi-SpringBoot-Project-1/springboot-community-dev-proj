@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,11 +29,11 @@ public class Board {
     @Column(name="page_post_count", nullable = false)
     @ColumnDefault("10")
     private Integer pagePostCount;
-//
+
     @Column(name="post_order", nullable = false)
     @ColumnDefault("0")
     private Integer postOrder;
-//
+
     @Column(name="description", nullable = false)
     @ColumnDefault("")
     private String description;

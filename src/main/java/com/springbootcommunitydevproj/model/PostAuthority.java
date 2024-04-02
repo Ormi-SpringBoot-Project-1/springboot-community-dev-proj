@@ -20,11 +20,11 @@ public class PostAuthority {
     @Column(name = "auth_id", updatable = false)
     private Integer id;
 
-    @Column(name = "auth_access_board_level", nullable = false)
+    @Column(name = "auth_access_board_level", columnDefinition = "TINYINT", nullable = false)
     @ColumnDefault("5")
     private Integer authAccessBoardLevel;
 
-    @Column(name = "auth_comment_level", nullable = false)
+    @Column(name = "auth_comment_level", columnDefinition = "TINYINT", nullable = false)
     @ColumnDefault("5")
     private Integer authCommentLevel;
 }

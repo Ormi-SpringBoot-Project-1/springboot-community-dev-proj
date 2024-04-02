@@ -19,7 +19,7 @@ public class PostLikes {
     @Column(name="like_or_dislike_id", updatable = false)
     private Integer id;
 
-    @Column(name="like_or_dislike", nullable = false)
+    @Column(name="like_or_dislike", columnDefinition = "TINYINT", nullable = false)
     @ColumnDefault("3") // 1: 좋아요 / 2: 싫어요 / 3: 안누름
     private Byte likeOrDislike;
 

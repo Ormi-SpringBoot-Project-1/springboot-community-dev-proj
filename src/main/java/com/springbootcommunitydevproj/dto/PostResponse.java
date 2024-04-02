@@ -33,8 +33,6 @@ public class PostResponse {
         createdAt = post.getCreatedAt();
         updatedAt = post.getUpdatedAt();
         views = post.getViews();
-        likes = post.getLikes();
-        dislikes = post.getDislikes();
         authority = post.getAuthority();
     }
 }
