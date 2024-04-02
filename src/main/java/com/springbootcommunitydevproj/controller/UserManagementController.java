@@ -23,10 +23,12 @@ public class UserManagementController {
 
     private final UserManagementService userManagementService;
 
-    // Admin 페이지의 회원 관리 페이지에 보여질 리스트 목록을 가져옵니다.
-    // Query String의 page 변수를 통해 페이징됩니다.
-    // 한 페이지 당 최대 10개의 결과를 가져옵니다.
-    // (3/28 추가) orderby로 어떤 열을 기준으로 정렬할 지, sort로 오름차순 내림차순 정렬할 지 결정합니다. 기본값은 userId, 오름차순 입니다.
+    /**
+     *      Admin 페이지의 회원 관리 페이지에 보여질 리스트 목록을 가져옵니다. <br>
+     *      Query String의 page 변수를 통해 페이징됩니다. <br>
+     *      한 페이지 당 최대 10개의 결과를 가져옵니다. <br>
+     *      (3/28 추가) orderby로 어떤 열을 기준으로 정렬할 지, sort로 오름차순 내림차순 정렬할 지 결정합니다. 기본값은 userId, 오름차순 입니다.
+     */
     @GetMapping("/api/admin/user_list")
     public ResponseEntity<List<UserManagementInfoDto>> getAllUserManagementInfo(
         @RequestParam(name = "page", defaultValue = "1") Integer page,
@@ -37,8 +39,10 @@ public class UserManagementController {
             .body(userManagementService.getAllUserManagementInfo(page, orderBy, ascOrDesc));
     }
 
-    // Admin 페이지의 회원 관리 페이지에서 특정 회원의 닉네임을 검색했을 때 결과를 가져옵니다.
-    // 리스트 형태로 Response를 반환합니다.
+    /**
+     *      Admin 페이지의 회원 관리 페이지에서 특정 회원의 닉네임을 검색했을 때 결과를 가져옵니다. <br>
+     *      리스트 형태로 Response를 반환합니다.
+     */
     @GetMapping("/api/admin/user/{nickname}")
     public ResponseEntity<List<UserManagementInfoDto>> getUserManagementInfoByNickname(
         @PathVariable(name = "nickname") String nickname) {
@@ -47,8 +51,10 @@ public class UserManagementController {
             .body(userManagementService.getUserManagementInfoByNickname(nickname));
     }
 
-    // Admin 페이지의 특정 회원의 등급을 변경합니다.
-    // 변경 결과에 따라 메시지를 Response로 반환합니다.
+    /**
+     *      Admin 페이지의 특정 회원의 등급을 변경합니다. <br>
+     *      변경 결과에 따라 메시지를 Response로 반환합니다.
+     */
     @PutMapping("/api/admin/user/level")
     public ResponseEntity<UserManagementResponse> changeUserLevel(@RequestBody UserRequest request) {
         UserManagementResponse response = new UserManagementResponse(userManagementService.changeUserLevel(request));
@@ -58,8 +64,10 @@ public class UserManagementController {
             .body(response);
     }
 
-    // Admin 페이지의 특정 회원의 가입 제한을 설정합니다.
-    // 변경 결과에 따라 메시지를 Response로 반환합니다.
+    /**
+     *      Admin 페이지의 특정 회원의 가입 제한을 설정합니다. <br>
+     *      변경 결과에 따라 메시지를 Response로 반환합니다.
+     */
     @PostMapping("/api/admin/user/blocked")
     public ResponseEntity<UserManagementResponse> setUserToBlockedUser(@RequestBody UserRequest request) {
         UserManagementResponse response = new UserManagementResponse(
@@ -70,7 +78,9 @@ public class UserManagementController {
             .body(response);
     }
 
-    // Admin 페이지의 특정 회원의 가입 제한은 해제합니다.
+    /**
+     *      Admin 페이지의 특정 회원의 가입 제한은 해제합니다.
+     */
     @DeleteMapping("/api/admin/user/unblocked")
     public ResponseEntity<UserManagementResponse> setBlockUserToUnBlock(@RequestBody UserRequest request) {
         UserManagementResponse response = new UserManagementResponse(
