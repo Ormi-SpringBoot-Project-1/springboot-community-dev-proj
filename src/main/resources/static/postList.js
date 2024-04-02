@@ -1,7 +1,7 @@
 function searchPost() {
   const searchKeyword = document.getElementsByClassName("search-post")[0].value;
 
-  window.location.replace(window.location.origin + window.location.pathname + "?search=" + searchKeyword);
+  window.location = (window.location.origin + window.location.pathname + "?search=" + searchKeyword);
 }
 
 function moveBoard(boardName) {
@@ -18,11 +18,11 @@ function moveBoard(boardName) {
 }
 
 function createPost(boardName) {
-
+  window.location = ("http://localhost:8080/posts/" + boardName + "/newPost");
 }
 
 function viewMyPost(boardName) {
-  window.location.replace("http://localhost:8080/posts/" + boardName + "/myPost");
+  window.location = ("http://localhost:8080/posts/" + boardName + "/myPost");
 }
 
 function viewPost(postId, updatedAt) {
