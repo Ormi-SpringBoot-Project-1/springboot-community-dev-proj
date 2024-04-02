@@ -1,6 +1,6 @@
 package com.springbootcommunitydevproj.service;
 
-import com.springbootcommunitydevproj.dto.AddPostRequest;
+import com.springbootcommunitydevproj.dto.PostRequest;
 import com.springbootcommunitydevproj.dto.PostListDto;
 import com.springbootcommunitydevproj.dto.UpdatePostRequest;
 import com.springbootcommunitydevproj.model.*;
@@ -44,7 +44,7 @@ public class PostService {
      */
     public List<PostListDto> getPostListByBoardName(String boardName, String search, Integer page, String orderBy, String sort) {
         PageRequest pageRequest = setPageRequest(page, orderBy, sort);
-        boardName = convertBoardNameToDBFormat(boardName);
+        boardName = validateBoardName(boardName);
 
         return postRepository.getPostListByBoardName(boardName, search, pageRequest);
     }
@@ -58,32 +58,35 @@ public class PostService {
      */
     public List<PostListDto> getPostListByUserId(String boardName, Integer userId, Integer page, String orderBy, String sort) {
         PageRequest pageRequest = setPageRequest(page, orderBy, sort);
-        boardName = convertBoardNameToDBFormat(boardName);
+        boardName = validateBoardName(boardName);
 
         return postRepository.getPostListByUserId(boardName, userId, pageRequest);
     }
 
     /**
-     *      회원 목록의 총 페이지 수를 반환합니다.
+     *      해당 게시판의 총 게시물 페이지 수를 가져옵니다.
      */
     public Integer getPostPages(String boardName) {
-        boardName = convertBoardNameToDBFormat(boardName);
+        boardName = validateBoardName(boardName);
 
         return (int) Math.ceil((double) postRepository.getCountByBoardName(boardName) / 10);
     }
 
     // 게시글 저장 api
-    public Post savePost(Integer board_id, Integer auth_id, AddPostRequest request) {
+    @Transactional
+    public Post savePost(String boardName, PostRequest request, User user) throws IllegalArgumentException {
+        PostAuthority postAuthority = postAuthorityRepository.save(new PostAuthority(request.getAccessLevel(), request.getCommentLevel()));
+        Board board = boardRepository.findBoardByBoardName(boardName).orElseThrow(IllegalArgumentException::new);
 
         // 게시글 구성 요소: 제목, 컨텐츠, 유저, 좋아요, 싫어요, 조회수, 글 권한
         Post post = Post.builder()
             .title(request.getTitle())
             .content(request.getContent())
-            .board(boardRepository.findById(board_id).get()) // 게시판
-            .user(request.getUser())
+            .board(board) // 게시판
+            .user(user)
             .views(0) // 디폴트 0
             .createdAt(LocalDateTime.now())
-            .authority(postAuthorityRepository.findById(auth_id).get()) // 게시글 권한
+            .authority(postAuthority) // 게시글 권한
             .build();
 
         return postRepository.save(post);
@@ -92,9 +95,7 @@ public class PostService {
     // 상세 게시글 불러오기 api
     @Transactional
     public Post findById(Integer id) {
-        postRepository.updateViews(id);
-
-        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(POST_ID_NOT_FOUND));
+        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(POST_ID_NOT_FOUND)).updateViews();
     }
 
     // 게시글 수정 api
@@ -136,13 +137,10 @@ public class PostService {
      *      쿼리로 검색할 수 있게 boardName을 DB에 저장된 값으로 매칭시키는 메소드입니다. <br>
      *      DB에 지정한 값이 아닌 다른 값이 오면 "자유 게시판"으로 매핑됩니다.
      */
-    private String convertBoardNameToDBFormat(String boardName) {
-        switch (boardName) {
-            case "attention" -> boardName = "공지 사항";
-            case "recruit" -> boardName = "그룹 모집 게시판";
-            case "evaluation" -> boardName = "평가 게시판";
-            case "share" -> boardName = "정보 공유 게시판";
-            default -> boardName = "자유 게시판";
+    public String validateBoardName(String boardName) {
+        if (!(boardName.equals("자유 게시판") || boardName.equals("공지 사항")
+            || boardName.equals("그룹 모집 게시판") || boardName.equals("평가 게시판") || boardName.equals("정보 공유 게시판"))) {
+            boardName = "자유 게시판";
         }
 
         return boardName;
