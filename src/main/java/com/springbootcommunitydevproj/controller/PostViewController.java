@@ -1,6 +1,7 @@
 package com.springbootcommunitydevproj.controller;
 
 import com.springbootcommunitydevproj.dto.PostListDto;
+import com.springbootcommunitydevproj.dto.PostRequest;
 import com.springbootcommunitydevproj.model.Post;
 import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.service.BoardService;
@@ -78,23 +79,36 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
     }
 
     // 게시글 조회
-    @GetMapping("/post/{post_id}")
+    @GetMapping("/posts/{post_id}")
     public String showOnePost(@PathVariable(name = "post_id") Integer id, Model model) {
-        Post post = postService.findById(id);
+
+        Post post = postService.findById(id).updateViews();
         model.addAttribute("post", post.toResponse());
         return "post";
     }
 
     /**
-     *      파라메터로 받은 boardName의 유효성 검사를 진행하는 메소드입니다. <br>
-     *      지정된 게시판 이름이 아니면 모두 자유 게시판으로 설정됩니다.
+     *      게시글 등록 혹은 수정 페이지를 반환합니다. <br>
+     *      만약 게시글 등록이라면 빈 PostResponse 객체를 보내주고 <br>
+     *      게시글 수정이라면 해당 게시글을 postId로 조회해 그 결과 PostResponse 객체를 보내줍니다. <br>
+     *      폼 데이터를 모아 줄 빈 PostRequest 객체도 함께 보내줍니다.
      */
-    private String validateBoardName(String boardName) {
-        if (!(boardName.equals("attention") || boardName.equals("recruit") || boardName.equals("evaluation") || boardName.equals("share"))) {
-            return "free";
+    @GetMapping("/posts/{boardName}/newPost")
+    public String createPostByBoardName(
+        @PathVariable(name = "boardName") String boardName,
+        @RequestParam(name = "postId", required = false) Integer postId,
+        Model model) {
+
+        if (postId == null) {
+            model.addAttribute("post", new Post().toResponse());
+        }
+        else {
+            model.addAttribute("post", postService.findById(postId).toResponse());
         }
 
-        return boardName;
+        model.addAttribute("postRequest", new PostRequest());
+
+        return "PostCreateOrUpdate";
     }
 
     /**
@@ -102,19 +116,24 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
      *      페이지에 보여질 쿼리 결과 회원 목록, 목록 페이지, 게시판 이름, HttpServletRequest 객체와 Model 객체를 파라메터로 받습니다.
      */
     private <T extends PostListDto> void setModelAndView(List<T> postList, Integer page, String boardName, HttpServletRequest request, Model model) {
-        Integer totalPages = postService.getPostPages(boardName);
+        int totalPages = postService.getPostPages(boardName);
+        int currentStartPage = 1;
+
+        if (Math.ceil((double) page / 10) > 1) {
+            currentStartPage = (int) Math.ceil((double) page / 10) * 10;
+        }
 
         model.addAttribute("postList", postList);
-        model.addAttribute("boardName", validateBoardName(boardName));
-        model.addAttribute("request", request);
+        model.addAttribute("boardName", boardName);
+        model.addAttribute("currentStartPage", currentStartPage);
 
-        model.addAttribute("currentStartPage", Math.floor((double) page / 10) * 10);
-
-        if (totalPages - Math.ceil((double) page / 10) * 10 >= 10) {
-            model.addAttribute("currentLastPage", (Math.floor((double) page / 10) * 10) + 10);
+        if (totalPages - currentStartPage < 10) {
+            model.addAttribute("currentLastPage", totalPages);
         }
         else {
-            model.addAttribute("currentLastPage", totalPages - 1);
+            model.addAttribute("currentLastPage", currentStartPage + 10);
         }
+
+        model.addAttribute("request", request);
     }
 }
