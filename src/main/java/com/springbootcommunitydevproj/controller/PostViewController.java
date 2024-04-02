@@ -74,7 +74,7 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         List<Post> posts = boardService.getBoardPost(board_id);
         model.addAttribute("posts", posts);
 
-        return "PostBoard";
+        return "post";
     }
 
     // 게시글 조회
@@ -82,7 +82,7 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
     public String showOnePost(@PathVariable(name = "post_id") Integer id, Model model) {
         Post post = postService.findById(id);
         model.addAttribute("post", post.toResponse());
-        return "PostBoard";
+        return "post";
     }
 
     /**
