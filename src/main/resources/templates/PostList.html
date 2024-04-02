@@ -53,10 +53,10 @@
     <section class="page">
         <ul th:with="orderby = (__${request.getParameter('orderby')}__ == null ? 'postId' : __${request.getParameter('orderby')}__),
                sort = (__${request.getParameter('sort')}__ == null ? 'asc' : __${request.getParameter('sort')}__)">
+            <li th:each="page : ${#numbers.sequence(__${currentStartPage}__, __${currentLastPage}__)}">
+                <a th:href="@{__${request.getRequestURL()}__?page=__${page}__&orderby=__${orderby}__&sort=__${sort}__}" th:text="__${page}__ + 1"></a>
+            </li>
         </ul>
-        <li th:each="page : ${#numbers.sequence(__${currentStartPage}__, __${currentLastPage}__)}">
-            <a th:href="@{__${request.getRequestURL()}__?page=__${page}__&orderby=__${orderby}__&sort=__${sort}__}" th:text="__${page}__ + 1"></a>
-        </li>
     </section>
 </body>
 <script th:inline="javascript" src="/postList.js"></script>
