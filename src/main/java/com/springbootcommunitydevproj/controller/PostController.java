@@ -24,16 +24,16 @@ public class PostController {
 
     @GetMapping("/api/post/{post_id}") // 게시글 조회
     public ResponseEntity<PostResponse> showPost(@PathVariable(name = "post_id") Integer id) {
-        postService.findById(id).updateViews();
+        postService.findById(id);
         return ResponseEntity.ok(postService.findById(id).toResponse());
     }
 
     @PutMapping("/api/post/{post_id}") // 게시글 수정
-    public ResponseEntity<PostResponse> updatePost(@PathVariable Integer post_id, @RequestBody UpdatePostRequest request) {
+    public ResponseEntity<String> updatePost(@PathVariable Integer post_id, @RequestBody UpdatePostRequest request) {
 
         try {
-            Post post = postService.update(post_id, request);
-            return ResponseEntity.ok(post.toResponse());
+            String result = postService.update(post_id, request);
+            return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
