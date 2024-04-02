@@ -60,15 +60,15 @@ public class UserManagementViewController {
 
         model.addAttribute("userList", userList);
         model.addAttribute("blockedUserSet", blockedUserSet);
-        model.addAttribute("currentStartPage", Math.ceil((double) page / 10));
+        model.addAttribute("request", request);
 
-        if (totalPages < 10) {
-            model.addAttribute("currentLastPage", totalPages);
+        model.addAttribute("currentStartPage", Math.floor((double) page / 10) * 10);
+
+        if (totalPages - Math.ceil((double) page / 10) * 10 >= 10) {
+            model.addAttribute("currentLastPage", (Math.floor((double) page / 10) * 10) + 10);
         }
         else {
-            model.addAttribute("currentLastPage", totalPages - Math.ceil((double) page / 10));
+            model.addAttribute("currentLastPage", totalPages - 1);
         }
-
-        model.addAttribute("request", request);
     }
 }
