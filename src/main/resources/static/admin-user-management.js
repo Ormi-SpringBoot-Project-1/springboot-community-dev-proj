@@ -85,13 +85,13 @@ function searchUser() {
     return;
   }
 
-  window.location.replace("http://localhost:8080/admin/user/management/search?nickname=" + nickname);
+  window.location = ("http://localhost:8080/admin/user/management/search?nickname=" + nickname);
 }
 
 function changeOrder(order) {
-  window.location.replace("http://localhost:8080/admin/user/management?page" + page + "&orderby=" + order + "&sort=" + sort);
+  window.location = ("http://localhost:8080/admin/user/management?page" + page + "&orderby=" + order + "&sort=" + sort);
 }
 
 function changeSort(sort) {
-  window.location.replace("http://localhost:8080/admin/user/management?page" + page + "&orderby=" + orderBy + "&sort=" + sort);
+  window.location = ("http://localhost:8080/admin/user/management?page" + page + "&orderby=" + orderBy + "&sort=" + sort);
 }
