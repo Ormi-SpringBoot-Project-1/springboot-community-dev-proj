@@ -1,29 +1,19 @@
 package com.springbootcommunitydevproj.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysema.commons.lang.Assert;
-import com.springbootcommunitydevproj.dto.AddPostRequest;
-import com.springbootcommunitydevproj.dto.UpdatePostRequest;
-import com.springbootcommunitydevproj.model.*;
 import com.springbootcommunitydevproj.repository.*;
 import com.springbootcommunitydevproj.service.PostService;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Optional;
-
-import static com.springbootcommunitydevproj.utils.ResponseMessages.POST_ID_NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
