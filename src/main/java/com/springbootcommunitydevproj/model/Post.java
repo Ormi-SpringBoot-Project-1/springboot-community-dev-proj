@@ -60,7 +60,14 @@ public class Post {
 
     public PostResponse toResponse() {
         return PostResponse.builder()
+                .board(board)
+                .user(user)
                 .title(title)
-                .content(content).build();
+                .content(content)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .views(views)
+                .authority(authority)
+                .build();
     }
 }
