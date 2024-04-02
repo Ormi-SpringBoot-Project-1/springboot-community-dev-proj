@@ -25,7 +25,7 @@ public class Post {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="board_id", nullable = true)
+    @JoinColumn(name="board_id", nullable = false)
     private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,17 +46,13 @@ public class Post {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="views", nullable = false)
+    @Column(name="views")
     @ColumnDefault("0")
     private Integer views;
 
-    @Column(name="likes", nullable = false)
+    @Column(name="post_file_count", columnDefinition = "TINYINT")
     @ColumnDefault("0")
-    private Integer likes;
-
-    @Column(name="dislikes", nullable = false)
-    @ColumnDefault("0")
-    private Integer dislikes;
+    private Integer postFileCount;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="auth_id", nullable = false)
@@ -66,14 +62,5 @@ public class Post {
         return PostResponse.builder()
                 .title(title)
                 .content(content).build();
-    }
-
-    public void update(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
-
-    public void updateViews() {
-        views++;
     }
 }
