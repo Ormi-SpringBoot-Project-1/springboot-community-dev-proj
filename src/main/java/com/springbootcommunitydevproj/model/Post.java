@@ -2,14 +2,15 @@ package com.springbootcommunitydevproj.model;
 
 import com.springbootcommunitydevproj.dto.PostResponse;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import org.springframework.data.jpa.repository.Modifying;
 
 @Entity
 @Builder
@@ -42,7 +43,6 @@ public class Post {
     @Column(name="created_at")
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
@@ -70,4 +70,12 @@ public class Post {
                 .authority(authority)
                 .build();
     }
+
+    @Modifying
+    @Transactional
+    public Post updateViews() {
+        views++;
+        return this;
+    }
+
 }
