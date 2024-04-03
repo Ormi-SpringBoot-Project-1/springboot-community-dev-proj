@@ -75,7 +75,7 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         @PathVariable(name = "post_id") Integer id,
         @AuthenticationPrincipal User user, Model model) {
 
-        Post post = postService.findById(id).updateViews();
+        Post post = postService.findById(id);
         model.addAttribute("post", post.toResponse());
         model.addAttribute("boardName", boardName);
         model.addAttribute("user", user);
