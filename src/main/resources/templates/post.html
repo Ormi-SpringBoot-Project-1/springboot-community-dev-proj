@@ -15,17 +15,28 @@
         <div class="card-header">
             <h5 class="card-title" th:text="${post.title}"></h5>
             <p> <span class="card-text" th:text="'작성자 : ' + ${post.user.nickname}"></span>
-                <span class="card-text" th:text="'등급 : ' + ${post.user.level}"></span>
-                <span class="card-text" th:if="${post.updatedAt}" th:text="'작성일 : ' + ${post.updatedAt} + '(수정됨)'"></span>
-                <span class="card-text" th:unless="${post.updatedAt}" th:text="'작성일 : ' +${post.createdAt}"></span>
+                <span class="card-text" th:text="'등급 : ' + ${post.user.level.getLevelName()}"></span>
+                <span class="card-text" th:if="${post.updatedAt}" th:text="'작성일 : ' + ${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm:ss')} + '(수정됨)'"></span>
+                <span class="card-text" th:unless="${post.updatedAt}" th:text="'작성일 : ' +${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
             </p>
         </div>
         <div class="card-body">
             <p class="card-text" th:text="${post.content}"></p>
         </div>
     </div>
-    <br>
+    <section th:if="${user.id} == ${post.user.id}">
+        <button type="button" id="modify-btn" th:onclick="|location.href='@{/posts/{boardName}/newPost?postId={postId}(postId = ${post.postId}, boardName = ${boardName})}'|"
+                class="btn btn-primary btn-sm">수정
+        </button>
+        <button type="button" id="delete-btn" th:onclick="|deletePost('${post.postId}')|"
+                class="btn btn-secondary btn-sm">삭제
+        </button>
+    </section>
+    </article>
+    <button type="button" id="back-btn" onclick="history.back()" class="btn btn-primary btn-sm">뒤로</button>
 </div>
 
 </body>
+<script th:inline="javascript" src="/post.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </html>
