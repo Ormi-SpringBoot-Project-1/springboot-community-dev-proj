@@ -16,7 +16,7 @@
   </aside>
 
   <article class="set-post" th:with="api = (${post.postId} == null ? 'http://localhost:8080/api/post/' + ${boardName} : 'http://localhost:8080/api/post/' + ${post.postId})">
-    <form class="send-post-info" th:action="${api}" th:object="${postRequest}" accept-charset="utf-8" method="post">
+    <form class="send-post-info" th:value="${post.postId}" th:action="${api}" th:object="${postRequest}" accept-charset="utf-8">
       <input type="hidden" id="article-id" th:value="${post.postId}">
 
       <fieldset>
@@ -62,6 +62,5 @@
   </article>
 </body>
 <script th:inline="javascript" src="/PostCreateOrUpdate.js"></script>
-<script th:inline="javascript" src="/postList.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </html>
