@@ -28,10 +28,14 @@ function viewMyPost(boardName) {
 function viewPost(postId, boardName) {
   $.ajax({
     type: "get",
-    url: "http://localhost:8080/posts/" + postId,
+    url: "http://localhost:8080/posts/" + boardName + "/" + postId,
     statusCode: {
       200: () => {
         window.location = "http://localhost:8080/posts/" + boardName + "/" + postId;
+      },
+      403: () => {
+        alert("해당 게시물에 접근할 권한이 없습니다.")
+        history.back();
       },
       404: () => {
         alert("해당 게시물을 찾을 수 없습니다.");
