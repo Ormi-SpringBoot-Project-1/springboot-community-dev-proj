@@ -25,6 +25,18 @@ function viewMyPost(boardName) {
   window.location = ("http://localhost:8080/posts/" + boardName + "/myPost");
 }
 
-function viewPost(postId, updatedAt) {
-
+function viewPost(postId, boardName) {
+  $.ajax({
+    type: "get",
+    url: "http://localhost:8080/posts/" + postId,
+    statusCode: {
+      200: () => {
+        window.location = "http://localhost:8080/posts/" + boardName + "/" + postId;
+      },
+      404: () => {
+        alert("해당 게시물을 찾을 수 없습니다.");
+        history.back();
+      }
+    }
+  })
 }
