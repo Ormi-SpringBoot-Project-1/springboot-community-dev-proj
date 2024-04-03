@@ -2,7 +2,6 @@ package com.springbootcommunitydevproj.controller;
 
 import com.springbootcommunitydevproj.dto.PostRequest;
 import com.springbootcommunitydevproj.dto.PostResponse;
-import com.springbootcommunitydevproj.dto.UpdatePostRequest;
 import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.service.PostService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,6 @@ public class PostController {
             log.error("Board Name 불일치");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 게시판에 게시글 작성을 시도하였습니다.");
         }
-
         return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 성공적으로 작성되었습니다.");
     }
 
@@ -43,18 +41,18 @@ public class PostController {
     }
 
     @PutMapping("/api/post/{post_id}") // 게시글 수정
-    public ResponseEntity<String> updatePost(@PathVariable Integer post_id, @RequestBody UpdatePostRequest request) {
+    public ResponseEntity<String> updatePost(@PathVariable(name = "post_id") Integer post_id, @ModelAttribute PostRequest updatePost) {
 
         try {
-            String result = postService.update(post_id, request);
+            String result = postService.update(post_id, updatePost);
             return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글 수정에 실패했습니다.");
         }
     }
 
     @DeleteMapping("/api/post/{post_id}") // 게시글 삭제
-    public ResponseEntity<Void> deletePost(@PathVariable Integer post_id) {
+    public ResponseEntity<Void> deletePost(@PathVariable(name = "post_id") Integer post_id) {
 
         try {
             postService.delete(post_id);
