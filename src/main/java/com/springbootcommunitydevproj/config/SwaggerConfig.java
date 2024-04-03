@@ -18,8 +18,8 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-            .title("Blog API")
-            .description("블로그 CRUD API")
+            .title("Community Dev Project API")
+            .description("스프링부트 커뮤니티 제작 프로젝트의 API 문서입니다.")
             .version("1.0.0");
     }
 
