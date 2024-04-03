@@ -8,6 +8,7 @@ import com.springbootcommunitydevproj.service.BoardService;
 import com.springbootcommunitydevproj.service.PostService;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class PostViewController { // 전체 게시판, 특정 게시판 화면 목록
@@ -66,24 +68,18 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         return "PostList";
     }
 
-    // 특정 게시글 목록
-    @GetMapping("/posts/{boardName}/{board_id}")
-    public String showBoardPosts(
-        @PathVariable(name = "boardName") String boardName,
-        @PathVariable(name = "board_id") Integer board_id, Model model) {
-
-        List<Post> posts = boardService.getBoardPost(board_id);
-        model.addAttribute("posts", posts);
-
-        return "post";
-    }
-
     // 게시글 조회
-    @GetMapping("/posts/{post_id}")
-    public String showOnePost(@PathVariable(name = "post_id") Integer id, Model model) {
+    @GetMapping("/posts/{boardName}/{post_id}")
+    public String showOnePost(
+        @PathVariable(name = "boardName") String boardName,
+        @PathVariable(name = "post_id") Integer id,
+        @AuthenticationPrincipal User user, Model model) {
 
         Post post = postService.findById(id).updateViews();
         model.addAttribute("post", post.toResponse());
+        model.addAttribute("boardName", boardName);
+        model.addAttribute("user", user);
+
         return "post";
     }
 
@@ -103,6 +99,7 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
             model.addAttribute("post", new Post().toResponse());
         }
         else {
+            log.debug(String.valueOf(postService.findById(postId).toResponse().getPostId()));
             model.addAttribute("post", postService.findById(postId).toResponse());
         }
 
