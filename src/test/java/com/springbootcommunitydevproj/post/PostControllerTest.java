@@ -1,7 +1,7 @@
 package com.springbootcommunitydevproj.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springbootcommunitydevproj.dto.AddPostRequest;
+import com.springbootcommunitydevproj.dto.PostRequest;
 import com.springbootcommunitydevproj.model.*;
 import com.springbootcommunitydevproj.repository.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,11 +77,9 @@ public class PostControllerTest {
         User user = userRepository.getById(1);
         PostAuthority postAuthority = postAuthorityRepository.getById(1);
 
-        AddPostRequest request = AddPostRequest.builder()
+        PostRequest request = PostRequest.builder()
                 .title("title")
                 .content("content")
-                .user(user)
-                .authority(postAuthority)
                 .build();
 
         String json = objectMapper.writeValueAsString(request);

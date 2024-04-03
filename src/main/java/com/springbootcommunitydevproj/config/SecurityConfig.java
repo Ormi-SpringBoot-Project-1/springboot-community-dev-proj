@@ -1,7 +1,5 @@
 package com.springbootcommunitydevproj.config;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,8 +16,8 @@ public class SecurityConfig{
     // swagger 접근도 Security 비활성화
     @Bean
     public WebSecurityCustomizer config() {
-        return web -> web.ignoring()//.requestMatchers(toH2Console())
-            .requestMatchers("/static/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html");
+        return web -> web.ignoring()
+            .requestMatchers("static/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html");
     }
 
     @Bean
@@ -29,13 +27,17 @@ public class SecurityConfig{
                 // 그 외 요청에 대해서는 인증 절차를 거친다.
                 // get url 테스트 목적으로 추가함.
                 auth.requestMatchers("/login", "/signup", "/user").permitAll()
+                    .requestMatchers("/api/admin/**", "/admin/**").hasAuthority("Admin") // 이 API는 Admin만 접근 가능
+                    .requestMatchers("/posts/recruit").hasAuthority("4")  // 이 API는 4등급 이상만 접근 가능
+                    .requestMatchers("/posts/evaluation").hasAuthority("3")  // 이 API는 3등급 이상만 접근 가능
+                    .requestMatchers("/posts/share").hasAuthority("3")  // 이 API는 3등급 이상만 접근 가능
                     .anyRequest().authenticated()
             )
             .formLogin(auth ->
                 // 폼 기반 로그인 페이지는 "/login" URL로 사용
-                // 로그인 성공 시 "/blogs" URL로 이동
+                // 로그인 성공 시 "/posts/free" URL로 이동
                 auth.loginPage("/login")
-                    .defaultSuccessUrl("/blogs"))
+                    .defaultSuccessUrl("/posts/free"))
             .logout(auth ->
                 // 로그 아웃 성공 시 "/login" URL로 이동
                 // 로그 아웃 이후 사용자 Session을 전체 삭제한다.

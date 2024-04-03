@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class PostResponse {
+    private Integer postId;
     private Board board;
     private User user;
     private String title;
@@ -26,15 +27,14 @@ public class PostResponse {
     private PostAuthority authority;
 
     public PostResponse(Post post) {
+        postId = post.getId();
         board = post.getBoard();
         user = post.getUser();
         title = post.getTitle();
-        content = post.getContent();;
+        content = post.getContent();
         createdAt = post.getCreatedAt();
         updatedAt = post.getUpdatedAt();
         views = post.getViews();
-        likes = post.getLikes();
-        dislikes = post.getDislikes();
         authority = post.getAuthority();
     }
 }

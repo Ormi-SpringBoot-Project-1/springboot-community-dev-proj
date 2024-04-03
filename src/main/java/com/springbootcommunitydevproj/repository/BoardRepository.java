@@ -2,10 +2,10 @@ package com.springbootcommunitydevproj.repository;
 
 import com.springbootcommunitydevproj.model.Board;
 import com.springbootcommunitydevproj.model.Post;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -15,4 +15,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     @Query(value = "select p.title, p.content, u.nickname from post as p outer join users as u on p.user_id = u.id where p.board_id = :id"
             ,nativeQuery = true)
     List<Post> getBoardPost(@Param(value="id") Integer id);
+
+    Optional<Board> findBoardByBoardName(String boardName);
 }

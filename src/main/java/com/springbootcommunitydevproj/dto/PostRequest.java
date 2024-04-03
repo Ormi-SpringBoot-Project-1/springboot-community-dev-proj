@@ -1,25 +1,22 @@
 package com.springbootcommunitydevproj.dto;
 
-import com.springbootcommunitydevproj.model.Board;
-import com.springbootcommunitydevproj.model.PostAuthority;
-import com.springbootcommunitydevproj.model.PostLikes;
-import com.springbootcommunitydevproj.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddPostRequest {
+public class PostRequest {
 
     // 일단 테스트에 필요한 컬럼들만 작성함. 더 추가 예정.
     private String title;
     private String content;
-    private PostAuthority authority;
-    private Board board;
-    private User user;
+    private Integer accessLevel;
+    private Integer commentLevel;
     private Integer postFileCount;
 }

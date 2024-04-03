@@ -32,8 +32,7 @@ public class UserManagementViewController {
         Model model, HttpServletRequest request) {
 
         List<UserManagementInfoDto> userList = userManagementService.getAllUserManagementInfo(page, orderBy, ascOrDesc);
-        Integer totalPages = userManagementService.getUserManagementInfoPages();
-        setModelAndView(userList, page, totalPages, request, model);
+        setModelAndView(userList, page, request, model);
 
         return "admin-user-manage.html";
     }
@@ -46,27 +45,34 @@ public class UserManagementViewController {
         Model model, HttpServletRequest request) {
 
         List<UserManagementInfoDto> userList = userManagementService.getUserManagementInfoByNickname(nickname);
-        setModelAndView(userList, 1, 1, request, model);
+        setModelAndView(userList, 1, request, model);
 
         return "admin-user-manage.html";
     }
 
     /**
      *      View Resolver에게 보낼 Model을 세팅하는 메소드입니다. <br>
-     *      페이지에 보여질 쿼리 결과 회원 목록, 목록 페이지, 회원 목록 전체 페이지 갯수, HttpServletRequest 객체와 Model 객체를 파라메터로 받습니다.
+     *      페이지에 보여질 쿼리 결과 회원 목록, 목록 페이지, HttpServletRequest 객체와 Model 객체를 파라메터로 받습니다.
      */
-    private <T extends UserManagementInfoDto> void setModelAndView(List<T> userList, Integer page, Integer totalPages, HttpServletRequest request, Model model) {
+    private <T extends UserManagementInfoDto> void setModelAndView(List<T> userList, Integer page, HttpServletRequest request, Model model) {
+        int totalPages = userManagementService.getUserManagementInfoPages();
+        int currentStartPage = 1;
+
+        if (Math.ceil((double) page / 10) > 1) {
+            currentStartPage = (int) Math.ceil((double) page / 10) * 10;
+        }
+
         Set<Integer> blockedUserSet = userManagementService.getAllBlockedUser();
 
         model.addAttribute("userList", userList);
         model.addAttribute("blockedUserSet", blockedUserSet);
-        model.addAttribute("currentStartPage", Math.ceil((double) page / 10));
+        model.addAttribute("currentStartPage", currentStartPage);
 
-        if (totalPages < 10) {
+        if (totalPages - currentStartPage < 10) {
             model.addAttribute("currentLastPage", totalPages);
         }
         else {
-            model.addAttribute("currentLastPage", totalPages - Math.ceil((double) page / 10));
+            model.addAttribute("currentLastPage", currentStartPage + 10);
         }
 
         model.addAttribute("request", request);

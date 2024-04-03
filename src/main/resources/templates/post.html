@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 조회</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<div class="p-5 mb-5 text-center</> bg-light">
+    <h1 class="mb-3">사이트 제목</h1>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title" th:text="${post.title}"></h5>
+            <p> <span class="card-text" th:text="'작성자 : ' + ${post.user.nickname}"></span>
+                <span class="card-text" th:text="'등급 : ' + ${post.user.level.getLevelName()}"></span>
+                <span class="card-text" th:if="${post.updatedAt}" th:text="'작성일 : ' + ${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm:ss')} + '(수정됨)'"></span>
+                <span class="card-text" th:unless="${post.updatedAt}" th:text="'작성일 : ' +${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+            </p>
+        </div>
+        <div class="card-body">
+            <p class="card-text" th:text="${post.content}"></p>
+        </div>
+    </div>
+    <section th:if="${user.id} == ${post.user.id}">
+        <button type="button" id="modify-btn" th:onclick="|location.href='@{/posts/{boardName}/newPost?postId={postId}(postId = ${post.postId}, boardName = ${boardName})}'|"
+                class="btn btn-primary btn-sm">수정
+        </button>
+        <button type="button" id="delete-btn" th:onclick="|deletePost('${post.postId}')|"
+                class="btn btn-secondary btn-sm">삭제
+        </button>
+    </section>
+    </article>
+    <button type="button" id="back-btn" onclick="history.back()" class="btn btn-primary btn-sm">뒤로</button>
+</div>
+
+</body>
+<script th:inline="javascript" src="/post.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</html>
