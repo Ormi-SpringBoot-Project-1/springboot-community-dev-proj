@@ -71,13 +71,13 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Integer checkAuthorizationToBoard(@Param("boardName") String boardName, @Param("userId") Integer userId);
 
     /**
-     *      게시글 등록 쿼리 (수정중)
+     *      게시글을 생성하는 쿼리입니다.
      */
-    @Query(value = "update post "
-        + "set title = (case when :title != '' then :title else title end), content = (case when :content != '' then :content else content end), updated_at = now() "
-        + "where post_id = :postId"
+    @Query(value = "update post post, post_authority auth "
+        + "set post.title = (case when :title is not null then :title else post.title end), post.content = (case when :content is not null then :content else post.content end), auth.auth_access_board_level = :accessLevel, auth.auth_comment_level = :commentLevel, post.updated_at = now() "
+        + "where post.auth_id = auth.auth_id and post.post_id = :postId"
         , nativeQuery = true)
     @Modifying
     @Transactional
-    Integer updatePost(@Param("title") String title, @Param("content") String content, @Param("postId") Integer postId);
+    int updatePost(@Param("title") String title, @Param("content") String content, @Param("accessLevel") Integer accessLevel, @Param("commentLevel") Integer commentLevel, @Param("postId") Integer postId);
 }
