@@ -151,7 +151,7 @@ public class UserManagementServiceTest {
                 // 등급 변경 성공 메시지를 정상적으로 받았는지 확인합니다.
                 assertThat(result).isEqualTo(ResponseMessages.CHANGE_LEVEL_SUCCESS);
                 // 등급이 실제로 올바르게 변경되었는지 확인합니다.
-                assertThat(user.orElseThrow().getLevelId()).isEqualTo(testDataList.get(i).getLevel());
+                assertThat(user.orElseThrow().getLevel().getLevel()).isEqualTo(testDataList.get(i).getLevel());
             }
             else if (i == 5) {
                 // 등급 변경 실페 메시지를 정상적으로 받았는지 확인합니다.
