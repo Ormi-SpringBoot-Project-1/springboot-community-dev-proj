@@ -2,7 +2,6 @@ package com.springbootcommunitydevproj.service;
 
 import com.springbootcommunitydevproj.dto.PostRequest;
 import com.springbootcommunitydevproj.dto.PostListDto;
-import com.springbootcommunitydevproj.dto.UpdatePostRequest;
 import com.springbootcommunitydevproj.model.*;
 import com.springbootcommunitydevproj.repository.BoardAuthorityRepository;
 import com.springbootcommunitydevproj.repository.BoardRepository;
@@ -11,14 +10,17 @@ import com.springbootcommunitydevproj.repository.PostRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 import static com.springbootcommunitydevproj.utils.ResponseMessages.POST_ID_NOT_FOUND;
 
+@Slf4j
 @Service
 public class PostService {
 
@@ -100,33 +102,39 @@ public class PostService {
 
     // 게시글 수정 api
     @Transactional
-    public String update(Integer id, UpdatePostRequest request) {
-        if (request.getTitle() == null && request.getContent() == null) {
+    public String update(Integer id, PostRequest updatePost) throws IllegalArgumentException {
+        if (updatePost.getTitle() == null && updatePost.getContent() == null) {
             return "게시글 변경 사항이 없습니다.";
         }
 
-        String title = "";
-        String content = "";
+        String title = null;
+        String content = null;
 
-        if (request.getTitle() != null) {
-            title = request.getTitle();
+        if (updatePost.getTitle() != null) {
+            title = updatePost.getTitle();
         }
 
-        if (request.getContent() != null) {
-            content = request.getContent();
+        if (updatePost.getContent() != null) {
+            content = updatePost.getContent();
         }
 
-        return postRepository.updatePost(title, content, id).equals(1) ? "게시글이 성공적으로 수정되었습니다." : "게시글 수정에 실패했습니다.";
+        return postRepository.updatePost(title, content, updatePost.getAccessLevel(), updatePost.getCommentLevel(), id) == 2 ? "게시글이 성공적으로 수정되었습니다." : "게시글 수정에 실패했습니다.";
     }
 
     // 게시글 삭제 api
+    @Modifying
+    @Transactional
     public void delete(Integer id) {
 
         Optional<Post> optionalPost = postRepository.findById(id);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
+            // 게시글 권한 삭제
+            postAuthorityRepository.delete(post.getAuthority());
+            // 댓글 삭제
+
             // 게시글 삭제
-            postRepository.delete(post);
+            postRepository.deleteById(id);
         }
         else {
             throw new IllegalArgumentException(POST_ID_NOT_FOUND);
