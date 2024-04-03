@@ -32,7 +32,7 @@
                 <tr th:if="__${#lists.isEmpty(postList)}__">
                     <td colspan="5">게시글이 없습니다.</td>
                 </tr>
-                <tr th:if="${not #lists.isEmpty(postList)}" th:each="post, stat : ${postList}" th:onclick="|viewPost('__${post.postId}__', '__${post.updatedAt}__')|">
+                <tr th:if="${not #lists.isEmpty(postList)}" th:each="post, stat : ${postList}" th:onclick="|viewPost('__${post.postId}__', '__${boardName}__')|">
                     <td th:text="${post.author}">작성자</td>
                     <td th:text="${post.title}">제목</td>
                     <td th:text="${post.comments}">댓글</td>
