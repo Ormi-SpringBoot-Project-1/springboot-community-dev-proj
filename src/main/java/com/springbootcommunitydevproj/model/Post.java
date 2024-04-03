@@ -55,11 +55,12 @@ public class Post {
     private Integer postFileCount;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="auth_id", nullable = false)
+    @JoinColumn(name="auth_id")
     private PostAuthority authority;
 
     public PostResponse toResponse() {
         return PostResponse.builder()
+                .postId(id)
                 .board(board)
                 .user(user)
                 .title(title)
