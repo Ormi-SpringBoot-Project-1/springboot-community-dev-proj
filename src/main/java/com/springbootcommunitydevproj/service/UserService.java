@@ -1,6 +1,6 @@
 package com.springbootcommunitydevproj.service;
 
-import com.springbootcommunitydevproj.dto.AddUserRequest;
+import com.springbootcommunitydevproj.dto.UserRequest;
 import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.repository.CommentRepository;
 import com.springbootcommunitydevproj.repository.UserRepository;
@@ -21,7 +21,7 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    public User save(AddUserRequest dto){
+    public User save(UserRequest dto){
 
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");

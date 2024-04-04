@@ -5,7 +5,7 @@ import lombok.*;
 
 @Getter
 @Setter
-public class AddUserRequest {
+public class UserRequest {
     @NotBlank(message = "email is mandatory")
     private String email;
 

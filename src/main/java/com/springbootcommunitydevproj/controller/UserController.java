@@ -1,6 +1,6 @@
 package com.springbootcommunitydevproj.controller;
 
-import com.springbootcommunitydevproj.dto.AddUserRequest;
+import com.springbootcommunitydevproj.dto.UserRequest;
 import com.springbootcommunitydevproj.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public String signup(AddUserRequest request){
+    public String signup(UserRequest request){
         userService.save(request); // 회원가입(저장)
         return "redirect:/login"; // 회원가입 처리 후 로그인 페이지로 이동
     }
