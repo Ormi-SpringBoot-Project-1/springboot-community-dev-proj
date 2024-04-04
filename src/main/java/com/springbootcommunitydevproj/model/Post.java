@@ -72,8 +72,6 @@ public class Post {
                 .build();
     }
 
-    @Modifying
-    @Transactional
     public Post updateViews() {
         views++;
         return this;
