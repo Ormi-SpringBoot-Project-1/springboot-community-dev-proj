@@ -1,4 +1,4 @@
-package com.springbootcommunitydevproj.entity;
+package com.springbootcommunitydevproj.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -53,7 +53,7 @@ public class Comment {
         this.user = user;
         this.post = post;
         this.body = body;
-        this.isReported = isReported;
+        this.is_Reported = isReported;
         this.likes = likes;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

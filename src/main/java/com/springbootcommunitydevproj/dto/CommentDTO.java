@@ -1,6 +1,7 @@
 package com.springbootcommunitydevproj.dto;
 
-import com.springbootcommunitydevproj.entity.Comment;
+import com.springbootcommunitydevproj.model.Comment;
+import com.springbootcommunitydevproj.model.Post;
 import lombok.*;
 
 import java.time.LocalDateTime;

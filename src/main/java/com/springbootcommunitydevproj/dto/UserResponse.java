@@ -1,6 +1,6 @@
 package com.springbootcommunitydevproj.dto;
 
-import com.springbootcommunitydevproj.entity.User;
+import com.springbootcommunitydevproj.model.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -30,10 +30,7 @@ public class UserResponse {
         description = user.getDescription();
         levelId = user.getLevelId();
         reportedCount = user.getReportedCount();
-        createdAt = user.getCreatedAt();
         isAdmin = user.getIsAdmin();
-        userIp = user.getUserIp();
-        lastLogInIp = user.getLastLogInIp();
         phoneNumber = user.getPhoneNumber();
     }
 }

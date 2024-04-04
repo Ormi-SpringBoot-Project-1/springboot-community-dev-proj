@@ -1,20 +1,23 @@
-package com.springbootcommunitydevproj.entity;
+package com.springbootcommunitydevproj.model;
 
+import com.springbootcommunitydevproj.dto.UserResponse;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
@@ -31,6 +34,7 @@ public class User {
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
+    @Setter
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
@@ -77,9 +81,38 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("user"));
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
     // 계정 잠금 여부 반환 (true: 잠금 안됨)
     @Override
     public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    // 계정 만료 여부 반환 (true: 만료 안됨)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    // 패스워드의 만료 여부 반환 (true: 만료 안됨)
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // 사용자의 비밀번호를 일정 기간 지나서 변경하는 정책이 있을 경우,
+        // 비밀번호가 만료되었다면 사용자의 로그인을 거부할 수 있음.
         return true;
     }
 
@@ -87,5 +120,18 @@ public class User {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserResponse toResponse() {
+        return UserResponse.builder()
+                .Id(id)
+                .nickname(nickname)
+                .email(email)
+                .description(description)
+                .levelId(levelId)
+                .reportedCount(reportedCount)
+                .isAdmin(isAdmin)
+                .phoneNumber(phoneNumber)
+                .build();
     }
 }

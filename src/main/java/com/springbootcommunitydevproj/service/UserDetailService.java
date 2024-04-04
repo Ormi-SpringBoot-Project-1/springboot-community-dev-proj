@@ -1,6 +1,6 @@
 package com.springbootcommunitydevproj.service;
 
-import com.springbootcommunitydevproj.entity.User;
+import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,11 +24,18 @@ public class UserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
-        return new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(), user.getAuthorities());
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .accountExpired(!user.isAccountNonExpired())
+                .accountLocked(!user.isAccountNonLocked())
+                .credentialsExpired(!user.isCredentialsNonExpired())
+                .disabled(!user.isEnabled())
+                .build();
     }
 
-    public boolean login(String userId, String password){
-        UserDetails userDetails = loadUserByUsername(userId);
+    public boolean login(String email, String password){
+        UserDetails userDetails = loadUserByUsername(email);
         return encoder.matches(password, userDetails.getPassword());
     }
 }
