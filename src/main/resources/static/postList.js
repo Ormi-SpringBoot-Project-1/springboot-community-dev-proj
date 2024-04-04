@@ -1,7 +1,8 @@
 function searchPost() {
   const searchKeyword = document.getElementsByClassName("search-post")[0].value;
 
-  window.location = (window.location.origin + window.location.pathname + "?search=" + searchKeyword);
+  window.location = (window.location.origin + window.location.pathname
+      + "?search=" + searchKeyword);
 }
 
 function moveBoard(boardName) {
@@ -12,7 +13,17 @@ function moveBoard(boardName) {
       200: (html) => {
         window.location = window.location.origin + "/posts/" + boardName;
       },
-      403: () => { alert("해당 게시판에 대한 접근 권한이 없습니다.");}
+      403: () => {
+        let accessLevel;
+
+        if (boardName === "그룹 모집 게시판") {
+          accessLevel = "Tier 4";
+        } else {
+          accessLevel = "Tier 3";
+        }
+
+        alert("해당 게시판에 대한 접근 권한이 없습니다.(" + accessLevel + " 이상 접근 가능)");
+      }
     }
   });
 }
@@ -27,20 +38,13 @@ function viewMyPost(boardName) {
 
 function viewPost(postId, boardName) {
   $.ajax({
-    type: "get",
-    url: "http://localhost:8080/posts/" + boardName + "/" + postId,
-    statusCode: {
-      200: () => {
-        window.location = "http://localhost:8080/posts/" + boardName + "/" + postId;
-      },
-      403: () => {
-        alert("해당 게시물에 접근할 권한이 없습니다.")
-        history.back();
-      },
-      404: () => {
-        alert("해당 게시물을 찾을 수 없습니다.");
-        history.back();
+        type: "get",
+        url: "http://localhost:8080/posts/" + boardName + "/" + postId + "?message=true"
       }
-    }
+  ).done(function (data, textStatus, xhr) {
+    window.location = ("http://localhost:8080/posts/" + boardName + "/" + postId + "?duplicate=true");
+  })
+  .fail(function (data, textStatus, xhr) {
+    alert(data.responseJSON.message);
   })
 }
