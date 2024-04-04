@@ -8,6 +8,7 @@ import com.springbootcommunitydevproj.repository.BoardRepository;
 import com.springbootcommunitydevproj.repository.PostAuthorityRepository;
 import com.springbootcommunitydevproj.repository.PostRepository;
 import jakarta.transaction.Transactional;
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +75,8 @@ public class PostService {
         return (int) Math.ceil((double) postRepository.getCountByBoardName(boardName) / 10);
     }
 
-    // 게시글 저장 api
+    // 게시글 저장
+    @Modifying
     @Transactional
     public Post savePost(String boardName, PostRequest request, User user) throws IllegalArgumentException {
         PostAuthority postAuthority = postAuthorityRepository.save(new PostAuthority(request.getAccessLevel(), request.getCommentLevel()));
@@ -96,15 +98,26 @@ public class PostService {
 
     // 상세 게시글 불러오기 api
     @Transactional
-    public Post findById(Integer id) {
-        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(POST_ID_NOT_FOUND)).updateViews();
+    public Post findById(Integer id, Integer userId, String duplicate) throws IllegalArgumentException, AccessDeniedException {
+        Post result = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(POST_ID_NOT_FOUND));
+        Integer canAccess = postRepository.checkAuthorizationToPost(id, userId);
+
+        if (canAccess != 1) {
+            throw new AccessDeniedException(null, null, result.getAuthority().getAuthAccessBoardLevel().toString());
+        }
+
+        if (duplicate.equals("false")) {
+            return result.updateViews();
+        }
+        return result;
     }
 
     // 게시글 수정 api
+    @Modifying
     @Transactional
-    public String update(Integer id, PostRequest updatePost) throws IllegalArgumentException {
+    public String update(Integer id, PostRequest updatePost) throws Exception {
         if (updatePost.getTitle() == null && updatePost.getContent() == null) {
-            return "게시글 변경 사항이 없습니다.";
+            throw new Exception("변경 사항이 없습니다.");
         }
 
         String title = null;
@@ -118,7 +131,12 @@ public class PostService {
             content = updatePost.getContent();
         }
 
-        return postRepository.updatePost(title, content, updatePost.getAccessLevel(), updatePost.getCommentLevel(), id) == 2 ? "게시글이 성공적으로 수정되었습니다." : "게시글 수정에 실패했습니다.";
+        if (postRepository.updatePost(title, content, updatePost.getAccessLevel(), updatePost.getCommentLevel(), id) == 2) {
+            return "게시글이 성공적으로 수정되었습니다.";
+        }
+        else {
+            throw new Exception("게시글 수정에 실패했습니다.");
+        }
     }
 
     // 게시글 삭제 api

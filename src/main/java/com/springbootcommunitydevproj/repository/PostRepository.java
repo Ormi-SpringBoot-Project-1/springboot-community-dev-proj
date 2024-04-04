@@ -41,15 +41,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<PostListDto> getPostListByUserId(@Param("boardName") String boardName, @Param("userId") Integer userId, Pageable pageable);
 
     /**
-     *      해당 게시글의 조회수를 1 증가시킵니다.
-     */
-    @Query(value = "update post set views = views + 1 where post_id = :postId"
-        , nativeQuery = true)
-    @Modifying
-    @Transactional
-    void updateViews(@Param("postId") Integer postId);
-
-    /**
      *      boardName으로 해당 게시판에 등록된 모든 게시글 갯수를 가져옵니다.
      */
     @Query(value = "select count(*) "
@@ -69,6 +60,18 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
         + "where user.user_id = :userId))"
         , nativeQuery = true)
     Integer checkAuthorizationToBoard(@Param("boardName") String boardName, @Param("userId") Integer userId);
+
+    /**
+     *      게시글에 설정된 접근 가능 권한과 접근하려는 회원의 등급을 비교해 접근 가능 여부를 판단하는 쿼리입니다.
+     */
+    @Query(value = "select exists(select 1 "
+        + "from post left join post_authority on post.auth_id = post_authority.auth_id "
+        + "where post.post_id = :postId and post_authority.auth_access_board_level >= ("
+        + "select level.level "
+        + "from user left join level on user.level_id = level.level_id "
+        + "where user.user_id = :userId))"
+        , nativeQuery = true)
+    Integer checkAuthorizationToPost(@Param("postId") Integer postId, @Param("userId") Integer userId);
 
     /**
      *      게시글을 생성하는 쿼리입니다.
