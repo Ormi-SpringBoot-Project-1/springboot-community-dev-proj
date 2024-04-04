@@ -24,5 +24,4 @@ public class CommentService {
     public void deleteComment(String commentId) {
         commentRepository.deleteById(Integer.valueOf(commentId));
     }
-
 }

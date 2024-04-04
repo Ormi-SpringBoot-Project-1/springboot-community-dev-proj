@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -22,5 +21,4 @@ public class SwaggerConfig {
                 .description("스프링부트 커뮤니티 제작 프로젝트의 API 문서입니다.")
                 .version("1.0.0");
     }
-
 }

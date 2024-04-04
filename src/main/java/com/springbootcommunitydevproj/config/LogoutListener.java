@@ -24,5 +24,4 @@ public class LogoutListener implements ApplicationListener<LogoutSuccessEvent> {
             log.info("LogoutListener :로그인된 사용자가 없습니다.");
         }
     }
-
 }

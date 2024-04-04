@@ -58,5 +58,4 @@ public class UserService {
         user.setPassword(changePassword);
         userRepository.save(user);
     }
-
 }
