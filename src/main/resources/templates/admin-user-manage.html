@@ -7,6 +7,14 @@
 
 </head>
 <body>
+
+<aside class="my-info">
+  <div class="user-nickname" th:text="|회원 닉네임: ${userNickname}|"></div>
+  <div class="user-level-name" th:text="|회원 등급: ${userLevelName}|"></div>
+  <button class="logout-btn" th:onclick="logout()">로그 아웃</button>
+  <button class="account-delete-btn" th:onclick="goToFreeBoard()">자유 게시판</button>
+</aside>
+
 <section class="search-user">
   <input type="text" placeholder="닉네임을 입력해주세요" class="search">
   <button class="search-btn" onclick="searchUser()"> 검색 </button>
@@ -84,5 +92,6 @@
 </section>
 </body>
 <script th:inline="javascript" src="/admin-user-management.js"></script>
+<script th:inline="javascript" src="/myInfoFunctions.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </html>
