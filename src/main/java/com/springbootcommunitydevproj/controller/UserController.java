@@ -36,11 +36,12 @@ public class UserController {
         return "redirect:/login"; // 회원가입 처리 후 로그인 페이지로 이동
     }
 
-    @PostMapping("/delete-account")
+    @GetMapping("/delete-account")
+    @ResponseBody
     public String deleteId(Authentication authentication) {
         String email = authentication.name();
         userService.deleteById(email);
-        return "redirect:/logout";
+        return "redirect:/login";
     }
 
     @GetMapping("/logout")
