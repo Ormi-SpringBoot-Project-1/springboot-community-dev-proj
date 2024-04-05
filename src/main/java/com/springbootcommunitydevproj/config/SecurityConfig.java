@@ -28,16 +28,16 @@ public class SecurityConfig{
                 // get url 테스트 목적으로 추가함.
                 auth.requestMatchers("/login", "/signup", "/user").permitAll()
                     .requestMatchers("/api/admin/**", "/admin/**").hasAuthority("Admin") // 이 API는 Admin만 접근 가능
-                    .requestMatchers("/posts/recruit").hasAuthority("4")  // 이 API는 4등급 이상만 접근 가능
-                    .requestMatchers("/posts/evaluation").hasAuthority("3")  // 이 API는 3등급 이상만 접근 가능
-                    .requestMatchers("/posts/share").hasAuthority("3")  // 이 API는 3등급 이상만 접근 가능
+                    .requestMatchers("/posts/그룹 모집 게시판").hasAuthority("4")  // 이 API는 4등급 이상만 접근 가능
+                    .requestMatchers("/posts/평가 게시판").hasAuthority("3")  // 이 API는 3등급 이상만 접근 가능
+                    .requestMatchers("/posts/정보 공유 게시판").hasAuthority("3")  // 이 API는 3등급 이상만 접근 가능
                     .anyRequest().authenticated()
             )
             .formLogin(auth ->
                 // 폼 기반 로그인 페이지는 "/login" URL로 사용
-                // 로그인 성공 시 "/posts/free" URL로 이동
+                // 로그인 성공 시 "/posts/자유 게시판" URL로 이동
                 auth.loginPage("/login")
-                    .defaultSuccessUrl("/posts/free"))
+                    .defaultSuccessUrl("/posts/자유 게시판"))
             .logout(auth ->
                 // 로그 아웃 성공 시 "/login" URL로 이동
                 // 로그 아웃 이후 사용자 Session을 전체 삭제한다.

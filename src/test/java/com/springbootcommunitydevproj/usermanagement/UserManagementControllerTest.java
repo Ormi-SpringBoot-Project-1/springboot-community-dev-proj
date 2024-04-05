@@ -78,40 +78,33 @@ public class UserManagementControllerTest {
             jsonPath("$[4].currentPostCount").value(answer.get(4).get("currentPostCount")));
     }
 
-//    @Test
-//    @DisplayName("GET /api/admin/user/{nickname} 테스트")
-//    void getUserManagementInfoByNicknameTest() {
-//        // given
-//        // 테스트 해볼 닉네임들
-//        List<String> nicknames = List.of("Test 1", "Test 5", "Test 9", "Test 12", "Test 100");
-//
-//        nicknames.forEach(nickname -> {
-//            try {
-//                // when
-//                ResultActions result = mockMvc.perform(get("/api/admin/user/" + nickname)
-//                        .accept(MediaType.APPLICATION_JSON));
-//
-//                // then
-//                if (nickname.equals("Test 100")) {
-//                    // Test 100 이란 닉네임은 존재하지 않습니다.
-//                    result.andExpect(status().isOk()).
-//                        andExpect(jsonPath("$[0]").doesNotExist());
-//                }
-//                else {
-//                    // 동일한 닉네임인지 확인합니다.
-//                    result.andExpect(status().isOk())
-//                        .andExpect(jsonPath("$[0].nickname", containsString(nickname)));
-//                }
-//            } catch (Exception e) {
-//            }
-//        });
-//    }
-
     @Test
     @DisplayName("GET /api/admin/user/{nickname} 테스트")
     void getUserManagementInfoByNicknameTest() {
+        // given
+        // 테스트 해볼 닉네임들
+        List<String> nicknames = List.of("Test 1", "Test 5", "Test 9", "Test 12", "Test 100");
 
+        nicknames.forEach(nickname -> {
+            try {
+                // when
+                ResultActions result = mockMvc.perform(get("/api/admin/user/" + nickname)
+                        .accept(MediaType.APPLICATION_JSON));
 
+                // then
+                if (nickname.equals("Test 100")) {
+                    // Test 100 이란 닉네임은 존재하지 않습니다.
+                    result.andExpect(status().isOk()).
+                        andExpect(jsonPath("$[0]").doesNotExist());
+                }
+                else {
+                    // 동일한 닉네임인지 확인합니다.
+                    result.andExpect(status().isOk())
+                        .andExpect(jsonPath("$[0].nickname", containsString(nickname)));
+                }
+            } catch (Exception e) {
+            }
+        });
     }
 
     @Test

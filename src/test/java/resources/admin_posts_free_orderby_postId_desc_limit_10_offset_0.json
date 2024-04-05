@@ -1,0 +1,102 @@
+[
+  {
+    "postId": 23,
+    "title": "어드민 테스트 글 작성 10",
+    "createdAt": "2024-04-04 14:19:18",
+    "updatedAt": "2024-04-04 14:26:21",
+    "views": 2,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 22,
+    "title": "어드민 테스트 글 작성 9",
+    "createdAt": "2024-04-04 14:19:01",
+    "updatedAt": "2024-04-04 14:26:05",
+    "views": 2,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 21,
+    "title": "어드민 테스트 글 작성 8",
+    "createdAt": "2024-04-04 14:18:40",
+    "updatedAt": null,
+    "views": 1,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 20,
+    "title": "어드민 테스트 글 작성 7",
+    "createdAt": "2024-04-04 14:18:25",
+    "updatedAt": null,
+    "views": 1,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 19,
+    "title": "어드민 테스트 글 작성 6",
+    "createdAt": "2024-04-04 14:18:12",
+    "updatedAt": "2024-04-04 14:25:50",
+    "views": 2,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 18,
+    "title": "어드민 테스트 글 작성 5",
+    "createdAt": "2024-04-04 14:18:00",
+    "updatedAt": "2024-04-04 14:25:39",
+    "views": 2,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 17,
+    "title": "어드민 테스트 글 작성 4",
+    "createdAt": "2024-04-04 14:17:42",
+    "updatedAt": "2024-04-04 14:25:29",
+    "views": 2,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 16,
+    "title": "어드민 테스트 글 작성 3",
+    "createdAt": "2024-04-04 14:17:20",
+    "updatedAt": "2024-04-04 14:25:20",
+    "views": 3,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 15,
+    "title": "어드민 테스트 글 작성 2",
+    "createdAt": "2024-04-04 14:17:02",
+    "updatedAt": "2024-04-04 14:25:08",
+    "views": 2,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 14,
+    "title": "어드민 테스트 글 작성 1",
+    "createdAt": "2024-04-04 14:16:31",
+    "updatedAt": "2024-04-04 14:22:31",
+    "views": 4,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  }
+]

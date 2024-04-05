@@ -6,9 +6,11 @@ import com.springbootcommunitydevproj.model.Post;
 import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.service.BoardService;
 import com.springbootcommunitydevproj.service.PostService;
+import java.nio.file.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Controller
@@ -38,7 +41,7 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         @RequestParam(name = "search", required = false) String search,
         @RequestParam(name = "page", defaultValue = "1") Integer page,
         @RequestParam(name = "orderby", defaultValue = "postId") String orderBy,
-        @RequestParam(name = "sort", defaultValue = "asc") String ascOrDesc,
+        @RequestParam(name = "sort", defaultValue = "desc") String ascOrDesc,
         Model model, HttpServletRequest request) {
 
         List<PostListDto> postList = postService.getPostListByBoardName(boardName, search, page, orderBy, ascOrDesc);
@@ -58,7 +61,7 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         @PathVariable(name = "boardName") String boardName,
         @RequestParam(name = "page", defaultValue = "1") Integer page,
         @RequestParam(name = "orderby", defaultValue = "postId") String orderBy,
-        @RequestParam(name = "sort", defaultValue = "asc") String ascOrDesc,
+        @RequestParam(name = "sort", defaultValue = "desc") String ascOrDesc,
         @AuthenticationPrincipal User user,
         Model model, HttpServletRequest request) {
 
@@ -73,12 +76,20 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
     public String showOnePost(
         @PathVariable(name = "boardName") String boardName,
         @PathVariable(name = "post_id") Integer id,
+        @RequestParam(name = "duplicate", defaultValue = "false", required = false) String duplicate,
         @AuthenticationPrincipal User user, Model model) {
 
-        Post post = postService.findById(id);
-        model.addAttribute("post", post.toResponse());
-        model.addAttribute("boardName", boardName);
-        model.addAttribute("user", user);
+        try {
+            Post post = postService.findById(id, user.getId(), duplicate);
+
+            model.addAttribute("post", post.toResponse());
+            model.addAttribute("boardName", boardName);
+            model.addAttribute("user", user);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
+        } catch (AccessDeniedException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Tier " + e.getReason() + " 이상만 접근이 가능한 게시물 입니다.");
+        }
 
         return "post";
     }
@@ -93,14 +104,19 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
     public String createPostByBoardName(
         @PathVariable(name = "boardName") String boardName,
         @RequestParam(name = "postId", required = false) Integer postId,
-        Model model) {
+        @AuthenticationPrincipal User user, Model model) {
 
         if (postId == null) {
             model.addAttribute("post", new Post().toResponse());
         }
         else {
-            log.debug(String.valueOf(postService.findById(postId).toResponse().getPostId()));
-            model.addAttribute("post", postService.findById(postId).toResponse());
+            try {
+                model.addAttribute("post", postService.findById(postId, user.getId(), "false").toResponse());
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
+            } catch (AccessDeniedException e) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Tier " + e.getReason() + " 이상만 접근이 가능한 게시물 입니다.");
+            }
         }
 
         model.addAttribute("postRequest", new PostRequest());

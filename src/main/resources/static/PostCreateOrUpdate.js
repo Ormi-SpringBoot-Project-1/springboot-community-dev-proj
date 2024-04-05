@@ -20,11 +20,13 @@ function createPost() {
     processData: false,
     contentType: false,
     statusCode: {
-      201: (response) => {
-        alert(response);
+      201: () => {
+        alert("게시글이 성공적으로 등록되었습니다.")
         history.back();
       },
-      404: (response) => { alert(response);}
+      404: () => {
+        alert("게시글 등록에 실패했습니다.")
+      }
     }
   })
 }
@@ -39,10 +41,16 @@ function updatePost() {
     contentType: false,
     statusCode: {
       200: (response) => {
-        alert(response);
+        console.log(response);
+        alert("게시글이 성공적으로 수정되었습니다.")
         history.back();
       },
-      404: (response) => { alert(response);}
+      404: () => {
+        alert("게시글 수정에 실패했습니다.");
+      },
+      500: () => {
+        alert("게시글 수정에 실패했습니다.");
+      }
     }
-  });
+  })
 }

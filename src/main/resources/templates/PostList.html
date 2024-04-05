@@ -33,12 +33,14 @@
                     <td colspan="5">게시글이 없습니다.</td>
                 </tr>
                 <tr th:if="${not #lists.isEmpty(postList)}" th:each="post, stat : ${postList}" th:onclick="|viewPost('__${post.postId}__', '__${boardName}__')|">
-                    <td th:text="${post.author}">작성자</td>
-                    <td th:text="${post.title}">제목</td>
-                    <td th:text="${post.comments}">댓글</td>
-                    <td th:if="${not #strings.isEmpty(post.updatedAt)}">[[${#temporals.format(post.updatedAt, 'yyyy.MM.dd HH:mm')}]] (수정됨)</td>
-                    <td th:if="${#strings.isEmpty(post.updatedAt)}" th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd HH:mm')}">작성일</td>
-                    <td th:text="${post.views}">조회수</td>
+                    <a>
+                        <td th:text="${post.author}">작성자</td>
+                        <td th:text="${post.title}">제목</td>
+                        <td th:text="${post.comments}">댓글</td>
+                        <td th:if="${not #strings.isEmpty(post.updatedAt)}">[[${#temporals.format(post.updatedAt, 'yyyy.MM.dd HH:mm')}]] (수정됨)</td>
+                        <td th:if="${#strings.isEmpty(post.updatedAt)}" th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd HH:mm')}">작성일</td>
+                        <td th:text="${post.views}">조회수</td>
+                    </a>
                 </tr>
             </tbody>
         </table>
@@ -52,7 +54,7 @@
 
     <section class="page">
         <ul th:with="orderby = (__${request.getParameter('orderby')}__ == null ? 'postId' : __${request.getParameter('orderby')}__),
-               sort = (__${request.getParameter('sort')}__ == null ? 'asc' : __${request.getParameter('sort')}__)">
+               sort = (__${request.getParameter('sort')}__ == null ? 'desc' : __${request.getParameter('sort')}__)">
             <li th:each="page : ${#numbers.sequence(__${currentStartPage}__, __${currentLastPage}__)}">
                 <a th:href="@{__${request.getRequestURL()}__?page=__${page}__&orderby=__${orderby}__&sort=__${sort}__}" th:text="__${page}__"></a>
             </li>

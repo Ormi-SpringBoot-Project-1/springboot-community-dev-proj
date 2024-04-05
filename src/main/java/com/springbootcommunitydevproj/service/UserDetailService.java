@@ -22,16 +22,19 @@ public class UserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .accountExpired(!user.isAccountNonExpired())
-                .accountLocked(!user.isAccountNonLocked())
-                .credentialsExpired(!user.isCredentialsNonExpired())
-                .disabled(!user.isEnabled())
-                .build();
+        // ToDo: 우선 주석 처리 -> 이후 이 UserDetails에 따라 Service 로직을 변경해야 함
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
+//        return org.springframework.security.core.userdetails.User.builder()
+//                .username(user.getEmail())
+//                .password(user.getPassword())
+//                .accountExpired(!user.isAccountNonExpired())
+//                .accountLocked(!user.isAccountNonLocked())
+//                .credentialsExpired(!user.isCredentialsNonExpired())
+//                .disabled(!user.isEnabled())
+//                .build();
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
     }
 
     public boolean login(String email, String password){
