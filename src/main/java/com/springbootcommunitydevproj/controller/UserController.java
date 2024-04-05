@@ -1,10 +1,12 @@
 package com.springbootcommunitydevproj.controller;
 
 import com.springbootcommunitydevproj.dto.UserRequest;
+import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -66,8 +68,8 @@ public class UserController {
     }
 
     @PostMapping("/updateInfo")
-    public String updateInfo( @RequestParam("password") String password, Authentication authentication){
-        String email = authentication.getName();
+    public String updateInfo( @RequestParam("password") String password, @AuthenticationPrincipal User user){
+        String email = user.getEmail();
         String changePassword = encoder.encode(password);
         userService.updateProfile(email,changePassword);
         return "redirect:/myInformation";

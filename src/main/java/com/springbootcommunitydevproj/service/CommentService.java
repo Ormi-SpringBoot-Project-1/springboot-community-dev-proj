@@ -13,8 +13,8 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public List<Comment> findCommentsByBoardId(String BoardId){
-        return commentRepository.findAllByPostOrderByCreatedDesc(BoardId);
+    public List<Comment> findCommentsByBoardId(Integer postId){
+        return commentRepository.findAllByPostIdOrderByCreatedAtDesc(postId);
     }
 
     public void saveComment(Comment comment){

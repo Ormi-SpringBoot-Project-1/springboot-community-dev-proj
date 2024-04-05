@@ -14,8 +14,8 @@
     <div class="card">
         <div class="card-header">
             <h5 class="card-title" th:text="${post.title}"></h5>
-            <p> <span class="card-text" th:text="'작성자 : ' + ${post.user.nickname}"></span>
-                <span class="card-text" th:text="'등급 : ' + ${post.user.level.getLevelName()}"></span>
+            <p> <span class="card-text" th:text="'작성자 : ' + ${post.authorNickname}"></span>
+                <span class="card-text" th:text="'등급 : ' + ${post.authorLevelName}"></span>
                 <span class="card-text" th:if="${post.updatedAt}" th:text="'작성일 : ' + ${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm:ss')} + '(수정됨)'"></span>
                 <span class="card-text" th:unless="${post.updatedAt}" th:text="'작성일 : ' +${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
             </p>
@@ -24,7 +24,7 @@
             <p class="card-text" th:text="${post.content}"></p>
         </div>
     </div>
-    <section th:if="${user.id} == ${post.user.id}">
+    <section th:if="${user.id} == ${post.authorId}">
         <button type="button" id="modify-btn" th:onclick="|location.href='@{/posts/{boardName}/newPost?postId={postId}(postId = ${post.postId}, boardName = ${boardName})}'|"
                 class="btn btn-primary btn-sm">수정
         </button>

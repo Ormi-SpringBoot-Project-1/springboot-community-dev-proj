@@ -41,7 +41,7 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         @RequestParam(name = "search", required = false) String search,
         @RequestParam(name = "page", defaultValue = "1") Integer page,
         @RequestParam(name = "orderby", defaultValue = "postId") String orderBy,
-        @RequestParam(name = "sort", defaultValue = "asc") String ascOrDesc,
+        @RequestParam(name = "sort", defaultValue = "desc") String ascOrDesc,
         Model model, HttpServletRequest request) {
 
         List<PostListDto> postList = postService.getPostListByBoardName(boardName, search, page, orderBy, ascOrDesc);
@@ -61,7 +61,7 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         @PathVariable(name = "boardName") String boardName,
         @RequestParam(name = "page", defaultValue = "1") Integer page,
         @RequestParam(name = "orderby", defaultValue = "postId") String orderBy,
-        @RequestParam(name = "sort", defaultValue = "asc") String ascOrDesc,
+        @RequestParam(name = "sort", defaultValue = "desc") String ascOrDesc,
         @AuthenticationPrincipal User user,
         Model model, HttpServletRequest request) {
 

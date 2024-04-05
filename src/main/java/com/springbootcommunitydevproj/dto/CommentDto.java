@@ -6,6 +6,7 @@ import com.springbootcommunitydevproj.model.Post;
 import java.time.LocalDateTime;
 
 public class CommentDto {
+
     private Integer comment_id;
     private Post post;
     private String commentContents;
@@ -15,12 +16,9 @@ public class CommentDto {
     public static CommentDto toCommentDto(Comment comment, Long postId) {
         CommentDto commentDto = new CommentDto();
         commentDto.setId(comment.getId());
-        commentDto.setCommentWriter(comment.getCommentWriter());
-        commentDto.setCommentContents(comment.getCommentContents());
-        commentDto.setCommentCreatedTime(comment.getCreatedTime());
-        commentDto.setBoardId(postId);
         return commentDto;
-}
+    }
 
     private void setId(Integer id) {
     }
+}

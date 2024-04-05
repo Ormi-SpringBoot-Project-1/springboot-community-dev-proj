@@ -15,26 +15,24 @@ import java.time.LocalDateTime;
 @Builder
 public class PostResponse {
     private Integer postId;
-    private Board board;
-    private User user;
+    private Integer authorId;
+    private String authorNickname;
+    private String authorLevelName;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer views;
-    private Integer likes;
-    private Integer dislikes;
-    private PostAuthority authority;
 
     public PostResponse(Post post) {
         postId = post.getId();
-        board = post.getBoard();
-        user = post.getUser();
+        authorId = post.getUser().getId();
+        authorNickname = post.getUser().getNickname();
+        authorLevelName = post.getUser().getLevel().getLevelName();
         title = post.getTitle();
         content = post.getContent();
         createdAt = post.getCreatedAt();
         updatedAt = post.getUpdatedAt();
         views = post.getViews();
-        authority = post.getAuthority();
     }
 }

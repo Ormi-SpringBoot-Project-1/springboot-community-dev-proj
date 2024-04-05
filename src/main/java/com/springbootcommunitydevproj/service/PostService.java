@@ -163,7 +163,7 @@ public class PostService {
      *      쿼리로 검색할 수 있게 boardName을 DB에 저장된 값으로 매칭시키는 메소드입니다. <br>
      *      DB에 지정한 값이 아닌 다른 값이 오면 "자유 게시판"으로 매핑됩니다.
      */
-    public String validateBoardName(String boardName) {
+    private String validateBoardName(String boardName) {
         if (!(boardName.equals("자유 게시판") || boardName.equals("공지 사항")
             || boardName.equals("그룹 모집 게시판") || boardName.equals("평가 게시판") || boardName.equals("정보 공유 게시판"))) {
             boardName = "자유 게시판";
@@ -177,10 +177,10 @@ public class PostService {
      */
     private PageRequest setPageRequest(Integer page, String orderBy, String sort) {
         if (!(orderBy.equals("postId") || orderBy.equals("author")
-            || orderBy.equals("date") || orderBy.equals("views") || orderBy.equals("likes")
-            || sort.equals("asc") || sort.equals("desc"))
-            || page < 0) {
-            return PageRequest.of(0, 10, Direction.ASC, "postId");
+            || orderBy.equals("createdAt") || orderBy.equals("views")
+            || sort.equals("asc") || sort.equals("desc")
+            || page < 0)) {
+            return PageRequest.of(0, 10, Direction.DESC, "postId");
         }
 
         if (sort.equals("asc")) {

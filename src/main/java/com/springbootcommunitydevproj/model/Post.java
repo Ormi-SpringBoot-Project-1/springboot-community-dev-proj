@@ -20,56 +20,57 @@ import org.springframework.data.jpa.repository.Modifying;
 @AllArgsConstructor
 @DynamicInsert
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="post_id", updatable = false)
+    @Column(name = "post_id", updatable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="board_id", nullable = false)
+    @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name="title", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name="content", nullable = false)
+    @Column(name = "content", nullable = false)
     private String content;
 
     @CreatedDate
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name="views")
+    @Column(name = "views")
     @ColumnDefault("0")
     private Integer views;
 
-    @Column(name="post_file_count", columnDefinition = "TINYINT")
+    @Column(name = "post_file_count", columnDefinition = "TINYINT")
     @ColumnDefault("0")
     private Integer postFileCount;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="auth_id")
+    @JoinColumn(name = "auth_id")
     private PostAuthority authority;
 
     public PostResponse toResponse() {
         return PostResponse.builder()
-                .postId(id)
-                .board(board)
-                .user(user)
-                .title(title)
-                .content(content)
-                .createdAt(createdAt)
-                .updatedAt(updatedAt)
-                .views(views)
-                .authority(authority)
-                .build();
+            .postId(id)
+            .authorId(user.getId())
+            .authorNickname(user.getNickname())
+            .authorLevelName(user.getLevel().getLevelName())
+            .title(title)
+            .content(content)
+            .createdAt(createdAt)
+            .updatedAt(updatedAt)
+            .views(views)
+            .build();
     }
 
     public Post updateViews() {

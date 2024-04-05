@@ -1,0 +1,102 @@
+[
+  {
+    "postId": 53,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 10",
+    "createdAt": "2024-04-04 14:34:35",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 52,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 9",
+    "createdAt": "2024-04-04 14:34:25",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 51,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 8",
+    "createdAt": "2024-04-04 14:34:16",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 50,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 7",
+    "createdAt": "2024-04-04 14:34:04",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 49,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 6",
+    "createdAt": "2024-04-04 14:33:53",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 48,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 5",
+    "createdAt": "2024-04-04 14:33:44",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 47,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 4",
+    "createdAt": "2024-04-04 14:33:35",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 46,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 3",
+    "createdAt": "2024-04-04 14:33:25",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 45,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 2",
+    "createdAt": "2024-04-04 14:33:13",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  },
+  {
+    "postId": 44,
+    "title": "일반 회원 평가 게시판 테스트 글 작성 1",
+    "createdAt": "2024-04-04 14:33:03",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 3
+  }
+]

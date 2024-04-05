@@ -1,0 +1,102 @@
+[
+  {
+    "postId": 33,
+    "title": "어드민 테스트 공지 사항 작성 10",
+    "createdAt": "2024-04-04 14:21:39",
+    "updatedAt": null,
+    "views": 2,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 32,
+    "title": "어드민 테스트 공지 사항 작성 9",
+    "createdAt": "2024-04-04 14:21:27",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 31,
+    "title": "어드민 테스트 공지 사항 작성 8",
+    "createdAt": "2024-04-04 14:21:18",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 30,
+    "title": "어드민 테스트 공지 사항 작성 7",
+    "createdAt": "2024-04-04 14:21:08",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 29,
+    "title": "어드민 테스트 공지 사항 작성 6",
+    "createdAt": "2024-04-04 14:21:00",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 28,
+    "title": "어드민 테스트 공지 사항 작성 5",
+    "createdAt": "2024-04-04 14:20:47",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 27,
+    "title": "어드민 테스트 공지 사항 작성 4",
+    "createdAt": "2024-04-04 14:20:36",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 26,
+    "title": "어드민 테스트 공지 사항 작성 3",
+    "createdAt": "2024-04-04 14:20:14",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 25,
+    "title": "어드민 테스트 공지 사항 작성 2",
+    "createdAt": "2024-04-04 14:20:05",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 24,
+    "title": "어드민 테스트 공지 사항 작성 1",
+    "createdAt": "2024-04-04 14:19:56",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Admin",
+    "comments": 0,
+    "accessLevel": 5
+  }
+]

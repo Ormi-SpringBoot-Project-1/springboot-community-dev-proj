@@ -30,7 +30,7 @@ public class UserRequest {
     private String userIp;
     private String lastLoginIp;
     @NotBlank(message = "phoneNumber is mandatory")
-    private String phoneNumber;
+    private String phoneNum;
 
     // 테스트용 생성자
     public UserRequest(Integer userId) {

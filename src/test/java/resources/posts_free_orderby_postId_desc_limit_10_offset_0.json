@@ -1,0 +1,102 @@
+[
+  {
+    "postId": 43,
+    "title": "일반 회원 테스트 글 작성 10",
+    "createdAt": "2024-04-04 14:29:30",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 42,
+    "title": "일반 회원 테스트 글 작성 9",
+    "createdAt": "2024-04-04 14:29:20",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 41,
+    "title": "일반 회원 테스트 글 작성 8",
+    "createdAt": "2024-04-04 14:29:12",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 40,
+    "title": "일반 회원 테스트 글 작성 7",
+    "createdAt": "2024-04-04 14:29:03",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 39,
+    "title": "일반 회원 테스트 글 작성 6",
+    "createdAt": "2024-04-04 14:28:55",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 38,
+    "title": "일반 회원 테스트 글 작성 5",
+    "createdAt": "2024-04-04 14:28:43",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 37,
+    "title": "일반 회원 테스트 글 작성 4",
+    "createdAt": "2024-04-04 14:28:34",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 36,
+    "title": "일반 회원 테스트 글 작성 3",
+    "createdAt": "2024-04-04 14:28:25",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 35,
+    "title": "일반 회원 테스트 글 작성 2",
+    "createdAt": "2024-04-04 14:28:16",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  },
+  {
+    "postId": 34,
+    "title": "일반 회원 테스트 글 작성 1",
+    "createdAt": "2024-04-04 14:27:53",
+    "updatedAt": null,
+    "views": 0,
+    "author": "Test User",
+    "comments": 0,
+    "accessLevel": 5
+  }
+]
