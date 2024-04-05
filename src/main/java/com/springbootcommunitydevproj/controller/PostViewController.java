@@ -7,6 +7,7 @@ import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.service.BoardService;
 import com.springbootcommunitydevproj.service.PostService;
 import java.nio.file.AccessDeniedException;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,14 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
     private final PostService postService;
 
     /**
+     *      루트 URL은 자유 게시판으로 리다이렉트 시킵니다.
+     */
+    @GetMapping("/")
+    public String root() {
+        return "redirect:/posts/free";
+    }
+
+    /**
      *      boardName의 게시글 목록을 반환합니다. <br>
      *      page로 목록의 페이지 수를, orderby로 정렬 기준을, sort로 정렬 방식을 결정합니다. <br>
      *      search로 게시글 제목을 기준으로 검색할 수 있습니다. <br>
@@ -42,10 +51,15 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         @RequestParam(name = "page", defaultValue = "1") Integer page,
         @RequestParam(name = "orderby", defaultValue = "postId") String orderBy,
         @RequestParam(name = "sort", defaultValue = "desc") String ascOrDesc,
+        @AuthenticationPrincipal User user,
         Model model, HttpServletRequest request) {
 
+        // boardName이 영문이라면 한글로 변환합니다.
+        boardName = convertBoardNameToKorean(boardName);
+
         List<PostListDto> postList = postService.getPostListByBoardName(boardName, search, page, orderBy, ascOrDesc);
-        setModelAndView(postList, page, boardName, request, model);
+        int totalPages = postService.getPostPages(boardName, null, search);
+        setModelAndView(postList, totalPages, user, page, boardName, search, request, model);
 
         return "PostList";
     }
@@ -65,8 +79,12 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         @AuthenticationPrincipal User user,
         Model model, HttpServletRequest request) {
 
+        // boardName이 영문이라면 한글로 변환합니다.
+        boardName = convertBoardNameToKorean(boardName);
+
         List<PostListDto> myPostList = postService.getPostListByUserId(boardName, user.getId(), page, orderBy, ascOrDesc);
-        setModelAndView(myPostList, page, boardName, request, model);
+        int totalPages = postService.getPostPages(boardName, user.getId(), null);
+        setModelAndView(myPostList, totalPages, user, page, boardName, null, request, model);
 
         return "PostList";
     }
@@ -79,12 +97,17 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         @RequestParam(name = "duplicate", defaultValue = "false", required = false) String duplicate,
         @AuthenticationPrincipal User user, Model model) {
 
+        // boardName이 영문이라면 한글로 변환합니다.
+        boardName = convertBoardNameToKorean(boardName);
+
         try {
             Post post = postService.findById(id, user.getId(), duplicate);
 
             model.addAttribute("post", post.toResponse());
             model.addAttribute("boardName", boardName);
-            model.addAttribute("user", user);
+            model.addAttribute("userId", user.getId());
+            model.addAttribute("userNickname", user.getNickname());
+            model.addAttribute("userLevelName", user.getLevel().getLevelName());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
         } catch (AccessDeniedException e) {
@@ -120,27 +143,36 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         }
 
         model.addAttribute("postRequest", new PostRequest());
+        model.addAttribute("userNickname", user.getNickname());
+        model.addAttribute("userLevelName", user.getLevel().getLevelName());
 
         return "PostCreateOrUpdate";
     }
 
     /**
      *      View Resolver에게 보낼 Model을 세팅하는 메소드입니다. <br>
-     *      페이지에 보여질 쿼리 결과 회원 목록, 목록 페이지, 게시판 이름, HttpServletRequest 객체와 Model 객체를 파라메터로 받습니다.
+     *      페이지에 보여질 쿼리 결과 회원 목록, 현재 접속한 회원 정보, 목록 페이지, 게시판 이름, (선택 사항) 검색어, HttpServletRequest 객체와 Model 객체를 파라메터로 받습니다.
      */
-    private <T extends PostListDto> void setModelAndView(List<T> postList, Integer page, String boardName, HttpServletRequest request, Model model) {
-        int totalPages = postService.getPostPages(boardName);
+    private <T extends PostListDto> void setModelAndView(List<T> postList, Integer totalPages, User user,  Integer page, String boardName, String search, HttpServletRequest request, Model model) {
         int currentStartPage = 1;
 
         if (Math.ceil((double) page / 10) > 1) {
-            currentStartPage = (int) Math.ceil((double) page / 10) * 10;
+            // 현재 사용자가 보고 있는 페이지가 11 페이지 이상 20 페이지 이하 라면 화면 하단 시작 페이징은 11부터 시작,
+            // 21 페이지 이상 30 페이지 이하 라면 시작 페이징은 21부터 시작, .....
+            currentStartPage = ((int) Math.ceil((double) page / 10) * 10) - 9;
         }
 
         model.addAttribute("postList", postList);
         model.addAttribute("boardName", boardName);
         model.addAttribute("currentStartPage", currentStartPage);
+        model.addAttribute("userNickname", user.getNickname());
+        model.addAttribute("userLevelName", user.getLevel().getLevelName());
+        model.addAttribute("search", search);
 
-        if (totalPages - currentStartPage < 10) {
+        if (totalPages == 0) {
+            model.addAttribute("currentLastPage", 1);
+        }
+        else if (totalPages - currentStartPage < 10) {
             model.addAttribute("currentLastPage", totalPages);
         }
         else {
@@ -148,5 +180,24 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         }
 
         model.addAttribute("request", request);
+    }
+
+    /**
+     *      영어로 된 boardName을 한글로 변환하는 메소드입니다. <br>
+     *      지정된 boardName이 아닌 경우, '자유 게시판'으로 변환됩니다.
+     */
+    private String convertBoardNameToKorean(String boardName) {
+        // 한글이면 그대로 반환
+        if (!Pattern.matches("[a-zA-Z]*" , boardName)) {
+            return boardName;
+        }
+
+        switch (boardName) {
+            case "attention" -> {return "공지 사항";}
+            case "recruit" -> {return "그룹 모집 게시판";}
+            case "evaluation" -> {return "평가 게시판";}
+            case "share" -> {return "정보 공유 게시판";}
+            default -> {return "자유 게시판";}
+        }
     }
 }
