@@ -6,10 +6,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <section>
-        <input type="text" placeholder="검색어를 입력해주세요" class="search-post">
-        <button class="search-post-btn" th:onclick="searchPost()">게시글 검색</button>
-    </section>
+    <aside class="my-info">
+        <div class="user-nickname" th:text="|회원 닉네임: ${userNickname}|"></div>
+        <div class="user-level-name" th:text="|회원 등급: ${userLevelName}|"></div>
+        <button class="logout-btn" th:onclick="logout()">로그 아웃</button>
+        <button class="account-delete-btn" th:if="${!#authorization.expression('hasAuthority(''Admin'')')}" th:onclick="accountDelete()">회원 탈퇴</button>
+        <button class="account-delete-btn" th:if="${#authorization.expression('hasAuthority(''Admin'')')}" th:onclick="goToUserManagement()">회원 관리</button>
+    </aside>
     <aside class="select-board">
         <div class="free-board" th:onclick="moveBoard('자유 게시판')">자유 게시판</div>
         <div class="attention-board" th:onclick="moveBoard('공지 사항')">공지 사항</div>
@@ -17,6 +20,10 @@
         <div class="evaluation-board" th:onclick="moveBoard('평가 게시판')">평가 게시판</div>
         <div class="share-board" th:onclick="moveBoard('정보 공유 게시판')">정보 공유 게시판</div>
     </aside>
+    <section>
+        <input type="text" placeholder="검색어를 입력해주세요" class="search-post">
+        <button class="search-post-btn" th:onclick="searchPost()">게시글 검색</button>
+    </section>
     <section class="post-table">
         <table>
             <thead>
@@ -56,11 +63,12 @@
         <ul th:with="orderby = (__${request.getParameter('orderby')}__ == null ? 'postId' : __${request.getParameter('orderby')}__),
                sort = (__${request.getParameter('sort')}__ == null ? 'desc' : __${request.getParameter('sort')}__)">
             <li th:each="page : ${#numbers.sequence(__${currentStartPage}__, __${currentLastPage}__)}">
-                <a th:href="@{__${request.getRequestURL()}__?page=__${page}__&orderby=__${orderby}__&sort=__${sort}__}" th:text="__${page}__"></a>
+                <a th:href="@{__${request.getRequestURL()}__?search=__${search == null ? '' : search}__&page=__${page}__&orderby=__${orderby}__&sort=__${sort}__}" th:text="__${page}__"></a>
             </li>
         </ul>
     </section>
 </body>
 <script th:inline="javascript" src="/postList.js"></script>
+<script th:inline="javascript" src="/myInfoFunctions.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </html>

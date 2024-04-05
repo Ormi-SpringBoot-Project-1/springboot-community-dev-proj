@@ -10,6 +10,14 @@
     <h1 class="mb-3">사이트 제목</h1>
 </div>
 
+<aside class="my-info">
+    <div class="user-nickname" th:text="|회원 닉네임: ${userNickname}|"></div>
+    <div class="user-level-name" th:text="|회원 등급: ${userLevelName}|"></div>
+    <button class="logout-btn" th:onclick="logout()">로그 아웃</button>
+    <button class="account-delete-btn" th:if="${!#authorization.expression('hasAuthority(''Admin'')')}" th:onclick="accountDelete()">회원 탈퇴</button>
+    <button class="account-delete-btn" th:if="${#authorization.expression('hasAuthority(''Admin'')')}" th:onclick="goToUserManagement()">회원 관리</button>
+</aside>
+
 <div class="container">
     <div class="card">
         <div class="card-header">
@@ -24,7 +32,7 @@
             <p class="card-text" th:text="${post.content}"></p>
         </div>
     </div>
-    <section th:if="${user.id} == ${post.authorId}">
+    <section th:if="${userId} == ${post.authorId}">
         <button type="button" id="modify-btn" th:onclick="|location.href='@{/posts/{boardName}/newPost?postId={postId}(postId = ${post.postId}, boardName = ${boardName})}'|"
                 class="btn btn-primary btn-sm">수정
         </button>
@@ -38,5 +46,6 @@
 
 </body>
 <script th:inline="javascript" src="/post.js"></script>
+<script th:inline="javascript" src="/myInfoFunctions.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </html>
