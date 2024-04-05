@@ -41,13 +41,14 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<PostListDto> getPostListByUserId(@Param("boardName") String boardName, @Param("userId") Integer userId, Pageable pageable);
 
     /**
-     *      boardName으로 해당 게시판에 등록된 모든 게시글 갯수를 가져옵니다.
+     *      boardName으로 해당 게시판에 등록된 모든 게시글 갯수를 가져옵니다. <br>
+     *      userId, search 파라미터가 존재한다면 각각 userId에 해당하는 회원이 작성한 게시글의 갯수, 게시글 제목 기준 검색 결과 갯수를 가져옵니다.
      */
     @Query(value = "select count(*) "
         + "from post left join board on post.board_id = board.board_id "
-        + "where board.board_name = :boardName"
+        + "where board.board_name = :boardName and (:userId is null or post.user_id = :userId) and (:search is null or post.title like concat('%', :search, '%'))"
         , nativeQuery = true)
-    Integer getCountByBoardName(@Param("boardName") String boardName);
+    Integer getCountByBoardName(@Param("boardName") String boardName, @Param("userId") Integer userId, @Param("search") String search);
 
     /**
      *      DEPRECATED
