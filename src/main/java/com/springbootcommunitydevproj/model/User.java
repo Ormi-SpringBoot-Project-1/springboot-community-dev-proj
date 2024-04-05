@@ -1,19 +1,20 @@
 package com.springbootcommunitydevproj.model;
 
+import com.springbootcommunitydevproj.dto.UserResponse;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,6 +37,7 @@ public class User implements UserDetails {
     @Column(name="email", nullable = false)
     private String email;
 
+    @Setter
     @Column(name="password", nullable = false)
     private String password;
 
@@ -128,5 +130,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserResponse toResponse() {
+        return UserResponse.builder()
+                .Id(id)
+                .nickname(nickname)
+                .email(email)
+                .description(description)
+                .level(level)
+                .reportedCount(reportedCount)
+                .isAdmin(isAdmin)
+                .phoneNumber(phoneNumber)
+                .build();
     }
 }
