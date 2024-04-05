@@ -37,7 +37,7 @@ public class SecurityConfig{
                 // 폼 기반 로그인 페이지는 "/login" URL로 사용
                 // 로그인 성공 시 "/posts/자유 게시판" URL로 이동
                 auth.loginPage("/login")
-                    .defaultSuccessUrl("/posts/자유 게시판"))
+                    .defaultSuccessUrl("/posts/free"))
             .logout(auth ->
                 // 로그 아웃 성공 시 "/login" URL로 이동
                 // 로그 아웃 이후 사용자 Session을 전체 삭제한다.
