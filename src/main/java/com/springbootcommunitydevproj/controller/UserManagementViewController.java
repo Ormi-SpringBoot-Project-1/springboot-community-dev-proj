@@ -1,12 +1,14 @@
 package com.springbootcommunitydevproj.controller;
 
 import com.springbootcommunitydevproj.dto.UserManagementInfoDto;
+import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.service.UserManagementService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +31,11 @@ public class UserManagementViewController {
         @RequestParam(name = "page", defaultValue = "1") Integer page,
         @RequestParam(name = "orderby", defaultValue = "userId") String orderBy,
         @RequestParam(name = "sort", defaultValue = "asc") String ascOrDesc,
+        @AuthenticationPrincipal User user,
         Model model, HttpServletRequest request) {
 
         List<UserManagementInfoDto> userList = userManagementService.getAllUserManagementInfo(page, orderBy, ascOrDesc);
-        setModelAndView(userList, page, request, model);
+        setModelAndView(userList, user, page, request, model);
 
         return "admin-user-manage.html";
     }
@@ -41,11 +44,13 @@ public class UserManagementViewController {
      *      회원의 닉네임을 기준으로 검색한 결과 페이지를 가져옵니다.
      */
     @GetMapping("/admin/user/management/search")
-    public String searchUserByNickname(@RequestParam(name = "nickname") String nickname,
+    public String searchUserByNickname(
+        @RequestParam(name = "nickname") String nickname,
+        @AuthenticationPrincipal User user,
         Model model, HttpServletRequest request) {
 
         List<UserManagementInfoDto> userList = userManagementService.getUserManagementInfoByNickname(nickname);
-        setModelAndView(userList, 1, request, model);
+        setModelAndView(userList, user, 1, request, model);
 
         return "admin-user-manage.html";
     }
@@ -54,7 +59,7 @@ public class UserManagementViewController {
      *      View Resolver에게 보낼 Model을 세팅하는 메소드입니다. <br>
      *      페이지에 보여질 쿼리 결과 회원 목록, 목록 페이지, HttpServletRequest 객체와 Model 객체를 파라메터로 받습니다.
      */
-    private <T extends UserManagementInfoDto> void setModelAndView(List<T> userList, Integer page, HttpServletRequest request, Model model) {
+    private <T extends UserManagementInfoDto> void setModelAndView(List<T> userList, User user, Integer page, HttpServletRequest request, Model model) {
         int totalPages = userManagementService.getUserManagementInfoPages();
         int currentStartPage = 1;
 
@@ -67,6 +72,8 @@ public class UserManagementViewController {
         model.addAttribute("userList", userList);
         model.addAttribute("blockedUserSet", blockedUserSet);
         model.addAttribute("currentStartPage", currentStartPage);
+        model.addAttribute("userNickname", user.getNickname());
+        model.addAttribute("userLevelName", user.getLevel().getLevelName());
 
         if (totalPages - currentStartPage < 10) {
             model.addAttribute("currentLastPage", totalPages);
