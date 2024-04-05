@@ -46,6 +46,7 @@
                         <button type="button" class="btn btn-secondary mt-3" onclick="location.href='/signup'">회원가입</button>
                         <button type="button" class="btn btn-secondary mt-3" onclick="location.href='/findPassword'">비밀번호 찾기</button>
                     </div>
+                    <div th:if="error == 'true'" th:text="${errorMessage}"></div>
                 </div>
             </div>
         </div>
