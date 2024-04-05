@@ -58,4 +58,8 @@ public class UserService {
         user.setPassword(changePassword);
         userRepository.save(user);
     }
+
+    public Optional<User> findUserByPhoneNumber(String phoneNumber){
+        return userRepository.findByPhoneNumber(phoneNumber);
+    }
 }

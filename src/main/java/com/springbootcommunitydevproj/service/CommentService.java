@@ -13,15 +13,15 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public List<Comment> findCommentsByBoardId(Integer postId){
-        return commentRepository.findAllByPostIdOrderByCreatedAtDesc(postId);
+    public List<Comment> findCommentsByBoardId(Integer BoardId){
+        return commentRepository.findAllByPostOrderByCreatedDesc(BoardId);
     }
 
     public void saveComment(Comment comment){
         commentRepository.save(comment);
     }
 
-    public void deleteComment(String commentId) {
+    public void deleteComment(Integer commentId) {
         commentRepository.deleteById(Integer.valueOf(commentId));
     }
 }
