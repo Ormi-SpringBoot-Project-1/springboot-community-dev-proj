@@ -1,5 +1,6 @@
 package com.springbootcommunitydevproj.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
+
+    @Autowired
+    private LoginFailHandler loginFailHandler; // 로그인 실패 핸들러 추가
+
     // 특정 URL에 대해서는 Security 기능 비활성화
     // h2-console과 static 하위 정적 리소스 접근에는 Security 비활성화
     // swagger 접근도 Security 비활성화
@@ -37,7 +42,8 @@ public class SecurityConfig{
                 // 폼 기반 로그인 페이지는 "/login" URL로 사용
                 // 로그인 성공 시 "/posts/자유 게시판" URL로 이동
                 auth.loginPage("/login")
-                    .defaultSuccessUrl("/posts/자유 게시판"))
+                    .defaultSuccessUrl("/posts/자유 게시판")
+                        .failureHandler(LoginFailHandler))
             .logout(auth ->
                 // 로그 아웃 성공 시 "/login" URL로 이동
                 // 로그 아웃 이후 사용자 Session을 전체 삭제한다.

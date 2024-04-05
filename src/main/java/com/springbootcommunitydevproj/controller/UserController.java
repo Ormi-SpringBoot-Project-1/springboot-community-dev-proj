@@ -6,19 +6,19 @@ import com.springbootcommunitydevproj.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+@RestController
 @Controller
 public class UserController {
     // 생성자 주입
@@ -73,5 +73,16 @@ public class UserController {
         String changePassword = encoder.encode(password);
         userService.updateProfile(email,changePassword);
         return "redirect:/myInformation";
+    }
+
+    @GetMapping("/find-email")
+    public ResponseEntity<String> findUserEmailByPhoneNumber(@RequestParam String phoneNumber) {
+        Optional<User> userOptional = userService.findUserByPhoneNumber(phoneNumber);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return ResponseEntity.ok(user.getEmail());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

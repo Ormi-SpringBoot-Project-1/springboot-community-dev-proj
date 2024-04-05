@@ -21,7 +21,7 @@ public class UserDetailService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
         // ToDo: 우선 주석 처리 -> 이후 이 UserDetails에 따라 Service 로직을 변경해야 함
 //        User user = userRepository.findByEmail(email)
 //                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
@@ -33,8 +33,8 @@ public class UserDetailService implements UserDetailsService {
 //                .credentialsExpired(!user.isCredentialsNonExpired())
 //                .disabled(!user.isEnabled())
 //                .build();
-        return userRepository.findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
+        return userRepository.findByPhoneNumber(phoneNumber)
+            .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + phoneNumber));
     }
 
     public boolean login(String email, String password){
