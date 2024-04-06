@@ -21,7 +21,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public void deleteComment(String commentId) {
+    public void deleteComment(Integer commentId) {
         commentRepository.deleteById(Integer.valueOf(commentId));
     }
 }

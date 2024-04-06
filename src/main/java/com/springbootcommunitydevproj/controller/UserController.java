@@ -5,20 +5,21 @@ import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+@Slf4j
 @Controller
 public class UserController {
     // 생성자 주입
@@ -31,16 +32,20 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public String signup(UserRequest request){
-        userService.save(request); // 회원가입(저장)
-        return "redirect:/login"; // 회원가입 처리 후 로그인 페이지로 이동
+    @ResponseBody
+    public ResponseEntity<String> signup(@ModelAttribute UserRequest request){
+        try {
+            userService.save(request); // 회원가입(저장)
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getLocalizedMessage());
+        }
+        return ResponseEntity.ok("회원 가입 성공"); // 회원가입 처리 후 로그인 페이지로 이동
     }
 
-    @PostMapping("/delete-account")
-    public String deleteId(Authentication authentication) {
-        String email = authentication.name();
-        userService.deleteById(email);
-        return "redirect:/logout";
+    @GetMapping("/delete-account")
+    public String deleteId(@AuthenticationPrincipal User user) {
+        userService.deleteById(user.getId());
+        return "redirect:/login";
     }
 
     @GetMapping("/logout")
@@ -73,5 +78,16 @@ public class UserController {
         String changePassword = encoder.encode(password);
         userService.updateProfile(email,changePassword);
         return "redirect:/myInformation";
+    }
+
+    @GetMapping("/find-email")
+    public ResponseEntity<String> findUserEmailByPhoneNumber(@RequestParam String phoneNumber) {
+        Optional<User> userOptional = userService.findUserByPhoneNumber(phoneNumber);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return ResponseEntity.ok(user.getEmail());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

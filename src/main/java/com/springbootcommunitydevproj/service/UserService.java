@@ -1,6 +1,7 @@
 package com.springbootcommunitydevproj.service;
 
 import com.springbootcommunitydevproj.dto.UserRequest;
+import com.springbootcommunitydevproj.model.Level;
 import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.repository.CommentRepository;
 import com.springbootcommunitydevproj.repository.UserRepository;
@@ -21,7 +22,7 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    public User save(UserRequest dto){
+    public User save(UserRequest dto) throws IllegalArgumentException {
 
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
@@ -34,14 +35,15 @@ public class UserService {
                         .email(dto.getEmail())
                         .password(encoder.encode(dto.getPassword()))
                         .nickname(dto.getNickname())
+                        .level(new Level(5, 5, "Tier 5"))
                         .description(dto.getDescription())
                         .phoneNumber(dto.getPhoneNum())
                         .build()
         );
     }
 
-    public void deleteById(String userId){
-        userRepository.deleteById(Integer.valueOf(userId));
+    public void deleteById(Integer userId){
+        userRepository.deleteById(userId);
     }
 
     public boolean existsByEmail(String Email) {
@@ -57,5 +59,9 @@ public class UserService {
         User user = userOptional.get();
         user.setPassword(changePassword);
         userRepository.save(user);
+    }
+
+    public Optional<User> findUserByPhoneNumber(String phoneNumber){
+        return userRepository.findByPhoneNumber(phoneNumber);
     }
 }

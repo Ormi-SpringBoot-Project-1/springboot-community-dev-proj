@@ -102,11 +102,11 @@ class PostServiceTest {
         final Integer shareCount = 1;   // 정보 공유 게시판 총 페이지
 
         // when
-        Integer freeCountResult = postService.getPostPages("자유 게시판");
-        Integer attentionCountResult = postService.getPostPages("공지 사항");
-        Integer recruitCountResult = postService.getPostPages("그룹 모집 게시판");
-        Integer evaluationCountResult = postService.getPostPages("평가 게시판");
-        Integer shareCountResult = postService.getPostPages("정보 공유 게시판");
+        Integer freeCountResult = postService.getPostPages("자유 게시판", null, null);
+        Integer attentionCountResult = postService.getPostPages("공지 사항", null, null);
+        Integer recruitCountResult = postService.getPostPages("그룹 모집 게시판", null, null);
+        Integer evaluationCountResult = postService.getPostPages("평가 게시판", null, null);
+        Integer shareCountResult = postService.getPostPages("정보 공유 게시판", null, null);
 
         // then
         assertThat(freeCountResult).isEqualTo(freeCount);

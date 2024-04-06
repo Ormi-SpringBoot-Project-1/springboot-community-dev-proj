@@ -31,7 +31,7 @@ public class Post {
     private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "title", nullable = false)
@@ -62,9 +62,9 @@ public class Post {
     public PostResponse toResponse() {
         return PostResponse.builder()
             .postId(id)
-            .authorId(user.getId())
-            .authorNickname(user.getNickname())
-            .authorLevelName(user.getLevel().getLevelName())
+            .authorId(user == null ? null : user.getId())
+            .authorNickname(user == null ? null : user.getNickname())
+            .authorLevelName(user == null ? null : user.getLevel().getLevelName())
             .title(title)
             .content(content)
             .createdAt(createdAt)

@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByEmail(String email);  // email로 사용자 정보를 가져옴
 
+    Optional<User> findByPhoneNumber(String phoneNumeber);  // phoneNumber로 사용자 정보를 가져옴
+
     @Query("SELECT COUNT(user) FROM User user")
     Long countAllUsers();
 }

@@ -69,10 +69,10 @@ public class PostService {
     /**
      *      해당 게시판의 총 게시물 페이지 수를 가져옵니다.
      */
-    public Integer getPostPages(String boardName) {
+    public Integer getPostPages(String boardName, Integer userId, String search) {
         boardName = validateBoardName(boardName);
 
-        return (int) Math.ceil((double) postRepository.getCountByBoardName(boardName) / 10);
+        return (int) Math.ceil((double) postRepository.getCountByBoardName(boardName, userId, search) / 10);
     }
 
     // 게시글 저장
