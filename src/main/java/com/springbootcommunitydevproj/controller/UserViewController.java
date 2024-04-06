@@ -1,5 +1,6 @@
 package com.springbootcommunitydevproj.controller;
 
+import com.springbootcommunitydevproj.dto.UserRequest;
 import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -26,12 +27,13 @@ public class UserViewController {
     ) {
         model.addAttribute("error", error);
         model.addAttribute("errorMessage", errorMessage);
-        return "/login";
+        return "login";
     }
 
     @GetMapping("/signup")
-    public String signup(){
-        return "/signup";
+    public String signup(Model model){
+        model.addAttribute("userRequest", new UserRequest());
+        return "signup";
     }
 
     @GetMapping("/main")
