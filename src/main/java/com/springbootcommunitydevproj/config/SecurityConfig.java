@@ -27,7 +27,7 @@ public class SecurityConfig{
                         // 로그인, 회원가입, "/user" URL에 대해서는 모든 요청에 대해 인증 허용
                         // 그 외 요청에 대해서는 인증 절차를 거친다.
                         // get url 테스트 목적으로 추가함.
-                        auth.requestMatchers("/login", "/signup", "/user").permitAll()
+                        auth.requestMatchers("/login", "/signup", "/user", "/findId", "/find-email", "/findPassword").permitAll()
                                 .requestMatchers("/api/admin/**", "/admin/**").hasAuthority("Admin") // 이 API는 Admin만 접근 가능
                                 .requestMatchers("/posts/그룹 모집 게시판").hasAuthority("4")  // 이 API는 4등급 이상만 접근 가능
                                 .requestMatchers("/posts/평가 게시판").hasAuthority("3")  // 이 API는 3등급 이상만 접근 가능
