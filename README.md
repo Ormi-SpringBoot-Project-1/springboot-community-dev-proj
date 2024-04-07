@@ -7,6 +7,16 @@
 * 스터디 그룹 모집의 환경
 * 관리자의 회원 관리
 ### 1.2 기능
+#### 로그인 / 회원 가입 / 로그 아웃 / 회원 탈퇴
+* 로그인 인증을 거치지 않은 사용자는 가장 먼저 로그인 화면으로 이동
+  * 로그인 실패 시 실패했음을 알림
+* 회원 가입 화면으로 들어가면 이메일(아이디), 닉네임, 비밀번호, 전화번호(아이디 찾기 용), 자기 소개를 입력
+  * 이메일, 닉네임, 비밀번호, 전화번호는 필수 입력 사항
+  * 비밀번호는 대소문자 영문 + 숫자 포함 8자리 이상
+  * 이메일, 닉네임이 이미 다른 사용자가 사용중이라면 사용중임을 알림
+  * 비밀번호와 비밀번호 확인까지 일치하면 회원 가입 완료
+* 게시판 위젯으로 사용자 정보와 함께 로그 아웃, 회원 탈퇴 버튼을 제공
+* 회원 탈퇴 시 해당 사용자가 작성한 게시글의 작성자 정보는 null로 표시
 #### 게시판
 * 게시글 목록 조회 기능 (10 단위로 페이징 적용)
 * 각 게시판에 적용된 접근 가능 등급 (회원 등급)에 따른 접근 설정 기능
@@ -39,6 +49,14 @@
   * MySQL 8 (Docker)
 ### 2.2 URL 구조
 #### User Authentication
+| URL             | Method | Function         | Description               | 필수  |
+|-----------------|--------|------------------|---------------------------|-----|
+| /user           | POST   | signup()         | 작성한 폼 내용을 통해 DB에 회원 정보 저장 |     |
+| /delete-account | GET    | deleteId()       | 현재 접속한 사용자의 회원 정보 삭제      | 로그인 |
+| /logout         | GET    | logout()         | 현재 접속한 사용자의 세션 삭제         | 로그인 |
+| /checkUsername  | GET    | checkUsername()  | 회원 가입 시 이메일(아이디) 중복 확인    |     |
+| /checkNickname  | GET    | checkNickname()  | 회원 가입 시 닉네임 중복 확인         |     |
+#### User Authentication View
 | URL     | Method  | Function | HTML File Name | Description |
 |---------|---------|----------|----------------|-------------|
 | /login  | GET     | login()  | login.html     | 로그인 페이지     |
@@ -78,77 +96,103 @@
 ------------
 ## 4. 프로젝트 구조
 ```html
+Windows7 볼륨에 대한 폴더 경로의 목록입니다.
+볼륨 일련 번호는 7092-FC0E입니다.
+C:.
 ├─main
 │  ├─java
 │  │  └─com
 │  │      └─springbootcommunitydevproj
 │  │          │  SpringbootCommunityDevProjApplication.java
-│  │          │  
+│  │          │
 │  │          ├─config
+│  │          │      LoginFailHandler.java
+│  │          │      LogoutListener.java
 │  │          │      SecurityConfig.java
 │  │          │      SwaggerConfig.java
-│  │          │      
+│  │          │
 │  │          ├─controller
+│  │          │      CommentController.java
 │  │          │      PostController.java
 │  │          │      PostViewController.java
-│  │          │      UserAuthController.java
+│  │          │      UserController.java
 │  │          │      UserManagementController.java
 │  │          │      UserManagementViewController.java
-│  │          │      
+│  │          │      UserViewController.java
+│  │          │
 │  │          ├─dto
+│  │          │      ChangePasswordRequest.java
+│  │          │      CommentDto.java
+│  │          │      DeleteUserRequest.java
+│  │          │      MyPage.java
 │  │          │      PostListDto.java
 │  │          │      PostRequest.java
 │  │          │      PostResponse.java
+│  │          │      PostTestDto.java
 │  │          │      UpdatePostRequest.java
 │  │          │      UserManagementInfoDto.java
 │  │          │      UserManagementResponse.java
 │  │          │      UserRequest.java
-│  │          │      
+│  │          │      UserResponse.java
+│  │          │
+│  │          ├─filter
+│  │          │      LoginFilter.java
+│  │          │
 │  │          ├─model
 │  │          │      BlockedUser.java
 │  │          │      Board.java
 │  │          │      BoardAuthority.java
+│  │          │      Comment.java
+│  │          │      CommentLike.java
 │  │          │      Level.java
 │  │          │      Post.java
 │  │          │      PostAuthority.java
 │  │          │      PostLikes.java
 │  │          │      User.java
-│  │          │      
+│  │          │
 │  │          ├─repository
 │  │          │      BlockedUserRepository.java
 │  │          │      BoardAuthorityRepository.java
 │  │          │      BoardRepository.java
+│  │          │      CommentRepository.java
+│  │          │      MypageRepository.java
 │  │          │      PostAuthorityRepository.java
 │  │          │      PostLikesRepository.java
 │  │          │      PostRepository.java
 │  │          │      UserManagementRepository.java
 │  │          │      UserRepository.java
-│  │          │      
+│  │          │
 │  │          ├─service
 │  │          │      BoardService.java
+│  │          │      CommentService.java
 │  │          │      PostService.java
 │  │          │      UserDetailService.java
 │  │          │      UserManagementService.java
-│  │          │      
+│  │          │      UserService.java
+│  │          │
 │  │          └─utils
 │  │                  ResponseMessages.java
-│  │                  
+│  │
 │  └─resources
 │      │  application.yml
-│      │  logback-config.xml
-│      │  Ormi-SpringBoot-ERD-Final.sql
-│      │  
+│      │
 │      ├─static
 │      │      admin-user-management.js
+│      │      findId.js
+│      │      findPassword.js
+│      │      loginFunctions.js
+│      │      myInfoFunctions.js
 │      │      post.js
 │      │      PostCreateOrUpdate.js
 │      │      postList.js
-│      │      
+│      │      signup.js
+│      │
 │      └─templates
 │              admin-user-manage.html
+│              findId.html
+│              findPassword.html
 │              login.html
 │              post.html
-│              PostBoard.html
 │              PostCreateOrUpdate.html
 │              PostList.html
 │              signup.html
@@ -156,16 +200,26 @@
 └─test
     └─java
         └─com
-           ├─springbootcommunitydevproj
-           │    SpringbootCommunityDevProjApplicationTests.java
-           │
-           ├─post
-           │    PostControllerTest.java
-           │    PostServiceTest.java
-           │
-           └─usermanagement
-                UserManagementControllerTest.java
-                UserManagementServiceTest.java
+            └─springbootcommunitydevproj
+              │  SpringbootCommunityDevProjApplicationTests.java
+              │
+              ├─post
+              │      PostControllerTest.java
+              │      PostServiceTest.java
+              │
+              ├─usermanagement
+              |      UserManagementControllerTest.java
+              |      UserManagementServiceTest.java
+              │
+              └─resources
+                     admin_posts_attention_orderby_postId_desc_limit_10_offset_0.json
+                     admin_posts_free_orderby_postId_desc_limit_10_offset_0.json
+                     posts_31_to_36.json
+                     posts_attention_orderby_postId_desc_limit_10_offset_0.json
+                     posts_evaluation_orderby_postId_desc_limit_10_offset_0.json
+                     posts_free_orderby_postId_desc_limit_10_offset_0.json
+                     user_posts_evaluation_orderby_postId_desc_limit_10_offset_0.json
+                     user_posts_free_orderby_postId_desc_limit_10_offset_0.json
 ```
 
 ------------
@@ -180,6 +234,35 @@
 
 ------------
 ## 7. 기능
+### 로그인
+![로그인 화면.jpg](readmeImages/로그인%20화면.jpg) <br>
+_(로그인 화면)_
+* 처음 방문한 사용자는 로그인 화면으로 이동합니다.
+
+
+* 로그인 시 아이디가 이메일 형식에 맞지 않는다면 이메일 형식에 맞지 않는다는 알림을 줍니다.
+
+![로그인 실패 화면.jpg](readmeImages/로그인%20실패%20화면.jpg) <br>
+_(로그인 실패 화면)_
+* 로그인 실패 시 알림을 줍니다.
+### 회원 
+![회원 가입 화면.jpg](readmeImages/회원%20가입%20화면.jpg) <br>
+_(회원 가입 화면)_
+* 회원 가입 시 아이디(이메일), 닉네임, 비밀번호, 비밀번호 확인, 전화번호는 필수 입력 사항입니다.
+
+![회원 가입 이미 사용중인 이메일 화면.jpg](readmeImages/회원%20가입%20이미%20사용중인%20이메일%20화면.jpg) <br>
+_(회원 가입 이미 사용중인 이메일 화면)_
+* 아이디(이메일), 닉네임이 이미 사용중이라면 사용중인 아이디, 닉네임임을 알려줍니다.
+
+
+* 비밀번호는 대소문자 영문 + 숫자 포함 8자리 이상이어야 합니다.
+### 로그 아웃
+* 로그 아웃 시 로그인 화면으로 돌아옵니다.
+### 회원 탈퇴
+* 회원 탈퇴 시 로그인 화면으로 돌아옵니다.
+
+
+* 탈퇴한 회원이 작성한 게시글은 작성자가 null로 표시됩니다.
 ### 게시판
 ![게시판 화면.jpg](readmeImages/게시판%20화면.jpg)<br>
 _(자유 게시판 화면)_
@@ -216,7 +299,7 @@ _(게시글 상세 보기 화면)_ <br>
 
 ![게시글 상세 보기 화면 작성자 본인.jpg](readmeImages/게시글%20상세%20보기%20화면%20작성자%20본인.jpg)<br>
 _(게시글 상세 보기 화면 작성자 본인)_ <br>
-![게시글 쓰기,수정 화면.jpg](readmeImages/게시글%20쓰기,수정%20화면.jpg)<br>
+![게시글 쓰기, 수정 화면.jpg](readmeImages/게시글%20쓰기,%20수정%20화면.jpg)<br>
 _(게시글 쓰기, 수정 화면)_ <br>
 * 해당 게시글이 사용자 본인이 작성한 게시글이라면 수정, 삭제가 가능합니다.
   * 게시글 수정 시 게시글 목록 및 게시글 상세 보기 화면에 표시되는 작성일이 최근 수정 날짜로 바뀝니다.
