@@ -6,6 +6,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ *      회원 관련 Response를 위한 DTO 입니다.
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

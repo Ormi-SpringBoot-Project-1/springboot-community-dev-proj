@@ -12,6 +12,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import org.springframework.data.jpa.repository.Modifying;
 
+/**
+ *      게시글 테이블 Entity
+ */
+
 @Entity
 @Builder
 @Getter

@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+/**
+ *      게시글 좋아에 테이블 Entity
+ */
+
 @Entity
 @Builder
 @NoArgsConstructor

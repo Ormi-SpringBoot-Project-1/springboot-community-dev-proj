@@ -8,6 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ *      회원 관련 Request를 매핑하기 위한 DTO 입니다.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

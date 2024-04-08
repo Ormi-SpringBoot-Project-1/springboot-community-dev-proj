@@ -9,6 +9,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
+/**
+ *      댓글 테이블 Entity
+ */
+
 @Entity
 @Getter
 @Setter

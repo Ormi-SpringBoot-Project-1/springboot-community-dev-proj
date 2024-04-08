@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ *      가입 제한 회원 테이블 Entity
+ */
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

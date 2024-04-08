@@ -4,13 +4,12 @@ import com.springbootcommunitydevproj.dto.PostListDto;
 import com.springbootcommunitydevproj.dto.PostRequest;
 import com.springbootcommunitydevproj.model.Post;
 import com.springbootcommunitydevproj.model.User;
-import com.springbootcommunitydevproj.service.BoardService;
 import com.springbootcommunitydevproj.service.PostService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.nio.file.AccessDeniedException;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,12 +21,10 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
-public class PostViewController { // 전체 게시판, 특정 게시판 화면 목록
+public class PostViewController {
 
-    private final BoardService boardService;
     private final PostService postService;
 
     /**
@@ -89,7 +86,11 @@ public class PostViewController { // 전체 게시판, 특정 게시판 화면 �
         return "PostList";
     }
 
-    // 게시글 조회
+    /**
+     *      boradName 게시판의 게시글들 중 post id에 해당하는 게시글 정보를 가져와 그 페이지를 반환합니다. <br>
+     *      RequestParam인 duplicate는 해당 게시글을 페이지의 JS 메소드에서 두번 요청을 통해 페이지 정보를 받아올 때, 두 번째 요청에서 조회수가 증가하는 것을 방지합니다. <br>
+     *      만약 해당 게시물을 찾지 못했다면 404 Code와 함께 찾지 못했음을 알리는 메시지를, 게시글 공개 등급에 회원 등급이 미치지 못한다면 403 Code와 함께 접근 제한 메시지를 반환합니다.
+     */
     @GetMapping("/posts/{boardName}/{post_id}")
     public String showOnePost(
         @PathVariable(name = "boardName") String boardName,
