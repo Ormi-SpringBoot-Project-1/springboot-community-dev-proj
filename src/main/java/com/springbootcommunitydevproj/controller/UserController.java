@@ -22,15 +22,22 @@ import java.util.Optional;
 @Slf4j
 @Controller
 public class UserController {
-    // 생성자 주입
+    /**
+     * UserService와 PasswordEncoder를 생성자 주입받음
+     */
     private final UserService userService;
     private final PasswordEncoder encoder;
 
+    // 생성자를 통한 의존성 주입
     public UserController(UserService userService, PasswordEncoder encoder){
         this.userService = userService;
         this.encoder = encoder;
     }
 
+    /**
+     * 회원가입 처리를 담당하는 메서드
+     * UserService를 사용하여 회원정보 저장
+     */
     @PostMapping("/user")
     @ResponseBody
     public ResponseEntity<String> signup(@ModelAttribute UserRequest request){
@@ -42,18 +49,32 @@ public class UserController {
         return ResponseEntity.ok("회원 가입 성공"); // 회원가입 처리 후 로그인 페이지로 이동
     }
 
+    /**
+     * 계정 삭제 처리를 담당하는 메서드
+     * UserService를 사용하여 계정 삭제
+     * 로그인 페이지로 리다이렉트
+     */
     @GetMapping("/delete-account")
     public String deleteId(@AuthenticationPrincipal User user) {
         userService.deleteById(user.getId());
         return "redirect:/login";
     }
 
+    /**
+     * 로그아웃 처리를 담당하는 메서드
+     * Spring Security를 사용하여 로그아웃 처리
+     * 로그인 페이지로 리다이렉트
+     */
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
         return "redirect:/login";
     }
 
+    /**
+     * 이메일 중복 체크를 담당하는 메서드
+     * UserService를 사용하여 이메일 중복 확인
+     */
     @GetMapping("/checkUsername")
     @ResponseBody
     public Map<String, Boolean> checkUsername(@RequestParam("email") String Email) {
@@ -63,6 +84,10 @@ public class UserController {
         return response;
     }
 
+    /**
+     * 닉네임 중복 체크를 담당하는 메서드
+     * UserService를 사용하여 닉네임 중복 확인
+     */
     @GetMapping("/checkNickname")
     @ResponseBody
     public Map<String, Boolean> checkNickname(@RequestParam("nickname") String nickname) {
@@ -72,6 +97,12 @@ public class UserController {
         return response;
     }
 
+    /**
+     * 사용장 정보 업데이트를 담당하는 메서드
+     * 입력 받은 비밀번호를 인코딩
+     * UserService를 사용하여 사용자 정보 업데이트
+     * 내 정보 페이지로 리다이렉트
+     */
     @PostMapping("/updateInfo")
     public String updateInfo( @RequestParam("password") String password, @AuthenticationPrincipal User user){
         String email = user.getEmail();
@@ -80,6 +111,12 @@ public class UserController {
         return "redirect:/myInformation";
     }
 
+    /**
+     * 전화번호로 이메일 찾기를 담당하는 메서드
+     * UserService를 사용하여 전화번호로 사용자 정보 조회
+     * 사용자 이메일을 응답
+     * 사용자를 찾지 못한 경우 404 응답
+     */
     @GetMapping("/find-email")
     public ResponseEntity<String> findUserEmailByPhoneNumber(@RequestParam String phoneNumber) {
         Optional<User> userOptional = userService.findUserByPhoneNumber(phoneNumber);
