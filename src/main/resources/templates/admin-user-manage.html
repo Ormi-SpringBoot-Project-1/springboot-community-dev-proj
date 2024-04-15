@@ -94,7 +94,7 @@
       </table>
     </section>
     <section class="page d-flex justify-content-center">
-      <a th:if="${request.getParameter('nickname') != null}" href="http://localhost:8080/admin/user/management">뒤로 가기</a>
+      <a class="btn btn-primary btn-sm" th:if="${request.getParameter('nickname') != null}" href="http://localhost:8080/admin/user/management">뒤로 가기</a>
 
       <ul class="pagination" th:if="${request.getParameter('nickname') == null}"
           th:with="orderby = (__${request.getParameter('orderby')}__ == null ? 'userId' : __${request.getParameter('orderby')}__),
