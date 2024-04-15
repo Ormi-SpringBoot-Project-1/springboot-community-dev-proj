@@ -8,87 +8,113 @@
 </head>
 <body>
 
-<aside class="my-info">
-  <div class="user-nickname" th:text="|회원 닉네임: ${userNickname}|"></div>
-  <div class="user-level-name" th:text="|회원 등급: ${userLevelName}|"></div>
-  <button class="logout-btn" th:onclick="logout()">로그 아웃</button>
-  <button class="account-delete-btn" th:onclick="goToFreeBoard()">자유 게시판</button>
-</aside>
+<section class="vh-100 m-5">
+  <section class="header d-flex justify-content-between mb-5">
+    <div>
+      <h1 class="position-relative">스터디 그룹 모집 커뮤니티</h1>
+      <h2 class="position-relative">회원 관리 페이지</h2>
+    </div>
 
-<section class="search-user">
-  <input type="text" placeholder="닉네임을 입력해주세요" class="search">
-  <button class="search-btn" onclick="searchUser()"> 검색 </button>
-</section>
-<section class="change-orderBy-sort">
-  <select name="정렬기준" class="order-by" onchange="changeOrder(this.value)">
-    <option value="none"> == 정렬 기준 == </option>
-    <option value="userId"> 기본 </option>
-    <option value="nickname"> 닉네임 </option>
-    <option value="level"> 등급 </option>
-    <option value="currentPostCount"> 총 게시글 수 </option>
-  </select>
+    <aside class="my-info alert alert-secondary" style="border-radius: 1rem; width: 300px;">
+      <div class="d-flex align-items-end flex-column mr-3">
+        <div class="user-nickname badge badge-pill badge-success m-1 w-75" style="font-size: medium" th:text="|회원 닉네임: ${userNickname}|">test</div>
+        <div class="user-level-name badge badge-pill badge-info m-1 w-75" style="font-size: medium" th:text="|회원 등급: ${userLevelName}|">test level</div>
+      </div>
+      <div class="d-flex justify-content-around mt-2">
+        <button class="logout-btn btn btn-secondary" th:onclick="logout()">로그 아웃</button>
+        <button class="account-delete-btn btn btn-success" th:onclick="goToFreeBoard()">자유 게시판</button>
+      </div>
+    </aside>
+  </section>
 
-  <select name="정렬방식" class="sort" onchange="changeSort(this.value)">
-    <option value="none"> == 정렬 방식 == </option>
-    <option value="asc"> 오름차순 </option>
-    <option value="desc"> 내림차순 </option>
-  </select>
+  <div class="container-fluid mt-5">
+    <section class="d-flex justify-content-between">
+      <section class="search-user input-group mb-3" style="width: 300px">
+        <input type="text" placeholder="닉네임을 입력해주세요" class="search form-control mr-1" style="border-radius: 5px;">
+        <button class="search-btn btn btn-primary ml-1" onclick="searchUser()"> 검색</button>
+      </section>
+      <section class="change-orderBy-sort d-flex justify-content-around">
+        <select name="정렬기준" class="order-by form-control mr-1" onchange="changeOrder(this.value)">
+          <option value="none"> == 정렬 기준 ==</option>
+          <option value="userId"> 기본</option>
+          <option value="nickname"> 닉네임</option>
+          <option value="level"> 등급</option>
+          <option value="currentPostCount"> 총 게시글 수</option>
+        </select>
+        <select name="정렬방식" class="sort form-control ml-1" onchange="changeSort(this.value)">
+          <option value="none"> == 정렬 방식 ==</option>
+          <option value="asc"> 오름차순</option>
+          <option value="desc"> 내림차순</option>
+        </select>
+      </section>
+    </section>
 
-</section>
-<section class="user-info-table">
-  <table>
-    <thead>
-    <tr>
-      <th>No.</th>
-      <th>닉네임</th>
-      <th>등급</th>
-      <th>총 게시글 수</th>
-      <th>등급 변경</th>
-      <th>가입 제한 설정</th>
-    </tr>
-    </thead>
-    <tbody th:with="currentPage = (__${request.getParameter('page')}__ == null ? 1 : __${request.getParameter('page')}__)">
-      <tr th:if="${#lists.isEmpty(userList)}">
-        <td colspan="6">회원 정보가 존재하지 않습니다.</td>
-      </tr>
-      <tr th:if="${not #lists.isEmpty(userList)}" th:each="user, stat : ${userList}">
-        <td><span th:text="(${currentPage} - 1) * 10 + ${stat.index} + 1"> No. </span></td>
-        <td><span th:text="${user.nickname}"> 닉네임</span></td>
-        <td><span th:text="${user.levelName}"> 등급 </span></td>
-        <td><span th:text="${user.currentPostCount}"> 총 게시글 수 </span></td>
-        <td>
-          <select name="등급" class="select-level" th:onchange="|changeUserLevel('${user.userId}', this.value)|">
-            <option value="none"> == 등급 변경 ==</option>
-            <option value="1"> Tier 1</option>
-            <option value="2"> Tier 2</option>
-            <option value="3"> Tier 3</option>
-            <option value="4"> Tier 4</option>
-            <option value="5"> Tier 5</option>
-          </select>
-        </td>
-        <td>
-          <button class="user-block-btn" th:if="${not #sets.contains(blockedUserSet, user.userId)}"
-                  th:onclick="|setUserBlock('${user.userId}')|"> 가입 제한
-          </button>
-          <button class="user-unblock-btn" th:if="${#sets.contains(blockedUserSet, user.userId)}"
-                  th:onclick="|setUserUnblock('${user.userId}')|"> 가입 제한 해제
-          </button>
-        </td>
-      </tr>
+    <section class="user-info-table">
+      <table class="table table-hover">
+        <thead class="thead-light">
+        <tr>
+          <th>No.</th>
+          <th>닉네임</th>
+          <th>등급</th>
+          <th>총 게시글 수</th>
+          <th>등급 변경</th>
+          <th>가입 제한 설정</th>
+        </tr>
+        </thead>
+        <tbody th:with="currentPage = (__${request.getParameter('page')}__ == null ? 1 : __${request.getParameter('page')}__)">
+        <tr th:if="${#lists.isEmpty(userList)}">
+          <td colspan="6">회원 정보가 존재하지 않습니다.</td>
+        </tr>
+        <tr th:if="${not #lists.isEmpty(userList)}" th:each="user, stat : ${userList}">
+          <td><span th:text="(${currentPage} - 1) * 10 + ${stat.index} + 1"> No. </span></td>
+          <td><span th:text="${user.nickname}"> 닉네임</span></td>
+          <td><span th:text="${user.levelName}"> 등급 </span></td>
+          <td><span th:text="${user.currentPostCount}"> 총 게시글 수 </span></td>
+          <td>
+            <select name="등급" class="select-level form-control form-control-sm mw-100" style="width: 150px;" th:onchange="|changeUserLevel('${user.userId}', this.value)|">
+              <option value="none"> == 등급 변경 ==</option>
+              <option value="1"> Tier 1</option>
+              <option value="2"> Tier 2</option>
+              <option value="3"> Tier 3</option>
+              <option value="4"> Tier 4</option>
+              <option value="5"> Tier 5</option>
+            </select>
+          </td>
+          <td>
+            <button class="user-block-btn btn btn-danger btn-sm" th:if="${not #sets.contains(blockedUserSet, user.userId)}"
+                    th:onclick="|setUserBlock('${user.userId}')|"> 가입 제한
+            </button>
+            <button class="user-unblock-btn btn btn-success btn-sm" th:if="${#sets.contains(blockedUserSet, user.userId)}"
+                    th:onclick="|setUserUnblock('${user.userId}')|"> 가입 제한 해제
+            </button>
+          </td>
+        </tr>
 
-    </tbody>
-  </table>
-</section>
-<section class="page">
-  <a th:if="${request.getParameter('nickname') != null}" href="http://localhost:8080/admin/user/management">뒤로 가기</a>
+        </tbody>
+      </table>
+    </section>
+    <section class="page d-flex justify-content-center">
+      <a th:if="${request.getParameter('nickname') != null}" href="http://localhost:8080/admin/user/management">뒤로 가기</a>
 
-  <ul th:if="${request.getParameter('nickname') == null}"
-      th:with="orderby = (__${request.getParameter('orderby')}__ == null ? 'userId' : __${request.getParameter('orderby')}__),
+      <ul class="pagination" th:if="${request.getParameter('nickname') == null}"
+          th:with="orderby = (__${request.getParameter('orderby')}__ == null ? 'userId' : __${request.getParameter('orderby')}__),
                sort = (__${request.getParameter('sort')}__ == null ? 'asc' : __${request.getParameter('sort')}__)">
-    <li th:each="page : ${#numbers.sequence(__${currentStartPage}__, __${currentLastPage}__)}">
-      <a th:href="@{__${request.getRequestURL()}__?page=__${page}__&orderby=__${orderby}__&sort=__${sort}__}" th:text="__${page}__"></a>
-    </li>
-  </ul>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" th:each="page : ${#numbers.sequence(__${currentStartPage}__, __${currentLastPage}__)}">
+          <a class="page-link" th:href="@{__${request.getRequestURL()}__?page=__${page}__&orderby=__${orderby}__&sort=__${sort}__}" th:text="__${page}__"></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </div>
 </section>
 </body>
 <script th:inline="javascript" src="/admin-user-management.js"></script>
