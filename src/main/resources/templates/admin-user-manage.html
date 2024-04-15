@@ -100,6 +100,7 @@
           th:with="orderby = (__${request.getParameter('orderby')}__ == null ? 'userId' : __${request.getParameter('orderby')}__),
                sort = (__${request.getParameter('sort')}__ == null ? 'asc' : __${request.getParameter('sort')}__)">
         <li class="page-item">
+          <!-- ToDo: 뒤로 가기 버튼 href 링크 연결하기 -->
           <a class="page-link" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
@@ -108,6 +109,7 @@
           <a class="page-link" th:href="@{__${request.getRequestURL()}__?page=__${page}__&orderby=__${orderby}__&sort=__${sort}__}" th:text="__${page}__"></a>
         </li>
         <li class="page-item">
+          <!-- ToDo: 앞으로 가기 버튼 href 링크 연결하기 -->
           <a class="page-link" href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
