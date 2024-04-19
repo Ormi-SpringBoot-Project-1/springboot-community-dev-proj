@@ -75,7 +75,12 @@ public class PostService {
         return (int) Math.ceil((double) postRepository.getCountByBoardName(boardName, userId, search) / 10);
     }
 
-    // 게시글 저장
+    /**
+     *      게시판 이름, 저장할 게시글 내용을 담은 PostRequest 객체, 회원 정보를 통해 DB에 게시글을 저장하는 메소드 입니다. <br>
+     *      먼저, 게시글 접근 권한 정보를 DB에 저장하고 게시글 테이블에 게시글을 저장하기 위해 게시판 정보를 조회합니다. <br>
+     *      그 뒤, PostRequest 객체의 정보를 토대로 게시글을 DB에 저장합니다. <br>
+     *      이때, 게시판 이름이 DB에 저장된 게시판 정보와 다르다면 예외를 발생시키며 Rollback됩니다.
+     */
     @Modifying
     @Transactional
     public Post savePost(String boardName, PostRequest request, User user) throws IllegalArgumentException {
@@ -96,7 +101,12 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    // 상세 게시글 불러오기 api
+    /**
+     *      post id를 통해 해당 게시글에 대한 세부 정보를 반환하는 메소드 입니다. <br>
+     *      이때, user id를 통해 해당 게시글에 접근하려는 회원의 등급과 게시글의 공개 등급을 비교해 게시글 접근 가능 여부를 판단합니다. <br>
+     *      접근 불가능 하다면 예외를 발생시킵니다. <br>
+     *      접근 가능하다면 duplicate가 true인지 false인지 판단해 true일 경우에만 조회수를 1 증가시킵니다.
+     */
     @Transactional
     public Post findById(Integer id, Integer userId, String duplicate) throws IllegalArgumentException, AccessDeniedException {
         Post result = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(POST_ID_NOT_FOUND));
@@ -112,7 +122,11 @@ public class PostService {
         return result;
     }
 
-    // 게시글 수정 api
+    /**
+     *      기존 게시글을 수정하는 메소드입니다. <br>
+     *      게시글 변경 사항을 담은 PostRequest 객체에 내용이 없다면 예외를 발생시킵니다. <br>
+     *      게시글이 성공적으로 수정되었다면 수정 성공 메시지를, 수정 도중 문제가 생겼다면 예외를 발생시킵니다.
+     */
     @Modifying
     @Transactional
     public String update(Integer id, PostRequest updatePost) throws Exception {
@@ -139,7 +153,11 @@ public class PostService {
         }
     }
 
-    // 게시글 삭제 api
+    /**
+     *      post id를 통해 해당 게시글을 삭제하는 메소드 입니다. <br>
+     *      삭제하고자 하는 게시글의 권한 정보와 게시글 정보를 삭제합니다. <br>
+     *      이때, 삭제하고자 하는 게시글이 DB에 존재하지 않으면 예외를 발생시킵니다.
+     */
     @Modifying
     @Transactional
     public void delete(Integer id) {

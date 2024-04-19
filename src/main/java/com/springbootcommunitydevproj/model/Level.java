@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ *      등급 테이블 Entity
+ */
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

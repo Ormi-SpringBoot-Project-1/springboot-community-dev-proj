@@ -3,9 +3,14 @@ package com.springbootcommunitydevproj.controller;
 import com.springbootcommunitydevproj.dto.UserRequest;
 import com.springbootcommunitydevproj.model.User;
 import com.springbootcommunitydevproj.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j
 @Controller
+@Tag(name = "회원 로그인, 회원 가입 관련 컨트롤러")
 public class UserController {
     /**
      * UserService와 PasswordEncoder를 생성자 주입받음
@@ -40,7 +45,12 @@ public class UserController {
      */
     @PostMapping("/user")
     @ResponseBody
-    public ResponseEntity<String> signup(@ModelAttribute UserRequest request){
+    @Operation(summary = "회원 가입", description = "회원 가입할 때 사용하는 API입니다.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "회원 가입 성공", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "443", description = "회원 가입 도중 문제 발생 (이미 사용중인 이메일 혹은 닉네임)", content = @Content(mediaType = "application/json"))
+    })
+    public ResponseEntity<String> signup(@Parameter(name = "회원 가입 폼 데이터", required = true) @ModelAttribute UserRequest request){
         try {
             userService.save(request); // 회원가입(저장)
         } catch (IllegalArgumentException e) {
@@ -77,6 +87,8 @@ public class UserController {
      */
     @GetMapping("/checkUsername")
     @ResponseBody
+    @Operation(summary = "이메일 중복 체크", description = "회원 가입 폼 데이터에서 이메일이 중복된 이메일인지 확인하는 API입니다.")
+    @ApiResponse(responseCode = "200", description = "이메일 중복 체크 결과", content = @Content(mediaType = "application/json"))
     public Map<String, Boolean> checkUsername(@RequestParam("email") String Email) {
         boolean isAvailable = !userService.existsByEmail(Email);
         Map<String, Boolean> response = new HashMap<>();
@@ -90,6 +102,8 @@ public class UserController {
      */
     @GetMapping("/checkNickname")
     @ResponseBody
+    @Operation(summary = "닉네임 중복 체크", description = "회원 가입 폼 데이터에서 닉네임이 중복된 닉네임인지 확인하는 API입니다.")
+    @ApiResponse(responseCode = "200", description = "닉네임 중복 체크 결과", content = @Content(mediaType = "application/json"))
     public Map<String, Boolean> checkNickname(@RequestParam("nickname") String nickname) {
         boolean isAvailable = !userService.existsByNickname(nickname);
         Map<String, Boolean> response = new HashMap<>();

@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ *      회원 테이블 Entity
+ */
+
 @Entity
 @Getter
 @NoArgsConstructor

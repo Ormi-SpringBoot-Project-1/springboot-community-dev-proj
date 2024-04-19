@@ -1,12 +1,13 @@
 package com.springbootcommunitydevproj.dto;
 
-import com.springbootcommunitydevproj.model.Board;
 import com.springbootcommunitydevproj.model.Post;
-import com.springbootcommunitydevproj.model.PostAuthority;
-import com.springbootcommunitydevproj.model.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
+/**
+ *      게시글 정보를 반환하기 위한 DTO 입니다.
+ */
 
 @Getter
 @Setter

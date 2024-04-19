@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ *      게시글 접근 권한 테이블 Entity
+ */
+
 @Entity
 @Getter
 @AllArgsConstructor

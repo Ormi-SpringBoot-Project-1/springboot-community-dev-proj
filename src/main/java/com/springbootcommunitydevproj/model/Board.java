@@ -9,6 +9,10 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ *      게시판 테이블 Entity
+ */
+
 @Entity
 @Getter
 @AllArgsConstructor

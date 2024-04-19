@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ *      게시글 작성, 수정 시 폼 데이터와 매핑을 위한 DTO 입니다.
+ */
+
 @Getter
 @Setter
 @Builder
@@ -13,7 +17,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostRequest {
 
-    // 일단 테스트에 필요한 컬럼들만 작성함. 더 추가 예정.
     private String title;
     private String content;
     private Integer accessLevel;
