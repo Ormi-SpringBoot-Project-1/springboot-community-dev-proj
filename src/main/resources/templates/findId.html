@@ -20,7 +20,7 @@
                         <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
                         <div class="mb-3">
                             <label class="form-label font-weight-bold">전화번호</label>
-                            <input type="tel" class="form-control" name="phoneNumber" placeholder="전화번호를 입력해주세요. (ex.01012345678)" autocomplete="off">
+                            <input type="tel" class="form-control" name="phoneNumber" placeholder="전화번호를 입력해주세요. (ex.01012345678)" autocomplete="off" required>
                         </div>
                         <button type="submit" class="btn btn-primary">아이디 찾기</button>
                     </form>
