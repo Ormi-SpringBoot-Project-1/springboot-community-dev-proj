@@ -17,6 +17,7 @@ jobs:
     permissions:
       contents: read
 
+    # 코드 Build 후 S3 업로드 뒤 Deploy
     steps:
       - uses: actions/checkout@v4
 
