@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [ "develop" ]
 
+# 환경 변수 설정
 env:
   S3_BUCKET_NAME: springboot-community-dev-proj
   AWS_REGION: ap-northeast-2
