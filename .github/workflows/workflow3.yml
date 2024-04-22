@@ -9,6 +9,8 @@ on:
 env:
   S3_BUCKET_NAME: springboot-community-dev-proj
   AWS_REGION: ap-northeast-2
+  CODEDEPLOY_NAME: springboot-community-dev-proj-codedeploy
+  CODEDEPLOY_GROUP: springboot-community-dev-proj-group
 
 jobs:
   build:
