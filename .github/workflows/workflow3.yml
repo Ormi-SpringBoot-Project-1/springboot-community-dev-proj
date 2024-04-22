@@ -1,4 +1,4 @@
-name: Java CI with Gradle and Upload to AWS S3
+name: Java CI with Gradle, Upload to AWS S3 and Deploy
 
 on:
   push:
