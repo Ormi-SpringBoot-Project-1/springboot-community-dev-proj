@@ -1,0 +1,20 @@
+# Code Deploy의 코드 배포 단계 설정
+
+version: 0.0
+os: linux
+files:
+    - source: /
+      destination: /home/ec2-user/action # 배포 파일이 위치할 ec2 서버 내의 디렉토리 경로
+      overwrite: yes
+
+permissions:
+    - object: /
+      pattern: "**"
+      owner: ec2-user
+      group: ec2-user
+
+hooks:
+    ApplicationStart:
+        - location: script/deploy.sh # 코드 배포할 때 개발자가 작성한 각 명령어들이 있는 Shell Script 파일을 참조해 배포한다.
+          timeout: 60
+          runas: ec2-user
