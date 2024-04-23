@@ -29,20 +29,20 @@ function moveBoard(boardName) {
 }
 
 function createPost(boardName) {
-  window.location = ("http://localhost:8080/posts/" + boardName + "/newPost");
+  window.location = (window.location.origin + "/posts/" + boardName + "/newPost");
 }
 
 function viewMyPost(boardName) {
-  window.location = ("http://localhost:8080/posts/" + boardName + "/myPost");
+  window.location = (window.location.origin + "/posts/" + boardName + "/myPost");
 }
 
 function viewPost(postId, boardName) {
   $.ajax({
         type: "get",
-        url: "http://localhost:8080/posts/" + boardName + "/" + postId + "?message=true"
+        url: window.location.origin + "/posts/" + boardName + "/" + postId + "?message=true"
       }
   ).done(function (data, textStatus, xhr) {
-    window.location = ("http://localhost:8080/posts/" + boardName + "/" + postId + "?duplicate=true");
+    window.location = (window.location.origin + "/posts/" + boardName + "/" + postId + "?duplicate=true");
   })
   .fail(function (data, textStatus, xhr) {
     alert(data.responseJSON.message);

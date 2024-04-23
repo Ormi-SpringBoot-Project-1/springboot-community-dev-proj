@@ -2,7 +2,7 @@ function deletePost(postId) {
   if(confirm("게시글을 삭제하시겠습니까?")) {
     $.ajax({
       type: "delete",
-      url: "http://localhost:8080/api/post/" + postId,
+      url: window.location.origin + "/api/post/" + postId,
       statusCode: {
         200 : () => {
           alert("게시글이 성공적으로 삭제되었습니다.");

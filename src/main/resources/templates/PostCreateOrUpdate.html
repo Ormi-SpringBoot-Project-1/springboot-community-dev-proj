@@ -23,7 +23,7 @@
     <div class="share-board" th:onclick="moveBoard('정보 공유 게시판')">정보 공유 게시판</div>
   </aside>
 
-  <article class="set-post" th:with="api = (${post.postId} == null ? 'http://localhost:8080/api/post/' + ${boardName} : 'http://localhost:8080/api/post/' + ${post.postId})">
+  <article class="set-post" th:with="api = (${post.postId} == null ? '/api/post/' + ${boardName} : '/api/post/' + ${post.postId})">
     <form class="send-post-info" th:value="${post.postId}" th:action="${api}" th:object="${postRequest}" accept-charset="utf-8">
       <input type="hidden" id="article-id" th:value="${post.postId}">
 
