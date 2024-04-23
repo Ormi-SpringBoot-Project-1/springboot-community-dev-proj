@@ -11,7 +11,7 @@ function setUserBlock(userId) {
 
   $.ajax({
     type: "post",
-    url: "http://localhost:8080/api/admin/user/blocked",
+    url: window.location.origin + "/api/admin/user/blocked",
     headers: {
       "Content-Type": "application/json; charset=utf-8"
     },
@@ -35,7 +35,7 @@ function setUserUnblock(userId) {
 
   $.ajax({
     type: "delete",
-    url: "http://localhost:8080/api/admin/user/unblocked",
+    url: window.location.origin + "/api/admin/user/unblocked",
     headers: {
       "Content-Type": "application/json; charset=utf-8"
     },
@@ -60,7 +60,7 @@ function changeUserLevel(userId, select) {
 
   $.ajax({
     type: "put",
-    url: "http://localhost:8080/api/admin/user/level",
+    url: window.location.origin + "/api/admin/user/level",
     headers: {
       "Content-Type": "application/json; charset=utf-8"
     },
@@ -85,13 +85,13 @@ function searchUser() {
     return;
   }
 
-  window.location = ("http://localhost:8080/admin/user/management/search?nickname=" + nickname);
+  window.location = (window.location.origin + "/admin/user/management/search?nickname=" + nickname);
 }
 
 function changeOrder(order) {
-  window.location = ("http://localhost:8080/admin/user/management?page" + page + "&orderby=" + order + "&sort=" + sort);
+  window.location = (window.location.origin + "/admin/user/management?page" + page + "&orderby=" + order + "&sort=" + sort);
 }
 
 function changeSort(sort) {
-  window.location = ("http://localhost:8080/admin/user/management?page" + page + "&orderby=" + orderBy + "&sort=" + sort);
+  window.location = (window.location.origin + "/admin/user/management?page" + page + "&orderby=" + orderBy + "&sort=" + sort);
 }
