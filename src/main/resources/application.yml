@@ -1,47 +1,16 @@
-#spring:
-#    application:
-#        name: springboot-community-dev-proj
-#    profiles:
-#        active: dev
-#    jpa:
-#        hibernate:
-#            ddl-auto: update
-#        defer-datasource-initialization: true
-#        properties:
-#            hibernate:
-#                dialect: org.hibernate.dialect.H2Dialect
-#                format_sql: true
-#        generate-ddl: false
-#        show-sql: true
-#        database-platform: org.hibernate.dialect.H2Dialect
-#    datasource:
-#        hikari:
-#            driver-class-name: org.h2.Driver
-#            jdbc-url: jdbc:h2:mem:testDB
-#            username: sa
-#            password:
-#            pool-name: H2Pool
-#            minimum-idle: 1
-#            maximum-pool-size: 5
-#            connection-timeout: 10000
-#            validation-timeout: 5000
-#            idle-timeout: 600000
-#    h2:
-#        console:
-#            enabled: true
-#            path: /h2-console
-#    sql:
-#        init:
-#            encoding: UTF-8
+config:
+    type: aws-parameterstore:/mysql/
 
 spring:
+    config:
+        import: ${config.type}
     application:
         name: springboot-community-dev-proj
     profiles:
         active: dev
     jpa:
         hibernate:
-            ddl-auto: none
+            ddl-auto: validate
         defer-datasource-initialization: true
         properties:
             hibernate:
@@ -53,9 +22,9 @@ spring:
     datasource:
         hikari:
             driver-class-name: com.mysql.cj.jdbc.Driver
-            jdbc-url: jdbc:mysql://localhost:3306/springboot
-            username: root
-            password:
+            jdbc-url: ${jdbc.url:jdbc:mysql://localhost:8082/springboot}
+            username: ${username:root}
+            password: ${password:root}
             pool-name: MySQLPool
             minimum-idle: 1
             maximum-pool-size: 5
@@ -65,3 +34,10 @@ spring:
     sql:
         init:
             encoding: UTF-8
+logging:
+    config: classpath:logback-config.xml
+    level:
+        org.springframework.security: DEBUG
+server:
+    error:
+        include-message: on_param
